@@ -1,13 +1,26 @@
 {
-    "id": "./",
     "name": "Fubao",
     "short_name": "Fubao",
-    "description": "Ứng dụng quản lý lịch trình và kế hoạch",
+    "description": "Ứng dụng quản lý lịch trình Fubao",
+    "id": "./",
     "start_url": "./login.html",
     "scope": "./",
     "display": "standalone",
-    "background_color": "#fff9fb",
-    "theme_color": "#fff7fa",
-    "lang": "vi",
-    "orientation": "portrait"
+    "orientation": "portrait",
+    "background_color": "#fff7fa",
+    "theme_color": "#f5b3c7",
+    "icons": [
+        {
+            "src": "./icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "./icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
+        }
+    ]
 }

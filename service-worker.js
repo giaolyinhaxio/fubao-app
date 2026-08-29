@@ -17,7 +17,10 @@ const APP_FILES = [
     "./week.js",
     "./pwa.js",
     "./manifest.json",
-    "./icon.svg"
+    "./icon.svg",
+    "./icon-192.png",
+    "./icon-512.png",
+    "./apple-touch-icon.png",
 ];
 
 
