@@ -1,0 +1,209 @@
+<svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 512 512"
+>
+    <defs>
+        <linearGradient
+            id="background"
+            x1="0"
+            y1="0"
+            x2="1"
+            y2="1"
+        >
+            <stop
+                offset="0%"
+                stop-color="#ffe2ed"
+            />
+
+            <stop
+                offset="100%"
+                stop-color="#dcefe3"
+            />
+        </linearGradient>
+
+        <filter
+            id="shadow"
+            x="-20%"
+            y="-20%"
+            width="140%"
+            height="140%"
+        >
+            <feDropShadow
+                dx="0"
+                dy="12"
+                stdDeviation="12"
+                flood-color="#6f5360"
+                flood-opacity="0.16"
+            />
+        </filter>
+    </defs>
+
+    <!-- Nền biểu tượng -->
+
+    <rect
+        width="512"
+        height="512"
+        rx="120"
+        fill="url(#background)"
+    />
+
+    <!-- Tai gấu trúc -->
+
+    <circle
+        cx="151"
+        cy="164"
+        r="67"
+        fill="#3f363a"
+    />
+
+    <circle
+        cx="361"
+        cy="164"
+        r="67"
+        fill="#3f363a"
+    />
+
+    <!-- Khuôn mặt -->
+
+    <ellipse
+        cx="256"
+        cy="237"
+        rx="166"
+        ry="153"
+        fill="#fffdfd"
+        filter="url(#shadow)"
+    />
+
+    <!-- Mảng mắt trái -->
+
+    <ellipse
+        cx="194"
+        cy="229"
+        rx="44"
+        ry="59"
+        fill="#453b3f"
+        transform="rotate(25 194 229)"
+    />
+
+    <!-- Mảng mắt phải -->
+
+    <ellipse
+        cx="318"
+        cy="229"
+        rx="44"
+        ry="59"
+        fill="#453b3f"
+        transform="rotate(-25 318 229)"
+    />
+
+    <!-- Mắt trái -->
+
+    <ellipse
+        cx="202"
+        cy="229"
+        rx="15"
+        ry="21"
+        fill="#171315"
+    />
+
+    <circle
+        cx="208"
+        cy="221"
+        r="5"
+        fill="#ffffff"
+    />
+
+    <!-- Mắt phải -->
+
+    <ellipse
+        cx="310"
+        cy="229"
+        rx="15"
+        ry="21"
+        fill="#171315"
+    />
+
+    <circle
+        cx="316"
+        cy="221"
+        r="5"
+        fill="#ffffff"
+    />
+
+    <!-- Má hồng -->
+
+    <ellipse
+        cx="154"
+        cy="285"
+        rx="31"
+        ry="17"
+        fill="#f5b3c7"
+        opacity="0.72"
+    />
+
+    <ellipse
+        cx="358"
+        cy="285"
+        rx="31"
+        ry="17"
+        fill="#f5b3c7"
+        opacity="0.72"
+    />
+
+    <!-- Mũi -->
+
+    <path
+        d="M232 274
+           Q256 258 280 274
+           Q276 299 256 301
+           Q236 299 232 274Z"
+        fill="#3f3539"
+    />
+
+    <!-- Miệng -->
+
+    <path
+        d="M256 300
+           C256 322 235 329 224 318"
+        fill="none"
+        stroke="#59474f"
+        stroke-width="8"
+        stroke-linecap="round"
+    />
+
+    <path
+        d="M256 300
+           C256 322 277 329 288 318"
+        fill="none"
+        stroke="#59474f"
+        stroke-width="8"
+        stroke-linecap="round"
+    />
+
+    <!-- Khung tên -->
+
+    <rect
+        x="101"
+        y="383"
+        width="310"
+        height="73"
+        rx="37"
+        fill="#ffffff"
+        opacity="0.82"
+    />
+
+    <!-- Tên app -->
+
+    <text
+        x="256"
+        y="433"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="48"
+        font-weight="700"
+        letter-spacing="2"
+        fill="#4c3b43"
+    >
+        Fubao
+    </text>
+</svg>

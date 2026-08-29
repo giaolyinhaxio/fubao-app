@@ -1,0 +1,1535 @@
+/* =========================
+   CÀI ĐẶT CHUNG
+========================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    min-height: 100%;
+    background-color: #fff7fa;
+}
+
+body {
+    min-height: 100vh;
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+    color: #352e32;
+    background:
+        radial-gradient(
+            circle at top left,
+            rgba(255, 208, 224, 0.7),
+            transparent 38%
+        ),
+        radial-gradient(
+            circle at bottom right,
+            rgba(210, 235, 220, 0.8),
+            transparent 42%
+        ),
+        #fff9fb;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+
+/* =========================
+   KHUNG ỨNG DỤNG
+========================= */
+
+.app-container {
+    width: 100%;
+    max-width: 480px;
+    min-height: 100vh;
+    margin: 0 auto;
+    padding:
+        calc(36px + env(safe-area-inset-top))
+        20px
+        calc(24px + env(safe-area-inset-bottom));
+}
+
+
+/* =========================
+   PHẦN ĐẦU TRANG CHỦ
+========================= */
+
+.home-header {
+    margin-bottom: 34px;
+    text-align: center;
+}
+
+.home-label {
+    margin-bottom: 10px;
+    color: #a16c80;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+}
+
+.home-header h1 {
+    margin-bottom: 10px;
+    color: #4a3540;
+    font-size: clamp(34px, 10vw, 44px);
+    line-height: 1.1;
+    letter-spacing: -1.5px;
+}
+
+.home-description {
+    max-width: 310px;
+    margin: 0 auto;
+    color: #806f77;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+
+/* =========================
+   DANH SÁCH 3 KHU VỰC
+========================= */
+
+.home-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.space-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 132px;
+    padding: 22px 48px 22px 20px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-radius: 28px;
+    box-shadow:
+        0 14px 30px rgba(91, 65, 77, 0.09),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.space-card:active {
+    transform: scale(0.97);
+    box-shadow:
+        0 8px 18px rgba(91, 65, 77, 0.08);
+}
+
+
+/* Khu vực Diquy */
+
+.diquy-card {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 238, 244, 0.98),
+            rgba(255, 218, 231, 0.95)
+        );
+}
+
+
+/* Khu vực TiOong */
+
+.tioong-card {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(237, 249, 241, 0.98),
+            rgba(205, 233, 216, 0.95)
+        );
+}
+
+
+/* Khu vực chung */
+
+.together-card {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 248, 225, 0.98),
+            rgba(242, 226, 191, 0.95)
+        );
+}
+
+
+/* =========================
+   NỘI DUNG TRONG THẺ
+========================= */
+
+.space-icon {
+    display: flex;
+    flex: 0 0 58px;
+    align-items: center;
+    justify-content: center;
+    width: 58px;
+    height: 58px;
+    margin-right: 17px;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.55);
+    box-shadow: 0 6px 16px rgba(80, 60, 70, 0.07);
+    font-size: 28px;
+}
+
+.space-content {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+}
+
+.space-label {
+    margin-bottom: 4px;
+    color: #997883;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+}
+
+.space-content h2 {
+    margin-bottom: 5px;
+    color: #44363d;
+    font-size: 25px;
+    line-height: 1.1;
+}
+
+.space-content > p:last-child {
+    color: #74666d;
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+.space-arrow {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    color: rgba(73, 54, 63, 0.52);
+    font-size: 36px;
+    font-weight: 300;
+    transform: translateY(-52%);
+}
+
+
+/* =========================
+   CUỐI TRANG
+========================= */
+
+.home-footer {
+    padding-top: 28px;
+    text-align: center;
+}
+
+.home-footer p {
+    color: #9b8b92;
+    font-size: 13px;
+}
+
+
+/* =========================
+   MÀN HÌNH LỚN
+========================= */
+
+@media (min-width: 600px) {
+    .app-container {
+        padding-top: 58px;
+    }
+
+    .space-card:hover {
+        transform: translateY(-3px);
+        box-shadow:
+            0 18px 36px rgba(91, 65, 77, 0.13);
+    }
+}
+
+/* =========================
+   TRANG DIQUY
+========================= */
+
+.diquy-page {
+    background:
+        radial-gradient(
+            circle at top left,
+            rgba(255, 206, 224, 0.75),
+            transparent 38%
+        ),
+        radial-gradient(
+            circle at bottom right,
+            rgba(255, 238, 215, 0.75),
+            transparent 40%
+        ),
+        #fff9fb;
+}
+
+.sub-page-container {
+    padding-top: calc(24px + env(safe-area-inset-top));
+}
+
+
+/* Thanh trên cùng */
+
+.sub-page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+}
+
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: #8f6475;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.back-button span {
+    margin-top: -3px;
+    font-size: 31px;
+    font-weight: 300;
+    line-height: 1;
+}
+
+.profile-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-radius: 16px;
+    background-color: rgba(255, 255, 255, 0.62);
+    box-shadow: 0 7px 18px rgba(104, 73, 87, 0.09);
+    font-size: 23px;
+}
+
+
+/* Tên Diquy */
+
+.profile-heading {
+    margin-bottom: 26px;
+}
+
+.profile-label {
+    margin-bottom: 5px;
+    color: #a37386;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+}
+
+.profile-heading h1 {
+    margin-bottom: 7px;
+    color: #493740;
+    font-size: 39px;
+    line-height: 1.1;
+    letter-spacing: -1px;
+}
+
+.profile-heading > p:last-child {
+    color: #8a7880;
+    font-size: 14px;
+}
+
+
+/* Hai ô thông tin */
+
+.information-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 13px;
+    margin-bottom: 32px;
+}
+
+.information-card {
+    display: flex;
+    min-height: 155px;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-radius: 24px;
+    background-color: rgba(255, 255, 255, 0.62);
+    box-shadow: 0 12px 26px rgba(96, 69, 81, 0.08);
+}
+
+.information-card:first-child {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.82),
+            rgba(255, 226, 237, 0.88)
+        );
+}
+
+.information-card:last-child {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.82),
+            rgba(239, 232, 255, 0.9)
+        );
+}
+
+.information-icon {
+    margin-bottom: 13px;
+    font-size: 26px;
+}
+
+.information-card p {
+    margin-bottom: 4px;
+    color: #90717e;
+    font-size: 12px;
+}
+
+.information-card strong {
+    margin-bottom: 4px;
+    color: #4d3c44;
+    font-size: 16px;
+}
+
+.information-card small {
+    color: #8d7e84;
+    font-size: 12px;
+}
+
+
+/* Phần lịch hôm nay */
+
+.today-schedule-section {
+    margin-bottom: 25px;
+}
+
+.section-heading-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+}
+
+.section-label {
+    margin-bottom: 3px;
+    color: #aa7b8d;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.4px;
+}
+
+.section-heading-row h2 {
+    color: #483a40;
+    font-size: 25px;
+}
+
+.small-action-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border: 0;
+    border-radius: 15px;
+    color: #8e6273;
+    background-color: rgba(255, 255, 255, 0.72);
+    box-shadow: 0 7px 17px rgba(91, 65, 77, 0.08);
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.small-action-button:active {
+    transform: scale(0.94);
+}
+
+
+/* Thẻ khi chưa tạo lịch */
+
+.today-schedule-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.empty-schedule-card {
+    display: flex;
+    min-height: 100px;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+    border: 1px dashed rgba(161, 112, 131, 0.4);
+    border-radius: 23px;
+    background-color: rgba(255, 255, 255, 0.54);
+}
+
+.empty-schedule-card span {
+    font-size: 27px;
+}
+
+.empty-schedule-card p {
+    color: #806f77;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+
+/* Các nút chức năng */
+
+.diquy-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-bottom: 10px;
+}
+
+.main-action-button {
+    display: flex;
+    width: 100%;
+    min-height: 82px;
+    align-items: center;
+    gap: 14px;
+    padding: 15px 18px;
+    border: 1px solid rgba(255, 255, 255, 0.88);
+    border-radius: 23px;
+    color: #4e4046;
+    background-color: rgba(255, 255, 255, 0.7);
+    box-shadow: 0 10px 24px rgba(90, 64, 76, 0.07);
+    text-align: left;
+    cursor: pointer;
+}
+
+.main-action-button > span:first-child {
+    font-size: 25px;
+}
+
+.action-text {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.action-text strong {
+    font-size: 15px;
+}
+
+.action-text small {
+    color: #8b7b82;
+    font-size: 12px;
+    line-height: 1.35;
+}
+
+.action-arrow {
+    color: #a28c95;
+    font-size: 29px;
+    font-weight: 300;
+}
+
+.main-action-button:active {
+    transform: scale(0.98);
+}
+/* =========================
+   THẺ LỊCH TRÌNH DIQUY
+========================= */
+
+.schedule-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-height: 100px;
+    padding: 17px;
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-radius: 23px;
+    box-shadow: 0 10px 24px rgba(90, 64, 76, 0.07);
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+/* Màu lịch học */
+
+.study-schedule {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.88),
+            rgba(255, 225, 236, 0.93)
+        );
+}
+
+
+/* Màu lịch làm */
+
+.work-schedule {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.88),
+            rgba(231, 226, 255, 0.93)
+        );
+}
+
+
+/* Màu lịch ôn bài */
+
+.review-schedule {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.88),
+            rgba(255, 241, 208, 0.93)
+        );
+}
+
+
+/* Icon của lịch */
+
+.schedule-item-icon {
+    display: flex;
+    flex: 0 0 51px;
+    align-items: center;
+    justify-content: center;
+    width: 51px;
+    height: 51px;
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-radius: 17px;
+    background-color: rgba(255, 255, 255, 0.62);
+    font-size: 25px;
+}
+
+
+/* Nội dung lịch */
+
+.schedule-item-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.schedule-item-time {
+    margin-bottom: 3px;
+    color: #a16d81;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.schedule-item-content h3 {
+    margin-bottom: 4px;
+    color: #4d3d44;
+    font-size: 15px;
+    line-height: 1.3;
+}
+
+.schedule-item-description {
+    color: #86767d;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+
+/* Nút hoàn thành */
+
+.complete-button {
+    display: flex;
+    flex: 0 0 34px;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border: 2px solid rgba(157, 105, 126, 0.35);
+    border-radius: 50%;
+    color: #9d697e;
+    background-color: rgba(255, 255, 255, 0.6);
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.complete-button:active {
+    transform: scale(0.9);
+}
+
+
+/* Khi đánh dấu hoàn thành */
+
+.schedule-item.completed {
+    opacity: 0.62;
+}
+
+.schedule-item.completed .schedule-item-content h3,
+.schedule-item.completed .schedule-item-description {
+    text-decoration: line-through;
+}
+
+.schedule-item.completed .complete-button {
+    border-color: #83ad91;
+    color: white;
+    background-color: #83ad91;
+}
+
+
+/* =========================
+   THẺ THÔNG BÁO CHƯA XẾP LỊCH
+========================= */
+
+.schedule-notice {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    min-height: 105px;
+    padding: 19px;
+    border: 1px dashed rgba(164, 114, 134, 0.43);
+    border-radius: 23px;
+    background-color: rgba(255, 255, 255, 0.58);
+}
+
+.schedule-notice > span {
+    display: flex;
+    flex: 0 0 49px;
+    align-items: center;
+    justify-content: center;
+    width: 49px;
+    height: 49px;
+    border-radius: 16px;
+    background-color: rgba(255, 236, 243, 0.82);
+    font-size: 24px;
+}
+
+.schedule-notice h3 {
+    margin-bottom: 5px;
+    color: #59464f;
+    font-size: 15px;
+}
+
+.schedule-notice p {
+    color: #87757d;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+
+/* Màn hình điện thoại nhỏ */
+
+@media (max-width: 370px) {
+    .schedule-item {
+        gap: 10px;
+        padding: 14px;
+    }
+
+    .schedule-item-icon {
+        flex-basis: 44px;
+        width: 44px;
+        height: 44px;
+        font-size: 22px;
+    }
+
+    .complete-button {
+        flex-basis: 31px;
+        width: 31px;
+        height: 31px;
+    }
+}
+
+/* =========================
+   CỬA SỔ XẾP CA LÀM
+========================= */
+
+.modal-overlay {
+    position: fixed;
+    z-index: 1000;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-top: 30px;
+    background-color: rgba(50, 38, 44, 0.35);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+        opacity 0.25s ease,
+        visibility 0.25s ease;
+}
+
+.modal-overlay.open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.shift-modal {
+    width: 100%;
+    max-width: 480px;
+    max-height: 90vh;
+    padding:
+        12px
+        21px
+        calc(24px + env(safe-area-inset-bottom));
+    overflow-y: auto;
+    border-radius: 30px 30px 0 0;
+    background-color: #fffafc;
+    box-shadow: 0 -18px 45px rgba(53, 39, 46, 0.2);
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.open .shift-modal {
+    transform: translateY(0);
+}
+
+
+/* Thanh nhỏ phía trên */
+
+.modal-handle {
+    width: 44px;
+    height: 5px;
+    margin: 0 auto 19px;
+    border-radius: 999px;
+    background-color: #dccbd2;
+}
+
+
+/* Phần đầu cửa sổ */
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+}
+
+.modal-header h2 {
+    margin-top: 3px;
+    color: #493a41;
+    font-size: 26px;
+}
+
+.close-modal-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 39px;
+    height: 39px;
+    border: 0;
+    border-radius: 50%;
+    color: #806c75;
+    background-color: #f2e8ec;
+    font-size: 27px;
+    font-weight: 300;
+    cursor: pointer;
+}
+
+.close-modal-button:active {
+    transform: scale(0.92);
+}
+
+
+/* Ghi chú lịch Riki */
+
+.modal-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+    margin-bottom: 23px;
+    padding: 14px;
+    border-radius: 18px;
+    background-color: #fff0f5;
+}
+
+.modal-note span {
+    font-size: 19px;
+}
+
+.modal-note p {
+    color: #7d626d;
+    font-size: 12px;
+    line-height: 1.55;
+}
+
+
+/* Các ô nhập liệu */
+
+.form-group {
+    margin-bottom: 22px;
+}
+
+.form-group > label {
+    display: block;
+    margin-bottom: 9px;
+    color: #55444c;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.form-group input[type="date"],
+.form-group select {
+    width: 100%;
+    height: 52px;
+    padding: 0 14px;
+    border: 1px solid #eadce2;
+    border-radius: 16px;
+    outline: none;
+    color: #4e4046;
+    background-color: white;
+    font-size: 15px;
+}
+
+.form-group input[type="date"]:focus,
+.form-group select:focus {
+    border-color: #d99bb3;
+    box-shadow: 0 0 0 3px rgba(217, 155, 179, 0.15);
+}
+
+.form-group > small {
+    display: block;
+    margin-top: 7px;
+    color: #96848c;
+    font-size: 11px;
+}
+
+
+/* Chọn ngày làm cuối tuần */
+
+.weekend-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 11px;
+}
+
+.weekend-option {
+    position: relative;
+    cursor: pointer;
+}
+
+.weekend-option input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.weekend-option > span {
+    display: flex;
+    min-height: 78px;
+    flex-direction: column;
+    justify-content: center;
+    padding: 14px;
+    border: 2px solid #eee2e7;
+    border-radius: 18px;
+    background-color: white;
+    transition:
+        border-color 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.weekend-option strong {
+    margin-bottom: 4px;
+    color: #56464d;
+    font-size: 14px;
+}
+
+.weekend-option small {
+    color: #96858c;
+    font-size: 11px;
+}
+
+.weekend-option input:checked + span {
+    border-color: #d795ae;
+    background-color: #fff0f5;
+}
+
+
+/* Nút lưu */
+
+.save-shift-button {
+    width: 100%;
+    min-height: 54px;
+    margin-top: 2px;
+    border: 0;
+    border-radius: 18px;
+    color: white;
+    background:
+        linear-gradient(
+            135deg,
+            #d78ca8,
+            #bc718e
+        );
+    box-shadow: 0 10px 22px rgba(188, 113, 142, 0.24);
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.save-shift-button:active {
+    transform: scale(0.98);
+}
+
+
+/* Không cuộn trang khi cửa sổ đang mở */
+
+body.modal-open {
+    overflow: hidden;
+}
+
+/* =========================
+   TRANG ĐĂNG NHẬP
+========================= */
+
+.login-page {
+    display: flex;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: center;
+    padding:
+        calc(25px + env(safe-area-inset-top))
+        20px
+        calc(25px + env(safe-area-inset-bottom));
+    background:
+        radial-gradient(
+            circle at top left,
+            rgba(255, 205, 224, 0.78),
+            transparent 40%
+        ),
+        radial-gradient(
+            circle at bottom right,
+            rgba(211, 235, 220, 0.82),
+            transparent 43%
+        ),
+        #fff9fb;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 420px;
+    padding: 30px 24px 24px;
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-radius: 32px;
+    background-color: rgba(255, 255, 255, 0.68);
+    box-shadow:
+        0 20px 48px rgba(82, 59, 70, 0.12);
+    backdrop-filter: blur(16px);
+}
+
+
+/* Phần tên ứng dụng */
+
+.login-heading {
+    margin-bottom: 29px;
+    text-align: center;
+}
+
+.login-logo {
+    display: flex;
+    width: 68px;
+    height: 68px;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 18px;
+    border: 1px solid rgba(255, 255, 255, 0.92);
+    border-radius: 23px;
+    background:
+        linear-gradient(
+            145deg,
+            #fff8fb,
+            #ffdce9
+        );
+    box-shadow: 0 10px 23px rgba(122, 80, 98, 0.12);
+    font-size: 33px;
+}
+
+.login-label {
+    margin-bottom: 7px;
+    color: #a47285;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.7px;
+}
+
+.login-heading h1 {
+    margin-bottom: 9px;
+    color: #493740;
+    font-size: 34px;
+    line-height: 1.15;
+    letter-spacing: -1px;
+}
+
+.login-description {
+    color: #89757e;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+
+/* Form đăng nhập */
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 17px;
+}
+
+.login-form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #57454d;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.login-form-group input {
+    width: 100%;
+    height: 53px;
+    padding: 0 15px;
+    border: 1px solid #e9dce2;
+    border-radius: 17px;
+    outline: none;
+    color: #4c3e44;
+    background-color: rgba(255, 255, 255, 0.9);
+    font-size: 15px;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.login-form-group input::placeholder {
+    color: #b0a0a7;
+}
+
+.login-form-group input:focus {
+    border-color: #d693ad;
+    box-shadow:
+        0 0 0 4px rgba(214, 147, 173, 0.14);
+}
+
+
+/* Thông báo */
+
+.login-message {
+    min-height: 19px;
+    margin-top: -4px;
+    font-size: 12px;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.login-message.error {
+    color: #bc5361;
+}
+
+.login-message.success {
+    color: #588c68;
+}
+
+
+/* Nút đăng nhập */
+
+.login-button {
+    width: 100%;
+    min-height: 54px;
+    border: 0;
+    border-radius: 18px;
+    color: white;
+    background:
+        linear-gradient(
+            135deg,
+            #d98da9,
+            #b96e8b
+        );
+    box-shadow:
+        0 11px 23px rgba(185, 110, 139, 0.25);
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.login-button:active {
+    transform: scale(0.98);
+}
+
+.login-button:disabled {
+    opacity: 0.65;
+    cursor: wait;
+}
+
+
+/* Cuối trang đăng nhập */
+
+.login-footer {
+    margin-top: 21px;
+    color: #99878f;
+    font-size: 11px;
+    line-height: 1.5;
+    text-align: center;
+}
+
+
+/* Điện thoại nhỏ */
+
+@media (max-width: 370px) {
+    .login-container {
+        padding: 25px 19px 21px;
+    }
+
+    .login-heading h1 {
+        font-size: 30px;
+    }
+}
+
+/* =========================
+   TÀI KHOẢN VÀ ĐĂNG XUẤT
+========================= */
+
+.home-account-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 27px;
+    padding: 10px 11px 10px 15px;
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-radius: 18px;
+    background-color: rgba(255, 255, 255, 0.57);
+}
+
+.current-user-email {
+    min-width: 0;
+    overflow: hidden;
+    color: #88737d;
+    font-size: 11px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.logout-button {
+    flex: 0 0 auto;
+    min-height: 35px;
+    padding: 0 13px;
+    border: 0;
+    border-radius: 12px;
+    color: #8d5f72;
+    background-color: #f9e8ef;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.logout-button:active {
+    transform: scale(0.96);
+}
+
+.logout-button:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+/* =========================
+   TRANG LỊCH TUẦN
+========================= */
+
+.week-page {
+    background:
+        radial-gradient(
+            circle at top left,
+            rgba(255, 210, 227, 0.72),
+            transparent 36%
+        ),
+        radial-gradient(
+            circle at bottom right,
+            rgba(219, 233, 255, 0.75),
+            transparent 42%
+        ),
+        #fff9fb;
+}
+
+
+/* Tiêu đề */
+
+.week-heading {
+    margin-bottom: 22px;
+}
+
+.week-heading h1 {
+    margin: 5px 0 7px;
+    color: #493940;
+    font-size: 37px;
+    line-height: 1.1;
+    letter-spacing: -1px;
+}
+
+.week-heading > p:last-child {
+    color: #88767e;
+    font-size: 14px;
+}
+
+
+/* Điều hướng tuần */
+
+.week-navigation {
+    display: grid;
+    grid-template-columns: 48px 1fr 48px;
+    gap: 10px;
+    margin-bottom: 25px;
+    padding: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.62);
+    box-shadow: 0 8px 20px rgba(88, 65, 75, 0.06);
+}
+
+.week-navigation button {
+    min-height: 43px;
+    border: 0;
+    border-radius: 14px;
+    color: #805e6c;
+    background-color: #f7eaf0;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+#previousWeekButton,
+#nextWeekButton {
+    font-size: 28px;
+    font-weight: 300;
+}
+
+#currentWeekButton {
+    color: #765362;
+    background-color: rgba(255, 255, 255, 0.83);
+    font-size: 13px;
+}
+
+.week-navigation button:active {
+    transform: scale(0.94);
+}
+
+
+/* Danh sách ngày */
+
+.week-schedule {
+    display: flex;
+    flex-direction: column;
+    gap: 17px;
+    padding-bottom:
+        calc(15px + env(safe-area-inset-bottom));
+}
+
+.week-day {
+    padding: 17px;
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-radius: 26px;
+    background-color: rgba(255, 255, 255, 0.61);
+    box-shadow:
+        0 11px 26px rgba(87, 64, 75, 0.07);
+}
+
+.week-day.today {
+    border-color: rgba(210, 130, 161, 0.52);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.84),
+            rgba(255, 231, 240, 0.85)
+        );
+    box-shadow:
+        0 13px 30px rgba(171, 100, 128, 0.13);
+}
+
+
+/* Tiêu đề từng ngày */
+
+.week-day-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 13px;
+    padding: 0 2px;
+}
+
+.week-day-header p {
+    margin-bottom: 3px;
+    color: #a06c80;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.7px;
+    text-transform: uppercase;
+}
+
+.week-day-header h2 {
+    color: #4d3e45;
+    font-size: 22px;
+}
+
+.today-label {
+    padding: 6px 10px;
+    border-radius: 999px;
+    color: white;
+    background-color: #ca809d;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+
+/* Công việc trong ngày */
+
+.week-task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.week-task {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 75px;
+    padding: 12px 13px;
+    border: 1px solid rgba(255, 255, 255, 0.86);
+    border-radius: 19px;
+}
+
+.week-task.study {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 241, 247, 0.94),
+            rgba(255, 222, 235, 0.82)
+        );
+}
+
+.week-task.work {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(245, 241, 255, 0.95),
+            rgba(225, 219, 255, 0.85)
+        );
+}
+
+.week-task.review {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 250, 232, 0.96),
+            rgba(255, 237, 195, 0.85)
+        );
+}
+
+.week-task.listening {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(239, 249, 255, 0.96),
+            rgba(213, 235, 246, 0.87)
+        );
+}
+
+.week-task-icon {
+    display: flex;
+    flex: 0 0 44px;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid rgba(255, 255, 255, 0.86);
+    border-radius: 15px;
+    background-color: rgba(255, 255, 255, 0.62);
+    font-size: 21px;
+}
+
+.week-task-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.week-task-content > p {
+    margin-bottom: 2px;
+    color: #a36d82;
+    font-size: 11px;
+    font-weight: 750;
+}
+
+.week-task-content h3 {
+    margin-bottom: 3px;
+    color: #4e3f45;
+    font-size: 14px;
+    line-height: 1.3;
+}
+
+.week-task-content small {
+    display: block;
+    color: #897980;
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+
+/* Ngày chưa có ca */
+
+.week-empty {
+    display: flex;
+    min-height: 70px;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+    border: 1px dashed rgba(157, 111, 129, 0.35);
+    border-radius: 18px;
+    background-color: rgba(255, 255, 255, 0.48);
+}
+
+.week-empty span {
+    font-size: 22px;
+}
+
+.week-empty p {
+    color: #89767e;
+    font-size: 12px;
+    line-height: 1.45;
+}
+
+
+/* Màn hình rộng */
+
+@media (min-width: 750px) {
+    .week-page .app-container {
+        max-width: 760px;
+    }
+
+    .week-schedule {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        align-items: start;
+    }
+
+    .week-day.today {
+        grid-column: span 2;
+    }
+}
+
+
+/* Điện thoại nhỏ */
+
+@media (max-width: 370px) {
+    .week-day {
+        padding: 14px;
+    }
+
+    .week-task {
+        gap: 9px;
+        padding: 10px;
+    }
+
+    .week-task-icon {
+        flex-basis: 40px;
+        width: 40px;
+        height: 40px;
+    }
+}

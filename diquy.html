@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+    <meta name="theme-color" content="#ffeef4">
+
+    <title>Diquy | Fubao</title>
+
+    <link rel="manifest" href="manifest.json">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+    <meta name="apple-mobile-web-app-title" content="Fubao">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="diquy-page">
+
+    <div class="app-container sub-page-container">
+
+        <!-- Thanh trên cùng -->
+        <header class="sub-page-header">
+            <a class="back-button" href="index.html">
+                <span>‹</span>
+                Trang chủ
+            </a>
+
+            <div class="profile-icon">🌷</div>
+        </header>
+
+        <!-- Giới thiệu -->
+        <section class="profile-heading">
+            <p class="profile-label">KHÔNG GIAN CỦA</p>
+            <h1>Diquy</h1>
+            <p id="diquyCurrentDate">Đang tải ngày...</p>
+        </section>
+
+        <!-- Thông tin lịch cố định -->
+        <section class="information-grid">
+
+            <article class="information-card">
+                <span class="information-icon">📚</span>
+                <p>Học N5</p>
+                <strong>Thứ 2, 4, 6</strong>
+                <small>09:00–11:30</small>
+            </article>
+
+            <article class="information-card">
+                <span class="information-icon">💼</span>
+                <p>Lab Helpdesk</p>
+                <strong>3 ca xoay</strong>
+                <small>Đổi mỗi 2 tuần</small>
+            </article>
+
+        </section>
+
+        <!-- Lịch hôm nay -->
+        <section class="today-schedule-section">
+
+            <div class="section-heading-row">
+                <div>
+                    <p class="section-label">LỊCH TRÌNH</p>
+                    <h2>Hôm nay</h2>
+                </div>
+
+                <button class="small-action-button" id="refreshScheduleButton" type="button">
+                    ↻
+                </button>
+            </div>
+
+            <div class="today-schedule-list" id="diquyTodaySchedule">
+                <article class="empty-schedule-card">
+                    <span>🗓️</span>
+                    <p>Lịch hôm nay sẽ được tạo tự động tại đây.</p>
+                </article>
+            </div>
+
+        </section>
+
+        <!-- Chức năng -->
+        <section class="diquy-actions">
+
+            <button class="main-action-button" id="openWeekScheduleButton" type="button">
+                <span>📅</span>
+
+                <span class="action-text">
+                    <strong>Xem lịch tuần</strong>
+                    <small>Xem lịch học và lịch làm cả tuần</small>
+                </span>
+
+                <span class="action-arrow">›</span>
+            </button>
+
+            <button class="main-action-button" id="openShiftSettingButton" type="button">
+                <span>⚙️</span>
+
+                <span class="action-text">
+                    <strong>Xếp ca làm</strong>
+                    <small>Chọn ca làm và ngày làm cuối tuần</small>
+                </span>
+
+                <span class="action-arrow">›</span>
+            </button>
+
+        </section>
+
+    </div>
+
+    <!-- Cửa sổ xếp ca làm -->
+    <div class="modal-overlay" id="shiftModal">
+
+        <section class="shift-modal">
+
+            <div class="modal-handle"></div>
+
+            <header class="modal-header">
+                <div>
+                    <p class="section-label">THIẾT LẬP LỊCH</p>
+                    <h2>Xếp ca làm</h2>
+                </div>
+
+                <button class="close-modal-button" id="closeShiftModalButton" type="button" aria-label="Đóng">
+                    ×
+                </button>
+            </header>
+
+            <div class="modal-note">
+                <span>📌</span>
+                <p>
+                    Thứ 2, 4 và 6 có lớp Riki nên ca làm luôn là
+                    13:00–21:00.
+                </p>
+            </div>
+
+            <form id="shiftSettingForm">
+
+                <div class="form-group">
+                    <label for="cycleStartDate">
+                        Ngày bắt đầu chu kỳ
+                    </label>
+
+                    <input id="cycleStartDate" name="cycleStartDate" type="date" required>
+
+                    <small>
+                        Một chu kỳ ca làm kéo dài 2 tuần.
+                    </small>
+                </div>
+
+                <div class="form-group">
+                    <label for="workShift">
+                        Ca làm trong chu kỳ
+                    </label>
+
+                    <select id="workShift" name="workShift" required>
+                        <option value="">
+                            Chọn ca làm
+                        </option>
+
+                        <option value="morning">
+                            Ca sáng: 07:00–16:00
+                        </option>
+
+                        <option value="normal">
+                            Ca thường: 09:00–18:00
+                        </option>
+
+                        <option value="afternoon">
+                            Ca chiều: 13:00–21:00
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        Ngày đi làm cuối tuần
+                    </label>
+
+                    <div class="weekend-options">
+
+                        <label class="weekend-option">
+                            <input type="radio" name="weekendWorkDay" value="saturday" required>
+
+                            <span>
+                                <strong>Thứ Bảy</strong>
+                                <small>Chủ Nhật nghỉ</small>
+                            </span>
+                        </label>
+
+                        <label class="weekend-option">
+                            <input type="radio" name="weekendWorkDay" value="sunday" required>
+
+                            <span>
+                                <strong>Chủ Nhật</strong>
+                                <small>Thứ Bảy nghỉ</small>
+                            </span>
+                        </label>
+
+                    </div>
+                </div>
+
+                <button class="save-shift-button" id="saveShiftButton" type="submit">
+                    Lưu lịch làm
+                </button>
+
+            </form>
+
+        </section>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="app.js"></script>
+    <script src="pwa.js"></script>
+</body>
+
+</html>

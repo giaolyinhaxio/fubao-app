@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+    <meta name="theme-color" content="#fff7fa">
+
+    <title>Lịch tuần | Fubao</title>
+
+    <link rel="manifest" href="manifest.json">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+    <meta name="apple-mobile-web-app-title" content="Fubao">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="week-page">
+
+    <div class="app-container sub-page-container">
+
+        <header class="sub-page-header">
+            <a class="back-button" href="diquy.html">
+                <span>‹</span>
+                Diquy
+            </a>
+
+            <div class="profile-icon">📅</div>
+        </header>
+
+        <section class="week-heading">
+            <p class="profile-label">
+                LỊCH TRÌNH CỦA DIQUY
+            </p>
+
+            <h1>Lịch tuần</h1>
+
+            <p id="weekRange">
+                Đang tải khoảng ngày...
+            </p>
+        </section>
+
+        <nav class="week-navigation">
+            <button id="previousWeekButton" type="button" aria-label="Tuần trước">
+                ‹
+            </button>
+
+            <button id="currentWeekButton" type="button">
+                Tuần này
+            </button>
+
+            <button id="nextWeekButton" type="button" aria-label="Tuần sau">
+                ›
+            </button>
+        </nav>
+
+        <main class="week-schedule" id="weekSchedule">
+            <article class="schedule-notice">
+                <span>⏳</span>
+
+                <div>
+                    <h3>Đang tải lịch tuần</h3>
+                    <p>
+                        App đang lấy dữ liệu từ Supabase.
+                    </p>
+                </div>
+            </article>
+        </main>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="auth-guard.js"></script>
+    <script src="week.js"></script>
+    <script src="pwa.js"></script>
+</body>
+
+</html>

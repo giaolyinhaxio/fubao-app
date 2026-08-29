@@ -1,0 +1,13 @@
+{
+    "id": "./",
+    "name": "Fubao",
+    "short_name": "Fubao",
+    "description": "Ứng dụng quản lý lịch trình và kế hoạch",
+    "start_url": "./login.html",
+    "scope": "./",
+    "display": "standalone",
+    "background_color": "#fff9fb",
+    "theme_color": "#fff7fa",
+    "lang": "vi",
+    "orientation": "portrait"
+}

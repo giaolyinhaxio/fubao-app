@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+    <meta name="theme-color" content="#fff7fa">
+
+    <title>Fubao</title>
+
+    <link rel="manifest" href="manifest.json">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+    <meta name="apple-mobile-web-app-title" content="Fubao">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="home-page">
+
+    <div class="app-container">
+
+        <div class="home-account-bar">
+            <p class="current-user-email" id="currentUserEmail">
+                Đang tải tài khoản...
+            </p>
+
+            <button class="logout-button" id="logoutButton" type="button">
+                Đăng xuất
+            </button>
+        </div>
+
+        <header class="home-header">
+            <p class="home-label">ỨNG DỤNG CỦA CHÚNG MÌNH</p>
+            <h1>Fubao</h1>
+            <p class="home-description">
+                Lịch trình, mục tiêu và những kế hoạch chung
+            </p>
+        </header>
+
+        <main class="home-menu">
+
+            <a class="space-card diquy-card" href="diquy.html">
+                <div class="space-icon">🌷</div>
+
+                <div class="space-content">
+                    <p class="space-label">KHÔNG GIAN CỦA</p>
+                    <h2>Diquy</h2>
+                    <p>Lịch làm việc, học N5 và tiến độ mỗi ngày</p>
+                </div>
+
+                <span class="space-arrow">›</span>
+            </a>
+
+            <a class="space-card tioong-card" href="tioong.html">
+                <div class="space-icon">🌿</div>
+
+                <div class="space-content">
+                    <p class="space-label">KHÔNG GIAN CỦA</p>
+                    <h2>TiOong</h2>
+                    <p>Công việc, học tập và kế hoạch cá nhân</p>
+                </div>
+
+                <span class="space-arrow">›</span>
+            </a>
+
+            <a class="space-card together-card" href="chung-minh.html">
+                <div class="space-icon">🏡</div>
+
+                <div class="space-content">
+                    <p class="space-label">KHÔNG GIAN CHUNG</p>
+                    <h2>Chúng mình</h2>
+                    <p>Kế hoạch, mục tiêu và những việc cùng thực hiện</p>
+                </div>
+
+                <span class="space-arrow">›</span>
+            </a>
+
+        </main>
+
+        <footer class="home-footer">
+            <p id="currentDate">Đang tải ngày...</p>
+        </footer>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="auth-guard.js"></script>
+    <script src="app.js"></script>
+    <script src="pwa.js"></script>
+</body>
+
+</html>
