@@ -18,7 +18,7 @@
 
     <meta name="apple-mobile-web-app-title" content="Fubao">
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=24">
 </head>
 
 <body class="week-page">
@@ -28,22 +28,16 @@
         <header class="sub-page-header">
             <a class="back-button" href="diquy.html">
                 <span>‹</span>
-                Diquy
+                Trở lại
             </a>
 
             <div class="profile-icon">📅</div>
         </header>
 
         <section class="week-heading">
-            <p class="profile-label">
+            <h1 class="week-main-title">
                 LỊCH TRÌNH CỦA DIQUY
-            </p>
-
-            <h1>Lịch tuần</h1>
-
-            <p id="weekRange">
-                Đang tải khoảng ngày...
-            </p>
+            </h1>
         </section>
 
         <nav class="week-navigation">
@@ -51,8 +45,12 @@
                 ‹
             </button>
 
-            <button id="currentWeekButton" type="button">
-                Tuần này
+            <button id="currentWeekButton" type="button" aria-label="Quay về tuần hiện tại">
+                <strong>Lịch tuần</strong>
+
+                <span id="weekRange">
+                    Đang tải khoảng ngày...
+                </span>
             </button>
 
             <button id="nextWeekButton" type="button" aria-label="Tuần sau">
@@ -60,25 +58,101 @@
             </button>
         </nav>
 
-        <main class="week-schedule" id="weekSchedule">
-            <article class="schedule-notice">
-                <span>⏳</span>
+        <main class="weekly-plan-section">
 
-                <div>
-                    <h3>Đang tải lịch tuần</h3>
-                    <p>
-                        App đang lấy dữ liệu từ Supabase.
-                    </p>
-                </div>
-            </article>
+            <div class="week-table-wrapper">
+                <table class="week-plan-table" aria-label="Lịch trình trong tuần">
+                    <thead>
+                        <tr>
+                            <th>Ngày</th>
+                            <th>Công việc</th>
+                            <th>Học tập</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="weekSchedule">
+                        <tr class="week-loading-row">
+                            <td colspan="3">
+                                Đang tải lịch tuần...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
         </main>
 
+    </div>
+
+    <!-- Cửa sổ thêm giờ tự học -->
+    <div class="modal-overlay" id="studySlotModal">
+        <section class="shift-modal study-slot-modal">
+
+            <div class="modal-handle"></div>
+
+            <header class="modal-header">
+                <div>
+                    <p class="section-label">
+                        THÊM VÀO LỊCH
+                    </p>
+
+                    <h2>Giờ tự học</h2>
+
+                    <p id="studySlotDateLabel">
+                        Chưa chọn ngày
+                    </p>
+                </div>
+
+                <button class="close-modal-button" id="closeStudySlotModalButton" type="button" aria-label="Đóng">
+                    ×
+                </button>
+            </header>
+
+            <form id="studySlotForm">
+
+                <input id="studySlotDate" name="studySlotDate" type="hidden">
+
+                <div class="study-time-grid">
+
+                    <div class="form-group">
+                        <label for="studyStartTime">
+                            Bắt đầu
+                        </label>
+
+                        <input id="studyStartTime" name="studyStartTime" type="time" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="studyEndTime">
+                            Kết thúc
+                        </label>
+
+                        <input id="studyEndTime" name="studyEndTime" type="time" required>
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="studyTitle">
+                        Nội dung học
+                    </label>
+
+                    <input id="studyTitle" name="studyTitle" type="text" value="Tự học N5" maxlength="80" required>
+                </div>
+
+                <button class="save-shift-button" id="saveStudySlotButton" type="submit">
+                    ＋ Thêm vào lịch
+                </button>
+
+            </form>
+
+        </section>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase-config.js"></script>
     <script src="auth-guard.js"></script>
-    <script src="week.js"></script>
+    <script src="week.js?v=22"></script>
     <script src="pwa.js"></script>
 </body>
 

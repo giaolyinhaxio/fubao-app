@@ -15,6 +15,7 @@ document.addEventListener(
     "DOMContentLoaded",
     function () {
         ganSuKienChuyenTuan();
+        ganSuKienKeHoachTuan();
         hienThiLichTuan();
     }
 );
@@ -112,7 +113,8 @@ function dinhDangNgayNgan(date) {
         "vi-VN",
         {
             day: "2-digit",
-            month: "2-digit"
+            month: "2-digit",
+            year: "numeric"
         }
     ).format(date);
 }
@@ -122,11 +124,9 @@ function dinhDangKhoangTuan(
     monday,
     sunday
 ) {
-    const year = sunday.getFullYear();
-
     return (
         `${dinhDangNgayNgan(monday)} – ` +
-        `${dinhDangNgayNgan(sunday)}/${year}`
+        `${dinhDangNgayNgan(sunday)}`
     );
 }
 
@@ -218,6 +218,126 @@ function timCaLamChoNgay(
     ) || null;
 }
 
+/* =========================
+   KẾ HOẠCH RIÊNG TỪNG NGÀY
+========================= */
+
+function dinhDangNgayISO(date) {
+    const year =
+        date.getFullYear();
+
+    const month =
+        String(
+            date.getMonth() + 1
+        ).padStart(2, "0");
+
+    const day =
+        String(
+            date.getDate()
+        ).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+}
+
+
+async function layKeHoachNgayTrongKhoang(
+    startDate,
+    endDate
+) {
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("daily_plans")
+        .select(
+            `
+            id,
+            plan_date,
+            work_shift,
+            study_slots,
+            updated_at
+            `
+        )
+        .gte(
+            "plan_date",
+            dinhDangNgayISO(startDate)
+        )
+        .lte(
+            "plan_date",
+            dinhDangNgayISO(endDate)
+        );
+
+    if (error) {
+        throw error;
+    }
+
+    return data || [];
+}
+
+
+function taoBanDoKeHoachNgay(
+    dailyPlans
+) {
+    const planMap = new Map();
+
+    dailyPlans.forEach(
+        function (plan) {
+            planMap.set(
+                plan.plan_date,
+                plan
+            );
+        }
+    );
+
+    return planMap;
+}
+
+
+/* Chọn ca mặc định nếu ngày đó chưa chỉnh riêng */
+
+function layCaMacDinhChoNgay(
+    date,
+    settings
+) {
+    const dayOfWeek =
+        date.getDay();
+
+    const isRikiDay =
+        dayOfWeek === 1 ||
+        dayOfWeek === 3 ||
+        dayOfWeek === 5;
+
+    if (isRikiDay) {
+        return "afternoon";
+    }
+
+    const isNormalWeekday =
+        dayOfWeek === 2 ||
+        dayOfWeek === 4;
+
+    if (isNormalWeekday) {
+        return settings
+            ? settings.work_shift
+            : "off";
+    }
+
+    if (!settings) {
+        return "off";
+    }
+
+    const weekendDay =
+        dayOfWeek === 6
+            ? "saturday"
+            : "sunday";
+
+    const isWorkDay =
+        settings.weekend_work_day ===
+        weekendDay;
+
+    return isWorkDay
+        ? settings.work_shift
+        : "off";
+}
 
 /* =========================
    TẠO NỘI DUNG MỖI NGÀY
@@ -410,25 +530,37 @@ function taoLichChoNgay(
     return taoLichNgayNghi();
 }
 
+function taoLichHocTheoCaDaChon(
+    date,
+    selectedShift
+) {
+    const dayOfWeek = date.getDay();
 
-/* =========================
-   TẠO HTML LỊCH TUẦN
-========================= */
+    const isRikiDay =
+        dayOfWeek === 1 ||
+        dayOfWeek === 3 ||
+        dayOfWeek === 5;
 
-function taoCongViecHTML(task) {
-    return `
-        <article class="week-task ${task.type}">
-            <div class="week-task-icon">
-                ${task.icon}
-            </div>
+    // Thứ 2, 4, 6 vẫn giữ lịch học tại Riki
+    if (isRikiDay) {
+        return taoLichRiki();
+    }
 
-            <div class="week-task-content">
-                <p>${task.time}</p>
-                <h3>${task.title}</h3>
-                <small>${task.description}</small>
-            </div>
-        </article>
-    `;
+    // Nghỉ làm thì chưa tạo giờ học mặc định
+    if (selectedShift === "off") {
+        return [];
+    }
+
+    return taoLichTheoCa(selectedShift);
+}
+
+function baoVeNoiDungHTML(value) {
+    return String(value || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
 }
 
 
@@ -437,12 +569,122 @@ function kiemTraHomNay(date) {
 
     return (
         date.getFullYear() ===
-            today.getFullYear() &&
+        today.getFullYear() &&
         date.getMonth() ===
-            today.getMonth() &&
+        today.getMonth() &&
         date.getDate() ===
-            today.getDate()
+        today.getDate()
     );
+}
+
+
+function taoOptionCaLam(
+    value,
+    label,
+    selectedShift
+) {
+    const selected =
+        value === selectedShift
+            ? "selected"
+            : "";
+
+    return `
+        <option
+            value="${value}"
+            ${selected}
+        >
+            ${label}
+        </option>
+    `;
+}
+
+
+function taoBoChonCaLam(
+    planDate,
+    selectedShift
+) {
+    return `
+        <select
+            class="daily-shift-select"
+            data-plan-date="${planDate}"
+            aria-label="Chọn ca làm"
+        >
+            ${taoOptionCaLam(
+        "off",
+        "Nghỉ làm",
+        selectedShift
+    )}
+
+            ${taoOptionCaLam(
+        "morning",
+        "07:00–16:00",
+        selectedShift
+    )}
+
+            ${taoOptionCaLam(
+        "normal",
+        "09:00–18:00",
+        selectedShift
+    )}
+
+            ${taoOptionCaLam(
+        "afternoon",
+        "13:00–21:00",
+        selectedShift
+    )}
+        </select>
+    `;
+}
+
+
+function taoMucGioHocMacDinh(task) {
+    return `
+        <div class="week-study-item default">
+            <span>${baoVeNoiDungHTML(
+        task.time
+    )}</span>
+
+            <strong>${baoVeNoiDungHTML(
+        task.title
+    )}</strong>
+        </div>
+    `;
+}
+
+
+function taoMucGioHocTuThem(
+    slot,
+    planDate
+) {
+    return `
+        <div class="week-study-item custom">
+            <span>
+                ${baoVeNoiDungHTML(
+        slot.start_time
+    )}–${baoVeNoiDungHTML(
+        slot.end_time
+    )}
+            </span>
+
+            <strong>
+                ${baoVeNoiDungHTML(
+        slot.title
+    )}
+            </strong>
+
+            <button
+                class="delete-study-slot-button"
+                type="button"
+                data-plan-date="${planDate}"
+                data-slot-id="${baoVeNoiDungHTML(
+        slot.id
+    )}"
+                aria-label="Xóa giờ học"
+            >
+                ×
+            </button>
+        </div>
+    `;
 }
 
 
@@ -450,88 +692,634 @@ function taoNgayHTML(
     date,
     dayName,
     tasks,
-    hasSettings
+    dailyPlan,
+    selectedShift
 ) {
+    const planDate =
+        dinhDangNgayISO(date);
+
     const todayClass =
         kiemTraHomNay(date)
             ? "today"
             : "";
 
-    let tasksHTML = "";
+    const defaultStudyTasks =
+        tasks.filter(
+            function (task) {
+                return task.type !== "work";
+            }
+        );
 
-    if (tasks.length > 0) {
-        tasksHTML =
-            tasks
-                .map(taoCongViecHTML)
-                .join("");
-    } else {
-        tasksHTML = `
-            <article class="week-empty">
-                <span>⚙️</span>
-                <p>
-                    ${hasSettings
-                        ? "Hôm nay chưa có lịch."
-                        : "Chưa xếp ca cho ngày này."}
-                </p>
-            </article>
+    const customStudySlots =
+        dailyPlan &&
+            Array.isArray(
+                dailyPlan.study_slots
+            )
+            ? dailyPlan.study_slots
+            : [];
+
+    let studyHTML = "";
+
+    studyHTML +=
+        defaultStudyTasks
+            .map(taoMucGioHocMacDinh)
+            .join("");
+
+    studyHTML +=
+        customStudySlots
+            .map(
+                function (slot) {
+                    return taoMucGioHocTuThem(
+                        slot,
+                        planDate
+                    );
+                }
+            )
+            .join("");
+
+    if (!studyHTML) {
+        studyHTML = `
+            <small class="week-no-study">
+                Chưa có giờ học
+            </small>
         `;
     }
 
     return `
-        <section class="week-day ${todayClass}">
-            <header class="week-day-header">
-                <div>
-                    <p>${dayName}</p>
-                    <h2>${dinhDangNgayNgan(date)}</h2>
+        <tr class="week-plan-row ${todayClass}">
+            <td class="week-date-cell">
+                <strong>${dayName}</strong>
+
+                <span>
+                    ${dinhDangNgayNgan(date)}
+                </span>
+
+                ${todayClass
+            ? `<small>Hôm nay</small>`
+            : ""
+        }
+            </td>
+
+            <td class="week-shift-cell">
+                ${taoBoChonCaLam(
+            planDate,
+            selectedShift
+        )}
+            </td>
+
+            <td class="week-study-cell">
+                <div class="week-study-list">
+                    ${studyHTML}
                 </div>
 
-                ${
-                    todayClass
-                        ? `<span class="today-label">
-                               Hôm nay
-                           </span>`
-                        : ""
-                }
-            </header>
-
-            <div class="week-task-list">
-                ${tasksHTML}
-            </div>
-        </section>
+                <button
+                    class="add-study-slot-button"
+                    type="button"
+                    data-plan-date="${planDate}"
+                    data-day-name="${dayName}"
+                >
+                    ＋ Thêm
+                </button>
+            </td>
+        </tr>
     `;
+}
+
+/* =========================
+   LƯU KẾ HOẠCH TỪNG NGÀY
+========================= */
+
+async function layKeHoachMotNgay(planDate) {
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("daily_plans")
+        .select(`
+            id,
+            plan_date,
+            work_shift,
+            study_slots
+        `)
+        .eq("plan_date", planDate)
+        .maybeSingle();
+
+    if (error) {
+        throw error;
+    }
+
+    return data || null;
+}
+
+
+async function luuKeHoachNgay(
+    planDate,
+    workShift,
+    studySlots
+) {
+    const {
+        error
+    } = await supabaseClient
+        .from("daily_plans")
+        .upsert(
+            {
+                plan_date: planDate,
+                work_shift: workShift,
+                study_slots: studySlots,
+                updated_at:
+                    new Date().toISOString()
+            },
+            {
+                onConflict: "plan_date"
+            }
+        );
+
+    if (error) {
+        throw error;
+    }
+}
+
+
+function layCaDangChonTrongBang(planDate) {
+    const selectElements =
+        document.querySelectorAll(
+            ".daily-shift-select"
+        );
+
+    const selectedElement =
+        Array.from(selectElements).find(
+            function (element) {
+                return (
+                    element.dataset.planDate ===
+                    planDate
+                );
+            }
+        );
+
+    return selectedElement
+        ? selectedElement.value
+        : "off";
 }
 
 
 /* =========================
-   HIỂN THỊ LỊCH TUẦN
+   CỬA SỔ THÊM GIỜ HỌC
 ========================= */
 
-async function hienThiLichTuan() {
+function moCuaSoThemGioHoc(button) {
+    const modal =
+        document.getElementById(
+            "studySlotModal"
+        );
+
+    const dateInput =
+        document.getElementById(
+            "studySlotDate"
+        );
+
+    const dateLabel =
+        document.getElementById(
+            "studySlotDateLabel"
+        );
+
+    const form =
+        document.getElementById(
+            "studySlotForm"
+        );
+
+    if (
+        !modal ||
+        !dateInput ||
+        !dateLabel ||
+        !form
+    ) {
+        return;
+    }
+
+    const planDate =
+        button.dataset.planDate;
+
+    const dayName =
+        button.dataset.dayName;
+
+    const dateParts =
+        planDate.split("-");
+
+    const displayDate =
+        `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+
+    form.reset();
+
+    dateInput.value = planDate;
+
+    dateLabel.textContent =
+        `${dayName} · ${displayDate}`;
+
+    modal.classList.add("open");
+    document.body.classList.add(
+        "modal-open"
+    );
+
+    const startTimeInput =
+        document.getElementById(
+            "studyStartTime"
+        );
+
+    if (startTimeInput) {
+        startTimeInput.focus();
+    }
+}
+
+
+function dongCuaSoThemGioHoc() {
+    const modal =
+        document.getElementById(
+            "studySlotModal"
+        );
+
+    if (!modal) {
+        return;
+    }
+
+    modal.classList.remove("open");
+
+    document.body.classList.remove(
+        "modal-open"
+    );
+}
+
+
+/* =========================
+   XỬ LÝ ĐỔI CA LÀM
+========================= */
+
+async function xuLyDoiCaLam(selectElement) {
+    const planDate =
+        selectElement.dataset.planDate;
+
+    const selectedShift =
+        selectElement.value;
+
+    selectElement.disabled = true;
+
+    try {
+        const dailyPlan =
+            await layKeHoachMotNgay(
+                planDate
+            );
+
+        const studySlots =
+            dailyPlan &&
+                Array.isArray(
+                    dailyPlan.study_slots
+                )
+                ? dailyPlan.study_slots
+                : [];
+
+        await luuKeHoachNgay(
+            planDate,
+            selectedShift,
+            studySlots
+        );
+
+        await hienThiLichTuan();
+    } catch (error) {
+        console.error(
+            "Không thể lưu ca làm:",
+            error
+        );
+
+        alert(
+            "Chưa lưu được ca làm. Hãy kiểm tra mạng rồi thử lại."
+        );
+
+        selectElement.disabled = false;
+    }
+}
+
+
+/* =========================
+   XỬ LÝ THÊM GIỜ HỌC
+========================= */
+
+async function xuLyThemGioHoc(event) {
+    event.preventDefault();
+
+    const planDate =
+        document.getElementById(
+            "studySlotDate"
+        ).value;
+
+    const startTime =
+        document.getElementById(
+            "studyStartTime"
+        ).value;
+
+    const endTime =
+        document.getElementById(
+            "studyEndTime"
+        ).value;
+
+    const title =
+        document.getElementById(
+            "studyTitle"
+        ).value.trim();
+
+    const saveButton =
+        document.getElementById(
+            "saveStudySlotButton"
+        );
+
+    if (
+        !planDate ||
+        !startTime ||
+        !endTime ||
+        !title
+    ) {
+        alert("Hãy nhập đầy đủ thông tin.");
+        return;
+    }
+
+    if (endTime <= startTime) {
+        alert(
+            "Giờ kết thúc phải sau giờ bắt đầu."
+        );
+
+        return;
+    }
+
+    if (saveButton) {
+        saveButton.disabled = true;
+        saveButton.textContent =
+            "Đang lưu...";
+    }
+
+    try {
+        const dailyPlan =
+            await layKeHoachMotNgay(
+                planDate
+            );
+
+        const workShift =
+            dailyPlan
+                ? dailyPlan.work_shift
+                : layCaDangChonTrongBang(
+                    planDate
+                );
+
+        const studySlots =
+            dailyPlan &&
+                Array.isArray(
+                    dailyPlan.study_slots
+                )
+                ? [
+                    ...dailyPlan.study_slots
+                ]
+                : [];
+
+        studySlots.push({
+            id:
+                `${Date.now()}-${Math.random()
+                    .toString(16)
+                    .slice(2)}`,
+
+            start_time: startTime,
+            end_time: endTime,
+            title: title
+        });
+
+        studySlots.sort(
+            function (firstSlot, secondSlot) {
+                return firstSlot.start_time
+                    .localeCompare(
+                        secondSlot.start_time
+                    );
+            }
+        );
+
+        await luuKeHoachNgay(
+            planDate,
+            workShift,
+            studySlots
+        );
+
+        dongCuaSoThemGioHoc();
+
+        await hienThiLichTuan();
+    } catch (error) {
+        console.error(
+            "Không thể thêm giờ học:",
+            error
+        );
+
+        alert(
+            "Chưa thêm được giờ học. Hãy kiểm tra mạng rồi thử lại."
+        );
+    } finally {
+        if (saveButton) {
+            saveButton.disabled = false;
+            saveButton.textContent =
+                "＋ Thêm vào lịch";
+        }
+    }
+}
+
+
+/* =========================
+   XỬ LÝ XÓA GIỜ HỌC
+========================= */
+
+async function xuLyXoaGioHoc(button) {
+    const planDate =
+        button.dataset.planDate;
+
+    const slotId =
+        button.dataset.slotId;
+
+    const confirmed =
+        window.confirm(
+            "Xóa khoảng giờ học này?"
+        );
+
+    if (!confirmed) {
+        return;
+    }
+
+    button.disabled = true;
+
+    try {
+        const dailyPlan =
+            await layKeHoachMotNgay(
+                planDate
+            );
+
+        if (!dailyPlan) {
+            return;
+        }
+
+        const studySlots =
+            Array.isArray(
+                dailyPlan.study_slots
+            )
+                ? dailyPlan.study_slots.filter(
+                    function (slot) {
+                        return (
+                            String(slot.id) !==
+                            String(slotId)
+                        );
+                    }
+                )
+                : [];
+
+        await luuKeHoachNgay(
+            planDate,
+            dailyPlan.work_shift,
+            studySlots
+        );
+
+        await hienThiLichTuan();
+    } catch (error) {
+        console.error(
+            "Không thể xóa giờ học:",
+            error
+        );
+
+        alert(
+            "Chưa xóa được giờ học. Hãy thử lại."
+        );
+
+        button.disabled = false;
+    }
+}
+
+
+/* =========================
+   SỰ KIỆN BẢNG LỊCH TUẦN
+========================= */
+
+function ganSuKienKeHoachTuan() {
     const scheduleElement =
         document.getElementById(
             "weekSchedule"
         );
 
-    const rangeElement =
+    const modal =
         document.getElementById(
-            "weekRange"
+            "studySlotModal"
         );
+
+    const closeButton =
+        document.getElementById(
+            "closeStudySlotModalButton"
+        );
+
+    const form =
+        document.getElementById(
+            "studySlotForm"
+        );
+
+    if (scheduleElement) {
+        scheduleElement.addEventListener(
+            "change",
+            function (event) {
+                const selectElement =
+                    event.target.closest(
+                        ".daily-shift-select"
+                    );
+
+                if (selectElement) {
+                    xuLyDoiCaLam(
+                        selectElement
+                    );
+                }
+            }
+        );
+
+        scheduleElement.addEventListener(
+            "click",
+            function (event) {
+                const addButton =
+                    event.target.closest(
+                        ".add-study-slot-button"
+                    );
+
+                if (addButton) {
+                    moCuaSoThemGioHoc(
+                        addButton
+                    );
+
+                    return;
+                }
+
+                const deleteButton =
+                    event.target.closest(
+                        ".delete-study-slot-button"
+                    );
+
+                if (deleteButton) {
+                    xuLyXoaGioHoc(
+                        deleteButton
+                    );
+                }
+            }
+        );
+    }
+
+    if (closeButton) {
+        closeButton.addEventListener(
+            "click",
+            dongCuaSoThemGioHoc
+        );
+    }
+
+    if (modal) {
+        modal.addEventListener(
+            "click",
+            function (event) {
+                if (event.target === modal) {
+                    dongCuaSoThemGioHoc();
+                }
+            }
+        );
+    }
+
+    if (form) {
+        form.addEventListener(
+            "submit",
+            xuLyThemGioHoc
+        );
+    }
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
+            if (event.key === "Escape") {
+                dongCuaSoThemGioHoc();
+            }
+        }
+    );
+}
+
+/* =========================
+   HIỂN THỊ LỊCH TUẦN
+========================= */
+async function hienThiLichTuan() {
+    const scheduleElement =
+        document.getElementById("weekSchedule");
+
+    const rangeElement =
+        document.getElementById("weekRange");
 
     if (!scheduleElement || !rangeElement) {
         return;
     }
 
     scheduleElement.innerHTML = `
-        <article class="schedule-notice">
-            <span>⏳</span>
-
-            <div>
-                <h3>Đang tải lịch tuần</h3>
-                <p>
-                    App đang lấy dữ liệu từ Supabase.
-                </p>
-            </div>
-        </article>
+        <tr class="week-loading-row">
+            <td colspan="3">
+                Đang tải lịch tuần...
+            </td>
+        </tr>
     `;
 
     const currentMonday =
@@ -546,15 +1334,31 @@ async function hienThiLichTuan() {
     const selectedSunday =
         themNgay(selectedMonday, 6);
 
-    rangeElement.textContent =
+    const weekRangeText =
         dinhDangKhoangTuan(
             selectedMonday,
             selectedSunday
         );
 
+    rangeElement.textContent =
+        weekOffset === 0
+            ? `${weekRangeText} (Tuần này)`
+            : weekRangeText;
+
     try {
-        const settingsList =
-            await layTatCaCauHinhCaLam();
+        const [
+            settingsList,
+            dailyPlans
+        ] = await Promise.all([
+            layTatCaCauHinhCaLam(),
+            layKeHoachNgayTrongKhoang(
+                selectedMonday,
+                selectedSunday
+            )
+        ]);
+
+        const dailyPlanMap =
+            taoBanDoKeHoachNgay(dailyPlans);
 
         let weekHTML = "";
 
@@ -569,23 +1373,38 @@ async function hienThiLichTuan() {
                     index
                 );
 
+            const planDate =
+                dinhDangNgayISO(date);
+
             const settings =
                 timCaLamChoNgay(
                     settingsList,
                     date
                 );
 
+            const dailyPlan =
+                dailyPlanMap.get(planDate) || null;
+
+            const selectedShift =
+                dailyPlan
+                    ? dailyPlan.work_shift
+                    : layCaMacDinhChoNgay(
+                        date,
+                        settings
+                    );
+
             const tasks =
-                taoLichChoNgay(
+                taoLichHocTheoCaDaChon(
                     date,
-                    settings
+                    selectedShift
                 );
 
             weekHTML += taoNgayHTML(
                 date,
                 DAY_NAMES[index],
                 tasks,
-                Boolean(settings)
+                dailyPlan,
+                selectedShift
             );
         }
 
@@ -594,20 +1413,15 @@ async function hienThiLichTuan() {
     } catch (error) {
         console.error(
             "Không thể tải lịch tuần:",
-            error.message
+            error
         );
 
         scheduleElement.innerHTML = `
-            <article class="schedule-notice">
-                <span>⚠️</span>
-
-                <div>
-                    <h3>Không thể tải lịch</h3>
-                    <p>
-                        Hãy kiểm tra mạng rồi thử lại.
-                    </p>
-                </div>
-            </article>
+            <tr class="week-loading-row error">
+                <td colspan="3">
+                    Không thể tải lịch. Hãy kiểm tra mạng rồi thử lại.
+                </td>
+            </tr>
         `;
     }
 }

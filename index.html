@@ -18,7 +18,7 @@
 
     <meta name="apple-mobile-web-app-title" content="Fubao">
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=24">
 </head>
 
 <body class="home-page">
@@ -36,12 +36,42 @@
         </div>
 
         <header class="home-header">
-            <p class="home-label">ỨNG DỤNG CỦA CHÚNG MÌNH</p>
             <h1>Fubao</h1>
-            <p class="home-description">
-                Lịch trình, mục tiêu và những kế hoạch chung
-            </p>
         </header>
+
+        <!-- Bộ đếm ngày yêu -->
+        <section class="love-counter">
+            <div class="love-counter-circle">
+                <p class="love-counter-label">ĐANG YÊU</p>
+
+                <p class="love-counter-number" id="loveDays">
+                    0
+                </p>
+
+                <p class="love-counter-unit">NGÀY</p>
+            </div>
+            <div class="love-duration">
+                <div class="love-duration-item">
+                    <strong id="loveYears">0</strong>
+                    <span>NĂM</span>
+                </div>
+
+                <div class="love-duration-item">
+                    <strong id="loveMonths">0</strong>
+                    <span>THÁNG</span>
+                </div>
+
+                <div class="love-duration-item">
+                    <strong id="loveWeeks">0</strong>
+                    <span>TUẦN</span>
+                </div>
+
+                <div class="love-duration-item">
+                    <strong id="loveRemainingDays">0</strong>
+                    <span>NGÀY</span>
+                </div>
+            </div>
+        </section>
 
         <main class="home-menu">
 
@@ -92,7 +122,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase-config.js"></script>
     <script src="auth-guard.js"></script>
-    <script src="app.js"></script>
+    <script src="app.js?v=8"></script>
     <script src="pwa.js"></script>
 </body>
 
