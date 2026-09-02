@@ -1,6 +1,6 @@
 {
-    "name": "Fubao",
-    "short_name": "Fubao",
+    "name": "FuBao",
+    "short_name": "FuBao",
     "description": "Ứng dụng quản lý lịch trình Fubao",
     "id": "./",
     "start_url": "./login.html",

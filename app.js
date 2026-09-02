@@ -48,12 +48,19 @@ function hienThiNgayTrangChu() {
 
 
 function hienThiNgayTrangDiquy() {
-    const element =
-        document.getElementById("diquyCurrentDate");
+    const elements =
+        document.querySelectorAll(
+            ".profile-current-date"
+        );
 
-    if (element) {
-        element.textContent = dinhDangNgay(new Date());
-    }
+    elements.forEach(
+        function (element) {
+            element.textContent =
+                dinhDangNgay(
+                    new Date()
+                );
+        }
+    );
 }
 
 

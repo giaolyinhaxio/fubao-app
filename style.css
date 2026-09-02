@@ -2202,3 +2202,94 @@ body.modal-open {
     margin-right: auto;
     margin-left: auto;
 }
+
+.space-card {
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.space-card h2 {
+    margin: 0;
+    font-size: 30px;
+    line-height: 1.2;
+    text-align: center;
+}
+
+/* Ảnh nhỏ bên trái ba ô trang chủ */
+
+.space-icon {
+    overflow: hidden;
+    padding: 0;
+}
+
+.space-icon-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 19px;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Ngày hiện tại trên đầu trang chủ */
+
+.home-current-date {
+    margin: 0 0 18px;
+    color: #9b8b92;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Icon bên cạnh tiêu đề từng trang */
+
+.profile-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    width: 100%;
+}
+
+.profile-title-icon {
+    display: block;
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+    border: 3px solid rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    object-fit: cover;
+    object-position: center;
+    background-color: white;
+    box-shadow:
+        0 6px 16px rgba(78, 54, 64, 0.1);
+}
+
+.profile-title h1 {
+    margin: 0;
+}
+
+@media (max-width: 600px) {
+    .profile-title {
+        gap: 12px;
+    }
+
+    .profile-title-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 17px;
+    }
+}
+
+/* Ngày bên dưới tiêu đề từng trang */
+
+.profile-current-date {
+    margin: 14px 0 0;
+    color: #8a7880;
+    font-size: 14px;
+    line-height: 1.4;
+    text-align: center;
+}

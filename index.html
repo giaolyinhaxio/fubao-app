@@ -8,7 +8,7 @@
 
     <meta name="theme-color" content="#fff7fa">
 
-    <title>Fubao</title>
+    <title>FuBao</title>
 
     <link rel="manifest" href="manifest.json">
 
@@ -16,14 +16,18 @@
 
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
 
-    <meta name="apple-mobile-web-app-title" content="Fubao">
+    <meta name="apple-mobile-web-app-title" content="FuBao">
 
-    <link rel="stylesheet" href="style.css?v=24">
+    <link rel="stylesheet" href="style.css?v=31">
 </head>
 
 <body class="home-page">
 
     <div class="app-container">
+
+        <p class="home-current-date" id="currentDate">
+            Đang tải ngày...
+        </p>
 
         <div class="home-account-bar">
             <p class="current-user-email" id="currentUserEmail">
@@ -36,7 +40,7 @@
         </div>
 
         <header class="home-header">
-            <h1>Fubao</h1>
+            <h1>FuBao</h1>
         </header>
 
         <!-- Bộ đếm ngày yêu -->
@@ -76,53 +80,45 @@
         <main class="home-menu">
 
             <a class="space-card diquy-card" href="diquy.html">
-                <div class="space-icon">🌷</div>
-
-                <div class="space-content">
-                    <p class="space-label">KHÔNG GIAN CỦA</p>
-                    <h2>Diquy</h2>
-                    <p>Lịch làm việc, học N5 và tiến độ mỗi ngày</p>
+                <div class="space-icon">
+                    <img class="space-icon-image" src="images/diquy.jpg" alt="Diquy">
                 </div>
 
-                <span class="space-arrow">›</span>
+                <div class="space-content">
+                    <h2>DiQuy</h2>
+                </div>
             </a>
+
 
             <a class="space-card tioong-card" href="tioong.html">
-                <div class="space-icon">🌿</div>
-
-                <div class="space-content">
-                    <p class="space-label">KHÔNG GIAN CỦA</p>
-                    <h2>TiOong</h2>
-                    <p>Công việc, học tập và kế hoạch cá nhân</p>
+                <div class="space-icon">
+                    <img class="space-icon-image" src="images/tioong.jpg" alt="TiOong">
                 </div>
 
-                <span class="space-arrow">›</span>
+                <div class="space-content">
+                    <h2>TiOong</h2>
+                </div>
             </a>
 
-            <a class="space-card together-card" href="chung-minh.html">
-                <div class="space-icon">🏡</div>
 
-                <div class="space-content">
-                    <p class="space-label">KHÔNG GIAN CHUNG</p>
-                    <h2>Chúng mình</h2>
-                    <p>Kế hoạch, mục tiêu và những việc cùng thực hiện</p>
+            <a class="space-card together-card" href="chung-minh.html">
+                <div class="space-icon">
+                    <img class="space-icon-image" src="images/chung-minh.png" alt="Chúng mình">
                 </div>
 
-                <span class="space-arrow">›</span>
+                <div class="space-content">
+                    <h2>Chúng mình</h2>
+                </div>
             </a>
 
         </main>
-
-        <footer class="home-footer">
-            <p id="currentDate">Đang tải ngày...</p>
-        </footer>
 
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase-config.js"></script>
     <script src="auth-guard.js"></script>
-    <script src="app.js?v=8"></script>
+    <script src="app.js?v=25"></script>
     <script src="pwa.js"></script>
 </body>
 
