@@ -1,4 +1,4 @@
-const CACHE_NAME = "fubao-v9";
+const CACHE_NAME = "fubao-v10";
 
 const APP_FILES = [
     "./",
@@ -8,6 +8,15 @@ const APP_FILES = [
     "./lich-tuan.html",
     "./tioong.html",
     "./chung-minh.html",
+
+    "./english.html",
+    "./vocabulary.html",
+    "./vocabulary-home.js",
+    "./vocabulary-list.html",
+    "./vocabulary-list.js",
+    "./flashcard.html",
+    "./flashcard.js",
+
     "./style.css",
     "./app.js",
     "./auth.js",
@@ -15,11 +24,12 @@ const APP_FILES = [
     "./supabase-config.js",
     "./week.js",
     "./pwa.js",
+
     "./manifest.json",
     "./icon.svg",
     "./icon-192.png",
     "./icon-512.png",
-    "./apple-touch-icon.png",
+    "./apple-touch-icon.png"
 ];
 
 
@@ -54,17 +64,14 @@ self.addEventListener(
                 .then(function (cacheNames) {
                     return Promise.all(
                         cacheNames.map(
-                            function (
-                                cacheName
-                            ) {
+                            function (cacheName) {
                                 if (
                                     cacheName !==
                                     CACHE_NAME
                                 ) {
-                                    return caches
-                                        .delete(
-                                            cacheName
-                                        );
+                                    return caches.delete(
+                                        cacheName
+                                    );
                                 }
 
                                 return null;
@@ -116,32 +123,28 @@ self.addEventListener(
 
                         caches
                             .open(CACHE_NAME)
-                            .then(
-                                function (cache) {
-                                    cache.put(
-                                        request,
-                                        responseCopy
-                                    );
-                                }
-                            );
+                            .then(function (cache) {
+                                cache.put(
+                                    request,
+                                    responseCopy
+                                );
+                            });
 
                         return response;
                     })
                     .catch(function () {
                         return caches
                             .match(request)
-                            .then(
-                                function (
-                                    cachedResponse
-                                ) {
-                                    return (
-                                        cachedResponse ||
-                                        caches.match(
-                                            "./login.html"
-                                        )
-                                    );
-                                }
-                            );
+                            .then(function (
+                                cachedResponse
+                            ) {
+                                return (
+                                    cachedResponse ||
+                                    caches.match(
+                                        "./login.html"
+                                    )
+                                );
+                            });
                     })
             );
 
@@ -154,26 +157,30 @@ self.addEventListener(
         event.respondWith(
             caches
                 .match(request)
-                .then(function (cachedResponse) {
+                .then(function (
+                    cachedResponse
+                ) {
                     if (cachedResponse) {
                         return cachedResponse;
                     }
 
                     return fetch(request)
-                        .then(function (response) {
+                        .then(function (
+                            response
+                        ) {
                             const responseCopy =
                                 response.clone();
 
                             caches
                                 .open(CACHE_NAME)
-                                .then(
-                                    function (cache) {
-                                        cache.put(
-                                            request,
-                                            responseCopy
-                                        );
-                                    }
-                                );
+                                .then(function (
+                                    cache
+                                ) {
+                                    cache.put(
+                                        request,
+                                        responseCopy
+                                    );
+                                });
 
                             return response;
                         });

@@ -1340,10 +1340,13 @@ async function hienThiLichTuan() {
             selectedSunday
         );
 
-    rangeElement.textContent =
-        weekOffset === 0
-            ? `${weekRangeText} (Tuần này)`
-            : weekRangeText;
+    rangeElement.innerHTML =
+    weekOffset === 0
+        ? `${weekRangeText}
+           <span class="current-week-label">
+               (Tuần này)
+           </span>`
+        : weekRangeText;
 
     try {
         const [

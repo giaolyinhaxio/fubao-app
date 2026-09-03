@@ -2293,3 +2293,1540 @@ body.modal-open {
     line-height: 1.4;
     text-align: center;
 }
+
+/* =========================
+   HỌC TIẾNG ANH – TIOONG
+========================= */
+
+.tioong-learning-section {
+    margin-top: 42px;
+}
+
+.tioong-learning-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 116px;
+    padding: 20px 58px 20px 20px;
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-radius: 26px;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(237, 249, 241, 0.98),
+            rgba(205, 233, 216, 0.95)
+        );
+    box-shadow:
+        0 14px 30px rgba(70, 104, 82, 0.1);
+}
+
+.tioong-learning-icon {
+    display: flex;
+    flex: 0 0 62px;
+    align-items: center;
+    justify-content: center;
+    width: 62px;
+    height: 62px;
+    margin-right: 18px;
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.78);
+    color: #527661;
+    font-size: 21px;
+    font-weight: 850;
+}
+
+.tioong-learning-content {
+    flex: 1;
+}
+
+.tioong-learning-content h2 {
+    margin: 0 0 5px;
+    color: #44363d;
+    font-size: 22px;
+}
+
+.tioong-learning-content p {
+    margin: 0;
+    color: #74666d;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.tioong-learning-arrow {
+    position: absolute;
+    top: 50%;
+    right: 22px;
+    color: rgba(73, 54, 63, 0.52);
+    font-size: 34px;
+    transform: translateY(-52%);
+}
+
+/* =========================
+   TRANG HỌC TIẾNG ANH
+========================= */
+
+.english-page-heading {
+    margin: 30px 0 36px;
+    text-align: center;
+}
+
+.english-page-label {
+    margin: 0 0 8px;
+    color: #789184;
+    font-size: 11px;
+    font-weight: 850;
+    letter-spacing: 1.8px;
+}
+
+.english-page-heading h1 {
+    margin: 0 0 12px;
+    color: #44363d;
+    font-size: clamp(38px, 10vw, 52px);
+    line-height: 1.08;
+}
+
+.english-page-description {
+    margin: 0;
+    color: #8a7880;
+    font-size: 14px;
+}
+
+
+/* Danh sách chức năng */
+
+.english-learning-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 17px;
+}
+
+.english-learning-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 120px;
+    padding: 20px 62px 20px 20px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-radius: 27px;
+    box-shadow:
+        0 13px 28px rgba(77, 62, 68, 0.08);
+}
+
+.vocabulary-learning-card {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(232, 247, 238, 0.98),
+            rgba(204, 234, 216, 0.96)
+        );
+}
+
+.grammar-learning-card {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 247, 226, 0.98),
+            rgba(243, 228, 193, 0.96)
+        );
+}
+
+.english-learning-icon {
+    display: flex;
+    flex: 0 0 64px;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    margin-right: 18px;
+    border-radius: 21px;
+    background-color: rgba(255, 255, 255, 0.78);
+    color: #526f5d;
+    font-size: 22px;
+    font-weight: 850;
+}
+
+.english-learning-content {
+    flex: 1;
+}
+
+.english-learning-content h2 {
+    margin: 0 0 6px;
+    color: #44363d;
+    font-size: 23px;
+}
+
+.english-learning-content p {
+    margin: 0;
+    color: #786970;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.english-learning-arrow {
+    position: absolute;
+    top: 50%;
+    right: 23px;
+    color: rgba(73, 54, 63, 0.5);
+    font-size: 35px;
+    transform: translateY(-52%);
+}
+
+.disabled-learning-card {
+    opacity: 0.72;
+}
+
+.coming-soon-label {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    padding: 5px 9px;
+    border-radius: 999px;
+    background-color: rgba(255, 255, 255, 0.8);
+    color: #9a7f62;
+    font-size: 10px;
+    font-weight: 800;
+}
+
+/* =========================
+   FLASHCARD TỪ VỰNG
+========================= */
+
+.vocabulary-heading {
+    margin: 28px 0 30px;
+    text-align: center;
+}
+
+.vocabulary-heading > p {
+    margin: 0 0 7px;
+    color: #789184;
+    font-size: 11px;
+    font-weight: 850;
+    letter-spacing: 1.8px;
+}
+
+.vocabulary-heading h1 {
+    margin: 0 0 9px;
+    color: #44363d;
+    font-size: clamp(38px, 10vw, 50px);
+    line-height: 1.08;
+}
+
+.vocabulary-heading > span {
+    color: #8a7880;
+    font-size: 14px;
+}
+
+
+/* Thanh tiến độ */
+
+.vocabulary-progress-section {
+    margin-bottom: 18px;
+}
+
+.vocabulary-progress-text {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    color: #7e6e75;
+    font-size: 13px;
+}
+
+.vocabulary-progress-text strong {
+    color: #526f5d;
+}
+
+.vocabulary-progress-track {
+    height: 9px;
+    overflow: hidden;
+    border-radius: 999px;
+    background-color:
+        rgba(199, 222, 207, 0.48);
+}
+
+.vocabulary-progress-value {
+    width: 0;
+    height: 100%;
+    border-radius: inherit;
+    background:
+        linear-gradient(
+            90deg,
+            #97c6a8,
+            #6da183
+        );
+    transition: width 0.3s ease;
+}
+
+
+/* Thẻ Flashcard */
+
+.vocabulary-flashcard {
+    height: 390px;
+    cursor: pointer;
+    perspective: 1200px;
+}
+
+.vocabulary-flashcard-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition:
+        transform 0.55s ease;
+    transform-style: preserve-3d;
+}
+
+.vocabulary-flashcard.is-flipped
+.vocabulary-flashcard-inner {
+    transform: rotateY(180deg);
+}
+
+.flashcard-face {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 24px;
+    overflow: hidden;
+    border: 1px solid
+        rgba(255, 255, 255, 0.9);
+    border-radius: 30px;
+    backface-visibility: hidden;
+    box-shadow:
+        0 18px 40px
+        rgba(71, 91, 78, 0.12);
+}
+
+.flashcard-front {
+    background:
+        linear-gradient(
+            145deg,
+            #f6fff8,
+            #dff2e6
+        );
+}
+
+.flashcard-back {
+    background:
+        linear-gradient(
+            145deg,
+            #fffaf0,
+            #f5e7c8
+        );
+    transform: rotateY(180deg);
+}
+
+.flashcard-language {
+    margin: 0 0 24px;
+    color: #789184;
+    font-size: 11px;
+    font-weight: 850;
+    letter-spacing: 2px;
+}
+
+.flashcard-front h2 {
+    margin: 0 0 12px;
+    color: #40343a;
+    font-size: clamp(40px, 12vw, 58px);
+    line-height: 1.05;
+    text-align: center;
+}
+
+.flashcard-ipa {
+    margin: 0 0 28px;
+    color: #806f77;
+    font-size: 18px;
+    text-align: center;
+}
+
+.speak-word-button {
+    padding: 12px 18px;
+    border: 0;
+    border-radius: 999px;
+    background-color:
+        rgba(255, 255, 255, 0.82);
+    color: #527661;
+    font-size: 14px;
+    font-weight: 750;
+    box-shadow:
+        0 7px 16px
+        rgba(70, 104, 82, 0.1);
+}
+
+.flashcard-hint {
+    position: absolute;
+    right: 20px;
+    bottom: 17px;
+    left: 20px;
+    margin: 0;
+    color: #9a8a91;
+    font-size: 11px;
+    text-align: center;
+}
+
+.flashcard-meaning {
+    width: 100%;
+    margin-bottom: 22px;
+    text-align: center;
+}
+
+.flashcard-meaning span {
+    display: block;
+    margin-bottom: 7px;
+    color: #a18470;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.flashcard-meaning strong {
+    color: #493b41;
+    font-size: 20px;
+    line-height: 1.45;
+}
+
+
+/* Ba nút kết quả */
+
+.vocabulary-answer-actions {
+    display: grid;
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+    gap: 9px;
+    margin-top: 17px;
+}
+
+.vocabulary-answer-actions[hidden] {
+    display: none;
+}
+
+.answer-button {
+    min-height: 48px;
+    padding: 8px 5px;
+    border: 0;
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.answer-again {
+    background-color: #f9dddd;
+    color: #9a5656;
+}
+
+.answer-learning {
+    background-color: #faedc9;
+    color: #927139;
+}
+
+.answer-known {
+    background-color: #dceee2;
+    color: #51765f;
+}
+
+
+/* Hoàn thành */
+
+.vocabulary-finished {
+    padding: 45px 25px;
+    border-radius: 29px;
+    background-color:
+        rgba(255, 255, 255, 0.65);
+    text-align: center;
+    box-shadow:
+        0 15px 34px
+        rgba(72, 95, 79, 0.1);
+}
+
+.vocabulary-finished[hidden] {
+    display: none;
+}
+
+.vocabulary-finished > span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 18px;
+    border-radius: 50%;
+    background-color: #dceee2;
+    color: #51765f;
+    font-size: 32px;
+}
+
+.vocabulary-finished h2 {
+    margin: 0 0 9px;
+    color: #44363d;
+    font-size: 25px;
+}
+
+.vocabulary-finished p {
+    margin: 0 0 22px;
+    color: #817078;
+    font-size: 14px;
+}
+
+#restartVocabularyButton {
+    padding: 12px 23px;
+    border: 0;
+    border-radius: 999px;
+    background-color: #719c80;
+    color: white;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+/* Nút kết quả trong lúc lưu */
+
+.answer-button:disabled {
+    cursor: wait;
+    opacity: 0.55;
+}
+
+/* Kết quả lượt học flashcard */
+
+.vocabulary-result-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    width: 100%;
+    margin: 22px 0;
+}
+
+.result-summary-item {
+    display: flex;
+    min-height: 86px;
+    padding: 12px 7px;
+    border-radius: 18px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    text-align: center;
+}
+
+.result-summary-item strong {
+    color: #4f3c45;
+    font-size: 25px;
+    line-height: 1;
+}
+
+.result-summary-item span {
+    color: #826f77;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.result-again {
+    background-color: #fff0f3;
+}
+
+.result-learning {
+    background-color: #fff6df;
+}
+
+.result-known {
+    background-color: #eaf7ee;
+}
+
+/* Chọn số lượng từ mỗi lượt */
+
+.vocabulary-session-setting {
+    display: flex;
+    margin-bottom: 18px;
+    padding: 12px 15px;
+    border: 1px solid #e6d8de;
+    border-radius: 16px;
+    background-color: rgba(
+        255,
+        255,
+        255,
+        0.76
+    );
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+}
+
+.vocabulary-session-setting label {
+    color: #59464e;
+    font-size: 14px;
+    font-weight: 750;
+}
+
+.vocabulary-session-setting select {
+    min-width: 90px;
+    padding: 8px 10px;
+    border: 1px solid #dac8d0;
+    border-radius: 12px;
+    outline: none;
+    background-color: #ffffff;
+    color: #59464e;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+#restartVocabularyButton:disabled {
+    cursor: wait;
+    opacity: 0.55;
+}
+
+/* Thống kê học từ vựng */
+
+.vocabulary-statistics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+.vocabulary-statistics article {
+    display: flex;
+    min-height: 84px;
+    padding: 12px 7px;
+    border: 1px solid #e2d8dc;
+    border-radius: 18px;
+    background-color: rgba(
+        255,
+        255,
+        255,
+        0.78
+    );
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    text-align: center;
+}
+
+.vocabulary-statistics strong {
+    color: #4f3c45;
+    font-size: 23px;
+    line-height: 1;
+}
+
+.vocabulary-statistics span {
+    color: #88747d;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+/* Chọn chế độ học từ vựng */
+
+.vocabulary-mode-selector {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.vocabulary-mode-button {
+    display: flex;
+    min-height: 75px;
+    padding: 12px 10px;
+    border: 1px solid #dfd4d9;
+    border-radius: 17px;
+    background-color: rgba(
+        255,
+        255,
+        255,
+        0.72
+    );
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    color: #705e66;
+    cursor: pointer;
+}
+
+.vocabulary-mode-button strong {
+    font-size: 14px;
+}
+
+.vocabulary-mode-button span {
+    font-size: 11px;
+}
+
+.vocabulary-mode-button.is-active {
+    border-color: #8ebca0;
+    background-color: #e9f7ee;
+    color: #426b51;
+    box-shadow: 0 7px 18px rgba(
+        89,
+        139,
+        106,
+        0.13
+    );
+}
+
+/* =========================
+   DANH SÁCH TỪ VỰNG
+========================= */
+
+/* Nút mở danh sách */
+
+.vocabulary-list-link {
+    display: grid;
+    grid-template-columns: 45px 1fr auto;
+    margin-bottom: 18px;
+    padding: 14px 16px;
+    border: 1px solid #dce9df;
+    border-radius: 18px;
+    background-color: rgba(
+        255,
+        255,
+        255,
+        0.78
+    );
+    align-items: center;
+    gap: 12px;
+    color: #4e3d45;
+    text-decoration: none;
+    box-shadow: 0 8px 22px rgba(
+        82,
+        111,
+        92,
+        0.08
+    );
+}
+
+.vocabulary-list-link > span {
+    display: flex;
+    width: 45px;
+    height: 45px;
+    border-radius: 14px;
+    background-color: #e9f6ed;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.vocabulary-list-link div {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.vocabulary-list-link strong {
+    font-size: 14px;
+}
+
+.vocabulary-list-link small {
+    color: #8b7b82;
+    font-size: 11px;
+}
+
+.vocabulary-list-link b {
+    color: #a38f98;
+    font-size: 25px;
+}
+
+
+/* Tiêu đề trang */
+
+.vocabulary-list-heading {
+    margin: 20px 0 25px;
+    text-align: center;
+}
+
+.vocabulary-list-heading > p {
+    margin: 0 0 5px;
+    color: #76a184;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.vocabulary-list-heading h1 {
+    margin: 0 0 7px;
+    color: #4b3942;
+    font-size: clamp(
+        34px,
+        9vw,
+        48px
+    );
+    line-height: 1.1;
+}
+
+.vocabulary-list-heading > span {
+    color: #8b7c83;
+    font-size: 13px;
+}
+
+
+/* Tìm kiếm */
+
+.vocabulary-search-section {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    margin-bottom: 13px;
+    gap: 9px;
+}
+
+.vocabulary-search-section input {
+    min-width: 0;
+    padding: 13px 14px;
+    border: 1px solid #dacfd4;
+    border-radius: 15px;
+    outline: none;
+    background-color: rgba(
+        255,
+        255,
+        255,
+        0.86
+    );
+    color: #4e3d45;
+    font: inherit;
+    font-size: 14px;
+}
+
+.vocabulary-search-section input:focus {
+    border-color: #8fbea0;
+    box-shadow: 0 0 0 3px rgba(
+        143,
+        190,
+        160,
+        0.15
+    );
+}
+
+.vocabulary-search-section button {
+    padding: 0 18px;
+    border: 0;
+    border-radius: 15px;
+    background-color: #7eaa8c;
+    color: #ffffff;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 750;
+    cursor: pointer;
+}
+
+
+/* Số kết quả */
+
+.vocabulary-list-information {
+    margin-bottom: 12px;
+    color: #806f77;
+    font-size: 12px;
+}
+
+
+/* Các thẻ từ */
+
+.vocabulary-list-container {
+    display: grid;
+    gap: 11px;
+}
+
+.vocabulary-list-card {
+    padding: 15px 16px;
+    border: 1px solid #dfd6da;
+    border-radius: 18px;
+    background-color: rgba(
+        255,
+        255,
+        255,
+        0.82
+    );
+    box-shadow: 0 7px 20px rgba(
+        76,
+        61,
+        68,
+        0.06
+    );
+}
+
+.vocabulary-list-card-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.vocabulary-list-card-heading > div {
+    min-width: 0;
+}
+
+.vocabulary-list-card h2 {
+    margin: 0;
+    color: #4b3942;
+    font-size: 20px;
+    overflow-wrap: anywhere;
+}
+
+.vocabulary-list-ipa {
+    margin: 4px 0 0;
+    color: #9a7e89;
+    font-size: 13px;
+}
+
+.vocabulary-list-speak-button {
+    display: flex;
+    width: 40px;
+    height: 40px;
+    flex: 0 0 40px;
+    border: 0;
+    border-radius: 13px;
+    background-color: #e8f5ec;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+    cursor: pointer;
+}
+
+.vocabulary-list-meanings {
+    display: grid;
+    margin-top: 13px;
+    padding-top: 11px;
+    border-top: 1px solid #eee5e9;
+    gap: 5px;
+}
+
+.vocabulary-list-meanings p {
+    margin: 0;
+    color: #75666d;
+    font-size: 13px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+
+/* Trạng thái tải và trống */
+
+.vocabulary-list-loading,
+.vocabulary-list-empty {
+    padding: 35px 18px;
+    border: 1px dashed #d9cbd1;
+    border-radius: 18px;
+    background-color: rgba(
+        255,
+        255,
+        255,
+        0.62
+    );
+    color: #88777f;
+    text-align: center;
+}
+
+
+/* Chuyển trang */
+
+.vocabulary-pagination {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    margin-top: 20px;
+    padding-bottom: 30px;
+    align-items: center;
+    gap: 8px;
+}
+
+.vocabulary-pagination button {
+    min-height: 42px;
+    padding: 8px 10px;
+    border: 1px solid #d7cbd0;
+    border-radius: 13px;
+    background-color: #ffffff;
+    color: #66535c;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.vocabulary-pagination button:last-child {
+    justify-self: stretch;
+}
+
+.vocabulary-pagination button:disabled {
+    cursor: default;
+    opacity: 0.4;
+}
+
+.vocabulary-pagination span {
+    color: #87747d;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* Lọc trạng thái từ vựng */
+
+.vocabulary-filter-section {
+    display: flex;
+    margin-bottom: 13px;
+    padding: 11px 13px;
+    border: 1px solid #dfd5d9;
+    border-radius: 15px;
+    background-color: rgba(
+        255,
+        255,
+        255,
+        0.76
+    );
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.vocabulary-filter-section label {
+    color: #69565f;
+    font-size: 13px;
+    font-weight: 750;
+}
+
+.vocabulary-filter-section select {
+    min-width: 115px;
+    padding: 8px 10px;
+    border: 1px solid #d8cbd1;
+    border-radius: 11px;
+    outline: none;
+    background-color: #ffffff;
+    color: #65535b;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+/* Trạng thái học của từng từ */
+
+.vocabulary-status-badge {
+    display: inline-flex;
+    width: fit-content;
+    margin-top: 8px;
+    padding: 5px 9px;
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 750;
+}
+
+.vocabulary-status-badge.status-new {
+    background-color: #f1edf0;
+    color: #7f7077;
+}
+
+.vocabulary-status-badge.status-again {
+    background-color: #fff0f3;
+    color: #b7667b;
+}
+
+.vocabulary-status-badge.status-learning {
+    background-color: #fff5dc;
+    color: #9a7734;
+}
+
+.vocabulary-status-badge.status-known {
+    background-color: #e8f6ec;
+    color: #4f865f;
+}
+
+/* Nút phát âm và yêu thích */
+
+.vocabulary-list-card-actions {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 7px;
+}
+
+.vocabulary-favorite-button {
+    display: flex;
+    width: 40px;
+    height: 40px;
+    border: 0;
+    border-radius: 13px;
+    background-color: #f5eef1;
+    align-items: center;
+    justify-content: center;
+    color: #a58c97;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.vocabulary-favorite-button.is-favorite {
+    background-color: #fff2c9;
+    color: #d29b28;
+}
+
+.vocabulary-favorite-button:disabled {
+    cursor: wait;
+    opacity: 0.5;
+}
+
+/* =========================
+   NÚT MỞ TRANG FLASHCARD
+========================= */
+
+.vocabulary-mode-button {
+    position: relative;
+    box-sizing: border-box;
+    color: #513e47;
+    font: inherit;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.vocabulary-mode-button strong {
+    display: block;
+    color: #513e47;
+}
+
+.vocabulary-mode-button span {
+    display: block;
+    color: #8f7e86;
+}
+
+.vocabulary-mode-button b {
+    position: absolute;
+    top: 50%;
+    right: 18px;
+    color: #a58f99;
+    font-size: 25px;
+    line-height: 1;
+    transform: translateY(-50%);
+}
+
+.vocabulary-mode-button:hover {
+    transform: translateY(-2px);
+}
+
+.vocabulary-mode-button:active {
+    transform: scale(0.98);
+}
+
+@media (max-width: 480px) {
+    .vocabulary-mode-button {
+        min-height: 82px;
+        padding-right: 38px;
+    }
+
+    .vocabulary-mode-button b {
+        right: 14px;
+        font-size: 22px;
+    }
+}
+
+/* =========================
+   TRANG TỔNG QUAN TỪ VỰNG
+========================= */
+
+.vocabulary-home-page .sub-page-container {
+    max-width: 660px;
+}
+
+.vocabulary-home-page .vocabulary-heading {
+    margin: 32px 0 34px;
+}
+
+.vocabulary-home-page .vocabulary-heading h1 {
+    margin: 6px 0 8px;
+}
+
+.vocabulary-home-page .vocabulary-list-link {
+    border-color: #d5e8dc;
+    box-shadow: 0 14px 32px rgba(91, 124, 103, 0.08);
+}
+
+.vocabulary-home-page .vocabulary-statistics {
+    gap: 14px;
+    margin-top: 24px;
+}
+
+.vocabulary-home-page .vocabulary-statistics article {
+    min-height: 108px;
+    border-color: #eadde3;
+    border-radius: 22px;
+}
+
+.vocabulary-home-page .vocabulary-statistics article:nth-child(1) {
+    background: #fff8fb;
+}
+
+.vocabulary-home-page .vocabulary-statistics article:nth-child(2) {
+    background: #f3fbf6;
+}
+
+.vocabulary-home-page .vocabulary-statistics article:nth-child(3) {
+    background: #fffaf0;
+}
+
+
+/* Thành quả hôm nay */
+
+.vocabulary-today-result {
+    display: grid;
+    grid-template-columns: 68px 1fr;
+    align-items: center;
+    gap: 18px;
+    margin: 24px 0;
+    padding: 22px 24px;
+    overflow: hidden;
+    border: 1px solid #cfe5d7;
+    border-radius: 24px;
+    background:
+        linear-gradient(
+            135deg,
+            #effaf3 0%,
+            #fff8fb 100%
+        );
+    box-shadow:
+        0 16px 36px
+        rgba(89, 120, 100, 0.09);
+}
+
+.today-result-icon {
+    display: grid;
+    width: 68px;
+    height: 68px;
+    place-items: center;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.85);
+    font-size: 31px;
+    box-shadow:
+        0 8px 20px
+        rgba(102, 137, 115, 0.1);
+}
+
+.today-result-content > span {
+    color: #6f9d7e;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1.6px;
+}
+
+.today-result-content p {
+    margin: 4px 0 2px;
+    color: #513e47;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.today-result-content p strong {
+    margin-right: 5px;
+    color: #4f8c66;
+    font-size: 38px;
+    line-height: 1;
+}
+
+.today-result-content small {
+    color: #927f87;
+    font-size: 13px;
+}
+
+
+/* Hai nút học */
+
+.vocabulary-home-page .vocabulary-mode-selector {
+    gap: 14px;
+    margin-top: 0;
+}
+
+.vocabulary-home-page .vocabulary-mode-button {
+    min-height: 112px;
+    border-radius: 22px;
+}
+
+.vocabulary-home-page
+.vocabulary-mode-button:first-child {
+    border-color: #cfe5d7;
+    background:
+        linear-gradient(
+            145deg,
+            #f3fbf6,
+            #ffffff
+        );
+}
+
+.vocabulary-home-page
+.vocabulary-mode-button:last-child {
+    border-color: #eadcad;
+    background:
+        linear-gradient(
+            145deg,
+            #fffaf0,
+            #ffffff
+        );
+}
+
+.vocabulary-home-page
+.vocabulary-session-setting {
+    margin-top: 18px;
+    border-radius: 20px;
+}
+
+
+/* Điện thoại */
+
+@media (max-width: 480px) {
+    .vocabulary-home-page .vocabulary-heading {
+        margin: 20px 0 26px;
+    }
+
+    .vocabulary-home-page
+    .vocabulary-statistics {
+        gap: 8px;
+    }
+
+    .vocabulary-home-page
+    .vocabulary-statistics article {
+        min-height: 86px;
+        padding: 12px 5px;
+        border-radius: 18px;
+    }
+
+    .vocabulary-home-page
+    .vocabulary-statistics article strong {
+        font-size: 25px;
+    }
+
+    .vocabulary-today-result {
+        grid-template-columns: 56px 1fr;
+        gap: 14px;
+        margin: 18px 0;
+        padding: 18px;
+        border-radius: 20px;
+    }
+
+    .today-result-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 17px;
+        font-size: 26px;
+    }
+
+    .today-result-content p strong {
+        font-size: 32px;
+    }
+
+    .vocabulary-home-page
+    .vocabulary-mode-button {
+        min-height: 92px;
+    }
+}
+
+/* =========================
+   KHÔNG GIAN POQY
+========================= */
+
+/* Ô PoQy tại trang chủ */
+
+.together-card {
+    border-color: #c9e5f5;
+    background:
+        linear-gradient(
+            135deg,
+            #edf9ff 0%,
+            #d9effc 100%
+        );
+    box-shadow:
+        0 18px 38px
+        rgba(86, 151, 187, 0.13);
+}
+
+.together-card:hover {
+    background:
+        linear-gradient(
+            135deg,
+            #e5f6ff 0%,
+            #cceafa 100%
+        );
+}
+
+
+/* Màu nền trang PoQy */
+
+body.together-page {
+    background:
+        radial-gradient(
+            circle at 8% 5%,
+            rgba(200, 235, 253, 0.72),
+            transparent 34%
+        ),
+        radial-gradient(
+            circle at 94% 88%,
+            rgba(218, 241, 255, 0.7),
+            transparent 38%
+        ),
+        linear-gradient(
+            145deg,
+            #f5fbff 0%,
+            #fffafd 55%,
+            #eef9ff 100%
+        );
+}
+
+
+/* Tiêu đề PoQy */
+
+.together-page .profile-heading h1 {
+    color: #426f88;
+}
+
+.together-page .profile-current-date {
+    color: #7893a2;
+}
+
+.together-page .profile-title-icon {
+    border: 2px solid #d4ebf7;
+    background: #ffffff;
+    box-shadow:
+        0 12px 28px
+        rgba(75, 139, 173, 0.14);
+}
+
+
+/* Phần nội dung bên trong */
+
+.together-page .schedule-notice {
+    border-color: #bcddec;
+    background:
+        rgba(244, 251, 255, 0.88);
+    box-shadow:
+        0 16px 34px
+        rgba(74, 132, 162, 0.1);
+}
+
+.together-page .schedule-notice > span {
+    background: #dff2fc;
+}
+
+.current-week-label {
+    display: inline-block;
+    white-space: nowrap;
+}
+
+/* FIX LỊCH TUẦN TRÊN IPHONE */
+
+@media (max-width: 600px) {
+
+    .week-page .week-table-wrapper {
+        padding: 0 !important;
+        overflow: visible !important;
+        border: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+
+    .week-page .week-plan-table,
+    .week-page .week-plan-table tbody {
+        display: block !important;
+        width: 100% !important;
+    }
+
+    .week-page .week-plan-table thead {
+        display: none !important;
+    }
+
+    .week-page .week-plan-row {
+        display: block !important;
+        margin-bottom: 14px;
+        overflow: hidden;
+        border: 1px solid #efd8e2;
+        border-left: 5px solid #e4a0bd;
+        border-radius: 20px;
+        background: #fff9fb;
+    }
+
+    .week-page
+    .week-plan-row:nth-child(even) {
+        border-color: #dcd8f3;
+        border-left-color: #aaa0df;
+        background: #f7f6ff;
+    }
+
+    .week-page .week-plan-row.today {
+        border-color: #edb4cc;
+        border-left-color: #d7749e;
+        background: #fff0f6;
+    }
+
+    .week-page .week-plan-row td {
+        display: block !important;
+        box-sizing: border-box;
+        width: 100% !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+    }
+
+
+    /* Thứ và ngày */
+
+    .week-page .week-date-cell {
+        display: flex !important;
+        align-items: center;
+        gap: 8px;
+        padding: 13px 14px !important;
+        border-bottom:
+            1px solid #efdce4 !important;
+        text-align: left;
+    }
+
+    .week-page .week-date-cell strong {
+        font-size: 15px;
+    }
+
+    .week-page .week-date-cell span {
+        margin: 0;
+        font-size: 13px;
+    }
+
+    .week-page .week-date-cell small {
+        margin: 0 0 0 auto;
+    }
+
+
+    /* Ca làm */
+
+    .week-page .week-shift-cell {
+        padding: 12px 14px 8px !important;
+    }
+
+    .week-page .week-shift-cell::before {
+        display: block;
+        margin-bottom: 7px;
+        color: #94727f;
+        font-size: 10px;
+        font-weight: 850;
+        letter-spacing: 1px;
+        content: "CÔNG VIỆC";
+    }
+
+    .week-page .daily-shift-select {
+        display: block;
+        width: 100% !important;
+        max-width: none !important;
+        min-height: 46px;
+        padding: 8px 36px 8px 12px;
+        font-size: 14px !important;
+    }
+
+
+    /* Học tập */
+
+    .week-page .week-study-cell {
+        padding: 10px 14px 14px !important;
+    }
+
+    .week-page .week-study-cell::before {
+        display: block;
+        margin-bottom: 7px;
+        color: #94727f;
+        font-size: 10px;
+        font-weight: 850;
+        letter-spacing: 1px;
+        content: "HỌC TẬP";
+    }
+
+    .week-page .week-loading-row,
+    .week-page .week-loading-row td {
+        display: block !important;
+        box-sizing: border-box;
+        width: 100% !important;
+    }
+}
