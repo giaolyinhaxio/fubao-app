@@ -1,11 +1,24 @@
 const SHIFT_STORAGE_KEY = "diquyShiftSettings";
 
+const DISPLAY_TIMEZONE_STORAGE_KEY =
+    "fubaoDisplayTimezone";
+
+const VIETNAM_TIMEZONE =
+    "Asia/Ho_Chi_Minh";
+
+const JAPAN_TIMEZONE =
+    "Asia/Tokyo";
+
+let timezoneClockTimer = null;
+
 
 document.addEventListener("DOMContentLoaded", function () {
+    ganSuKienCaiDatTrangChu();
     hienThiNgayTrangChu();
     hienThiNgayTrangDiquy();
     taoLichDiquyHomNay();
     ganSuKienTrangDiquy();
+    batDauDongHoMuiGio();
 });
 
 window.addEventListener(
@@ -17,12 +30,173 @@ window.addEventListener(
     }
 );
 
+function layMuiGioHienThi() {
+    const savedTimezone =
+        localStorage.getItem(
+            DISPLAY_TIMEZONE_STORAGE_KEY
+        );
+
+    return savedTimezone === JAPAN_TIMEZONE
+        ? JAPAN_TIMEZONE
+        : VIETNAM_TIMEZONE;
+}
+
+
+function layTenMuiGio() {
+    return layMuiGioHienThi() ===
+        JAPAN_TIMEZONE
+        ? "Giờ Nhật Bản"
+        : "Giờ Việt Nam";
+}
+
+
+function layKyHieuMuiGio() {
+    return layMuiGioHienThi() ===
+        JAPAN_TIMEZONE
+        ? "🇯🇵"
+        : "🇻🇳";
+}
+
+
+function layDoLechHienThiPhut() {
+    return layMuiGioHienThi() ===
+        JAPAN_TIMEZONE
+        ? 120
+        : 0;
+}
+
+
+function layCacPhanNgayTheoMuiGio(
+    date,
+    timezone
+) {
+    const formatter =
+        new Intl.DateTimeFormat(
+            "en-CA",
+            {
+                timeZone: timezone,
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit"
+            }
+        );
+
+    const parts = {};
+
+    formatter
+        .formatToParts(date)
+        .forEach(function (part) {
+            if (part.type !== "literal") {
+                parts[part.type] =
+                    part.value;
+            }
+        });
+
+    return parts;
+}
+
+
+function layNgayLichGocHienTai() {
+    const parts =
+        layCacPhanNgayTheoMuiGio(
+            new Date(),
+            VIETNAM_TIMEZONE
+        );
+
+    return new Date(
+        Number(parts.year),
+        Number(parts.month) - 1,
+        Number(parts.day),
+        12,
+        0,
+        0
+    );
+}
+
+
+function chuyenMotMocGioHienThi(timeText) {
+    const match =
+        /^(\d{1,2}):(\d{2})$/.exec(
+            String(timeText).trim()
+        );
+
+    if (!match) {
+        return null;
+    }
+
+    const totalMinutes =
+        Number(match[1]) * 60 +
+        Number(match[2]) +
+        layDoLechHienThiPhut();
+
+    const dayOffset =
+        Math.floor(totalMinutes / 1440);
+
+    const minutesInDay =
+        totalMinutes % 1440;
+
+    const hours = String(
+        Math.floor(minutesInDay / 60)
+    ).padStart(2, "0");
+
+    const minutes = String(
+        minutesInDay % 60
+    ).padStart(2, "0");
+
+    return {
+        text: `${hours}:${minutes}`,
+        dayOffset: dayOffset
+    };
+}
+
+
+function chuyenKhoangGioHienThi(timeRange) {
+    const match =
+        /^(\d{1,2}:\d{2})\s*[–-]\s*(\d{1,2}:\d{2})$/.exec(
+            String(timeRange).trim()
+        );
+
+    if (!match) {
+        return timeRange;
+    }
+
+    const start =
+        chuyenMotMocGioHienThi(
+            match[1]
+        );
+
+    const end =
+        chuyenMotMocGioHienThi(
+            match[2]
+        );
+
+    if (!start || !end) {
+        return timeRange;
+    }
+
+    let note = "";
+
+    if (
+        start.dayOffset !==
+        end.dayOffset
+    ) {
+        note = " (sang ngày sau)";
+    } else if (start.dayOffset === 1) {
+        note = " (+1 ngày)";
+    }
+
+    return (
+        `${start.text}–${end.text}${note}`
+    );
+}
+
 /* =========================
    HIỂN THỊ NGÀY
 ========================= */
 
 function dinhDangNgay(date) {
     const formatter = new Intl.DateTimeFormat("vi-VN", {
+        timeZone: layMuiGioHienThi(),
         weekday: "long",
         day: "2-digit",
         month: "2-digit",
@@ -39,10 +213,38 @@ function dinhDangNgay(date) {
 
 
 function hienThiNgayTrangChu() {
-    const element = document.getElementById("currentDate");
+    const dateElement =
+        document.getElementById(
+            "currentDate"
+        );
 
-    if (element) {
-        element.textContent = dinhDangNgay(new Date());
+    const timeElement =
+        document.getElementById(
+            "currentTime"
+        );
+
+    const now = new Date();
+
+    if (dateElement) {
+        dateElement.textContent =
+            dinhDangNgay(now);
+    }
+
+    if (timeElement) {
+        const timeText =
+            new Intl.DateTimeFormat(
+                "vi-VN",
+                {
+                    timeZone:
+                        layMuiGioHienThi(),
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hourCycle: "h23"
+                }
+            ).format(now);
+
+        timeElement.textContent =
+            `${timeText} ${layKyHieuMuiGio()}`;
     }
 }
 
@@ -53,12 +255,167 @@ function hienThiNgayTrangDiquy() {
             ".profile-current-date"
         );
 
+    const timezone =
+        layMuiGioHienThi();
+
+    const now = new Date();
+
+    const dateText =
+        new Intl.DateTimeFormat(
+            "vi-VN",
+            {
+                timeZone: timezone,
+                weekday: "long",
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric"
+            }
+        ).format(now);
+
+    const timeText =
+        new Intl.DateTimeFormat(
+            "vi-VN",
+            {
+                timeZone: timezone,
+                hour: "2-digit",
+                minute: "2-digit",
+                hourCycle: "h23"
+            }
+        ).format(now);
+
+    const formattedDate =
+        dateText.charAt(0).toUpperCase() +
+        dateText.slice(1);
+
     elements.forEach(
         function (element) {
             element.textContent =
-                dinhDangNgay(
-                    new Date()
+                `${formattedDate} · ${timeText}`;
+        }
+    );
+}
+
+
+function batDauDongHoMuiGio() {
+    if (timezoneClockTimer) {
+        clearInterval(
+            timezoneClockTimer
+        );
+    }
+
+    timezoneClockTimer =
+        setInterval(
+            function () {
+                hienThiNgayTrangChu();
+                hienThiNgayTrangDiquy();
+            },
+            30000
+        );
+}
+
+function ganSuKienCaiDatTrangChu() {
+    const modal =
+        document.getElementById(
+            "homeSettingsModal"
+        );
+
+    const openButton =
+        document.getElementById(
+            "openHomeSettingsButton"
+        );
+
+    const closeButton =
+        document.getElementById(
+            "closeHomeSettingsButton"
+        );
+
+    const timezoneSelect =
+        document.getElementById(
+            "displayTimezoneSelect"
+        );
+
+    if (!modal || !openButton) {
+        return;
+    }
+
+    if (timezoneSelect) {
+        timezoneSelect.value =
+            layMuiGioHienThi();
+
+        timezoneSelect.addEventListener(
+            "change",
+            function () {
+                const timezone =
+                    timezoneSelect.value ===
+                        JAPAN_TIMEZONE
+                        ? JAPAN_TIMEZONE
+                        : VIETNAM_TIMEZONE;
+
+                localStorage.setItem(
+                    DISPLAY_TIMEZONE_STORAGE_KEY,
+                    timezone
                 );
+
+                hienThiNgayTrangChu();
+                hienThiNgayTrangDiquy();
+                taoLichDiquyHomNay();
+            }
+        );
+    }
+
+    function openModal() {
+        modal.classList.add("open");
+
+        modal.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+        document.body.classList.add(
+            "modal-open"
+        );
+    }
+
+    function closeModal() {
+        modal.classList.remove("open");
+
+        modal.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+        document.body.classList.remove(
+            "modal-open"
+        );
+    }
+
+    openButton.addEventListener(
+        "click",
+        openModal
+    );
+
+    if (closeButton) {
+        closeButton.addEventListener(
+            "click",
+            closeModal
+        );
+    }
+
+    modal.addEventListener(
+        "click",
+        function (event) {
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+    );
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
+            if (event.key === "Escape") {
+                closeModal();
+            }
         }
     );
 }
@@ -76,10 +433,13 @@ function taoTheLich(
             `${time}|${title}`
         );
 
+    const displayTime =
+        chuyenKhoangGioHienThi(time);
+
     return `
         <tr class="schedule-item ${type}">
             <td class="schedule-table-time">
-                ${time}
+                ${displayTime}
             </td>
 
             <td class="schedule-table-activity">
@@ -515,7 +875,7 @@ async function taoLichDiquyHomNay() {
 
     try {
         const today =
-            new Date();
+            layNgayLichGocHienTai();
 
         const dayOfWeek =
             today.getDay();
@@ -847,19 +1207,15 @@ async function luuTrangThaiHoanThanh(
 ========================= */
 
 function layNgayHomNayDangISO() {
-    const today = new Date();
+    const parts =
+        layCacPhanNgayTheoMuiGio(
+            new Date(),
+            VIETNAM_TIMEZONE
+        );
 
-    const year = today.getFullYear();
-
-    const month = String(
-        today.getMonth() + 1
-    ).padStart(2, "0");
-
-    const day = String(
-        today.getDate()
-    ).padStart(2, "0");
-
-    return `${year}-${month}-${day}`;
+    return (
+        `${parts.year}-${parts.month}-${parts.day}`
+    );
 }
 
 /* =========================
@@ -950,10 +1306,10 @@ function updateLoveDays() {
 
     /* Tổng số ngày */
     const totalDays =
-    Math.floor(
-        (today - startDate) /
-        millisecondsPerDay
-    );
+        Math.floor(
+            (today - startDate) /
+            millisecondsPerDay
+        );
 
     /* Tính số năm */
     let cursor = new Date(startDate);

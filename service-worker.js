@@ -1,4 +1,4 @@
-const CACHE_NAME = "fubao-v10";
+const CACHE_NAME = "fubao-v11";
 
 const APP_FILES = [
     "./",
@@ -19,6 +19,7 @@ const APP_FILES = [
 
     "./style.css",
     "./app.js",
+    "./notifications.js",
     "./auth.js",
     "./auth-guard.js",
     "./supabase-config.js",
@@ -185,6 +186,143 @@ self.addEventListener(
                             return response;
                         });
                 })
+        );
+    }
+);
+
+/* =========================
+   NHẬN THÔNG BÁO ĐẨY
+========================= */
+
+self.addEventListener(
+    "push",
+    function (event) {
+        let notificationData = {};
+
+        if (event.data) {
+            try {
+                notificationData =
+                    event.data.json();
+            } catch (error) {
+                notificationData = {
+                    body:
+                        event.data.text()
+                };
+            }
+        }
+
+
+        const title =
+            notificationData.title ||
+            "FuBao 🐼";
+
+
+        const options = {
+            body:
+                notificationData.body ||
+                "Bạn có một lịch trình sắp bắt đầu.",
+
+            icon:
+                notificationData.icon ||
+                "./icon-192.png",
+
+            badge:
+                notificationData.badge ||
+                "./icon-192.png",
+
+            tag:
+                notificationData.tag ||
+                "fubao-schedule",
+
+            data: {
+                url:
+                    notificationData.url ||
+                    "./diquy.html"
+            }
+        };
+
+
+        event.waitUntil(
+            self.registration
+                .showNotification(
+                    title,
+                    options
+                )
+        );
+    }
+);
+
+
+/* =========================
+   MỞ APP KHI NHẤN THÔNG BÁO
+========================= */
+
+self.addEventListener(
+    "notificationclick",
+    function (event) {
+        event.notification.close();
+
+
+        const targetURL =
+            new URL(
+                event.notification.data?.url ||
+                "./diquy.html",
+
+                self.location.origin
+            ).href;
+
+
+        event.waitUntil(
+            self.clients
+                .matchAll({
+                    type: "window",
+                    includeUncontrolled: true
+                })
+                .then(
+                    async function (
+                        clientList
+                    ) {
+                        for (
+                            const client
+                            of clientList
+                        ) {
+                            if (
+                                client.url ===
+                                targetURL
+                            ) {
+                                return client.focus();
+                            }
+                        }
+
+
+                        for (
+                            const client
+                            of clientList
+                        ) {
+                            if (
+                                "navigate" in client
+                            ) {
+                                await client.navigate(
+                                    targetURL
+                                );
+
+                                return client.focus();
+                            }
+                        }
+
+
+                        if (
+                            self.clients.openWindow
+                        ) {
+                            return self.clients
+                                .openWindow(
+                                    targetURL
+                                );
+                        }
+
+                        return null;
+                    }
+                )
         );
     }
 );

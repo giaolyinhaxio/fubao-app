@@ -1,14 +1,15 @@
 {
     "name": "FuBao",
     "short_name": "FuBao",
-    "description": "Ứng dụng quản lý lịch trình Fubao",
+    "description": "Ứng dụng quản lý lịch trình và học tập",
     "id": "./",
-    "start_url": "./login.html",
+    "start_url": "./index.html",
     "scope": "./",
     "display": "standalone",
-    "orientation": "portrait",
     "background_color": "#fff7fa",
-    "theme_color": "#f5b3c7",
+    "theme_color": "#fff7fa",
+    "lang": "vi",
+    "orientation": "portrait-primary",
     "icons": [
         {
             "src": "./icon-192.png",

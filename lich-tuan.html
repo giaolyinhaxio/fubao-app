@@ -18,7 +18,7 @@
 
     <meta name="apple-mobile-web-app-title" content="FuBao">
 
-    <link rel="stylesheet" href="style.css?v=54">
+    <link rel="stylesheet" href="style.css?v=55">
 </head>
 
 <body class="week-page">
@@ -38,6 +38,10 @@
             <h1 class="week-main-title">
                 LỊCH TRÌNH CỦA DIQUY
             </h1>
+
+            <p class="week-timezone-note" id="weekTimezoneNote">
+                Đang tải múi giờ...
+            </p>
         </section>
 
         <nav class="week-navigation">
@@ -132,6 +136,10 @@
 
                 </div>
 
+                <p class="study-timezone-help" id="studyTimezoneHelp">
+                    Nhập giờ theo múi giờ Việt Nam. App sẽ tự quy đổi khi hiển thị.
+                </p>
+
                 <div class="form-group">
                     <label for="studyTitle">
                         Nội dung học
@@ -152,7 +160,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase-config.js"></script>
     <script src="auth-guard.js"></script>
-    <script src="week.js?v=24"></script>
+    <script src="week.js?v=28"></script>
     <script src="pwa.js"></script>
 </body>
 

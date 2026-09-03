@@ -1,5 +1,5 @@
 /* =========================
-   CÀI ĐẶT CHUNG
+   CĂ€I Äáº¶T CHUNG
 ========================= */
 
 * {
@@ -49,7 +49,7 @@ textarea {
 
 
 /* =========================
-   KHUNG ỨNG DỤNG
+   KHUNG á»¨NG Dá»¤NG
 ========================= */
 
 .app-container {
@@ -65,7 +65,7 @@ textarea {
 
 
 /* =========================
-   PHẦN ĐẦU TRANG CHỦ
+   PHáº¦N Äáº¦U TRANG CHá»¦
 ========================= */
 
 .home-header {
@@ -99,7 +99,7 @@ textarea {
 
 
 /* =========================
-   DANH SÁCH 3 KHU VỰC
+   DANH SĂCH 3 KHU Vá»°C
 ========================= */
 
 .home-menu {
@@ -132,7 +132,7 @@ textarea {
 }
 
 
-/* Khu vực Diquy */
+/* Khu vá»±c Diquy */
 
 .diquy-card {
     background:
@@ -144,7 +144,7 @@ textarea {
 }
 
 
-/* Khu vực TiOong */
+/* Khu vá»±c TiOong */
 
 .tioong-card {
     background:
@@ -156,7 +156,7 @@ textarea {
 }
 
 
-/* Khu vực chung */
+/* Khu vá»±c chung */
 
 .together-card {
     background:
@@ -169,7 +169,7 @@ textarea {
 
 
 /* =========================
-   NỘI DUNG TRONG THẺ
+   Ná»˜I DUNG TRONG THáºº
 ========================= */
 
 .space-icon {
@@ -226,7 +226,7 @@ textarea {
 
 
 /* =========================
-   CUỐI TRANG
+   CUá»I TRANG
 ========================= */
 
 .home-footer {
@@ -241,7 +241,7 @@ textarea {
 
 
 /* =========================
-   MÀN HÌNH LỚN
+   MĂ€N HĂŒNH Lá»N
 ========================= */
 
 @media (min-width: 600px) {
@@ -280,7 +280,7 @@ textarea {
 }
 
 
-/* Thanh trên cùng */
+/* Thanh trĂªn cĂ¹ng */
 
 .sub-page-header {
     display: flex;
@@ -319,7 +319,7 @@ textarea {
 }
 
 
-/* Tên Diquy */
+/* TĂªn Diquy */
 
 .profile-heading {
     margin: 22px 0 36px;
@@ -349,7 +349,7 @@ textarea {
     text-align: center;
 }
 
-/* Phần lịch hôm nay */
+/* Pháº§n lá»‹ch hĂ´m nay */
 
 .today-schedule-section {
     margin-bottom: 25px;
@@ -395,7 +395,7 @@ textarea {
 }
 
 
-/* Thẻ khi chưa tạo lịch */
+/* Tháº» khi chÆ°a táº¡o lá»‹ch */
 
 .today-schedule-list {
     display: flex;
@@ -425,7 +425,7 @@ textarea {
 }
 
 
-/* Các nút chức năng */
+/* CĂ¡c nĂºt chá»©c nÄƒng */
 
 .diquy-actions {
     display: flex;
@@ -481,7 +481,7 @@ textarea {
     transform: scale(0.98);
 }
 /* =========================
-   THẺ LỊCH TRÌNH DIQUY
+   THáºº Lá»CH TRĂŒNH DIQUY
 ========================= */
 
 .schedule-item {
@@ -499,7 +499,7 @@ textarea {
 }
 
 
-/* Màu lịch học */
+/* MĂ u lá»‹ch há»c */
 
 .study-schedule {
     background:
@@ -511,7 +511,7 @@ textarea {
 }
 
 
-/* Màu lịch làm */
+/* MĂ u lá»‹ch lĂ m */
 
 .work-schedule {
     background:
@@ -523,7 +523,7 @@ textarea {
 }
 
 
-/* Màu lịch ôn bài */
+/* MĂ u lá»‹ch Ă´n bĂ i */
 
 .review-schedule {
     background:
@@ -535,7 +535,7 @@ textarea {
 }
 
 
-/* Icon của lịch */
+/* Icon cá»§a lá»‹ch */
 
 .schedule-item-icon {
     display: flex;
@@ -551,7 +551,7 @@ textarea {
 }
 
 
-/* Nội dung lịch */
+/* Ná»™i dung lá»‹ch */
 
 .schedule-item-content {
     flex: 1;
@@ -579,7 +579,7 @@ textarea {
 }
 
 
-/* Nút hoàn thành */
+/* NĂºt hoĂ n thĂ nh */
 
 .complete-button {
     display: flex;
@@ -601,7 +601,7 @@ textarea {
 }
 
 
-/* Khi đánh dấu hoàn thành */
+/* Khi Ä‘Ă¡nh dáº¥u hoĂ n thĂ nh */
 
 .schedule-item.completed {
     opacity: 0.62;
@@ -620,7 +620,7 @@ textarea {
 
 
 /* =========================
-   THẺ THÔNG BÁO CHƯA XẾP LỊCH
+   THáºº THĂ”NG BĂO CHÆ¯A Xáº¾P Lá»CH
 ========================= */
 
 .schedule-notice {
@@ -659,7 +659,7 @@ textarea {
 }
 
 
-/* Màn hình điện thoại nhỏ */
+/* MĂ n hĂ¬nh Ä‘iá»‡n thoáº¡i nhá» */
 
 @media (max-width: 370px) {
     .schedule-item {
@@ -682,7 +682,7 @@ textarea {
 }
 
 /* =========================
-   CỬA SỔ XẾP CA LÀM
+   Cá»¬A Sá»” Xáº¾P CA LĂ€M
 ========================= */
 
 .modal-overlay {
@@ -729,7 +729,7 @@ textarea {
 }
 
 
-/* Thanh nhỏ phía trên */
+/* Thanh nhá» phĂ­a trĂªn */
 
 .modal-handle {
     width: 44px;
@@ -740,7 +740,7 @@ textarea {
 }
 
 
-/* Phần đầu cửa sổ */
+/* Pháº§n Ä‘áº§u cá»­a sá»• */
 
 .modal-header {
     display: flex;
@@ -777,7 +777,7 @@ textarea {
 
 
 
-/* Các ô nhập liệu */
+/* CĂ¡c Ă´ nháº­p liá»‡u */
 
 .form-group {
     margin-bottom: 22px;
@@ -819,7 +819,7 @@ textarea {
 
 
 
-/* Nút lưu */
+/* NĂºt lÆ°u */
 
 .save-shift-button {
     width: 100%;
@@ -845,14 +845,14 @@ textarea {
 }
 
 
-/* Không cuộn trang khi cửa sổ đang mở */
+/* KhĂ´ng cuá»™n trang khi cá»­a sá»• Ä‘ang má»Ÿ */
 
 body.modal-open {
     overflow: hidden;
 }
 
 /* =========================
-   TRANG ĐĂNG NHẬP
+   TRANG ÄÄ‚NG NHáº¬P
 ========================= */
 
 .login-page {
@@ -891,7 +891,7 @@ body.modal-open {
 }
 
 
-/* Phần tên ứng dụng */
+/* Pháº§n tĂªn á»©ng dá»¥ng */
 
 .login-heading {
     margin-bottom: 29px;
@@ -940,7 +940,7 @@ body.modal-open {
 }
 
 
-/* Form đăng nhập */
+/* Form Ä‘Äƒng nháº­p */
 
 .login-form {
     display: flex;
@@ -982,7 +982,7 @@ body.modal-open {
 }
 
 
-/* Thông báo */
+/* ThĂ´ng bĂ¡o */
 
 .login-message {
     min-height: 19px;
@@ -1001,7 +1001,7 @@ body.modal-open {
 }
 
 
-/* Nút đăng nhập */
+/* NĂºt Ä‘Äƒng nháº­p */
 
 .login-button {
     width: 100%;
@@ -1032,7 +1032,7 @@ body.modal-open {
 }
 
 
-/* Cuối trang đăng nhập */
+/* Cuá»‘i trang Ä‘Äƒng nháº­p */
 
 .login-footer {
     margin-top: 21px;
@@ -1043,7 +1043,7 @@ body.modal-open {
 }
 
 
-/* Điện thoại nhỏ */
+/* Äiá»‡n thoáº¡i nhá» */
 
 @media (max-width: 370px) {
     .login-container {
@@ -1056,7 +1056,7 @@ body.modal-open {
 }
 
 /* =========================
-   TÀI KHOẢN VÀ ĐĂNG XUẤT
+   TĂ€I KHOáº¢N VĂ€ ÄÄ‚NG XUáº¤T
 ========================= */
 
 .home-account-bar {
@@ -1102,7 +1102,7 @@ body.modal-open {
     cursor: wait;
 }
 /* =========================
-   TRANG LỊCH TUẦN
+   TRANG Lá»CH TUáº¦N
 ========================= */
 
 .week-page {
@@ -1123,7 +1123,7 @@ body.modal-open {
 
 
 
-/* Điều hướng tuần */
+/* Äiá»u hÆ°á»›ng tuáº§n */
 
 .week-navigation {
     display: grid;
@@ -1160,7 +1160,7 @@ body.modal-open {
 
 
 
-/* Màn hình rộng */
+/* MĂ n hĂ¬nh rá»™ng */
 
 @media (min-width: 750px) {
     .week-page .app-container {
@@ -1172,10 +1172,10 @@ body.modal-open {
 
 
 /* =========================
-   TÙY CHỈNH MÀN HÌNH CHÍNH
+   TĂ™Y CHá»ˆNH MĂ€N HĂŒNH CHĂNH
 ========================= */
 
-/* Ẩn hai dòng giới thiệu */
+/* áº¨n hai dĂ²ng giá»›i thiá»‡u */
 .home-label,
 .home-description {
     display: none;
@@ -1183,7 +1183,7 @@ body.modal-open {
 
 
 /* =========================
-   BỘ ĐẾM NGÀY YÊU
+   Bá»˜ Äáº¾M NGĂ€Y YĂU
 ========================= */
 
 .love-counter {
@@ -1252,7 +1252,7 @@ body.modal-open {
 }
 
 /* =========================
-   CHI TIẾT NĂM - THÁNG - TUẦN - NGÀY
+   CHI TIáº¾T NÄ‚M - THĂNG - TUáº¦N - NGĂ€Y
 ========================= */
 
 .love-duration {
@@ -1315,10 +1315,10 @@ body.modal-open {
 }
 
 /* =========================
-   TINH CHỈNH TRANG CHỦ
+   TINH CHá»ˆNH TRANG CHá»¦
 ========================= */
 
-/* Chỉ giữ nút đăng xuất ở bên phải */
+/* Chá»‰ giá»¯ nĂºt Ä‘Äƒng xuáº¥t á»Ÿ bĂªn pháº£i */
 .home-account-bar {
     justify-content: flex-end;
     width: auto;
@@ -1331,28 +1331,28 @@ body.modal-open {
     box-shadow: none;
 }
 
-/* Tiếp tục ẩn email */
+/* Tiáº¿p tá»¥c áº©n email */
 .current-user-email {
     display: none !important;
 }
 
-/* Làm tên Fubao lớn hơn */
+/* LĂ m tĂªn Fubao lá»›n hÆ¡n */
 .home-header h1 {
     font-size: clamp(42px, 12vw, 56px);
 }
 
-/* Thu nhỏ toàn bộ vòng tròn */
+/* Thu nhá» toĂ n bá»™ vĂ²ng trĂ²n */
 .love-counter-circle {
     width: min(52vw, 215px);
 }
 
-/* Thu nhỏ số tổng ngày */
+/* Thu nhá» sá»‘ tá»•ng ngĂ y */
 .love-counter-number {
     font-size: clamp(44px, 14vw, 62px);
     letter-spacing: -2px;
 }
 
-/* Thu nhỏ chữ trong vòng tròn */
+/* Thu nhá» chá»¯ trong vĂ²ng trĂ²n */
 .love-counter-label {
     font-size: 14px;
 }
@@ -1363,7 +1363,7 @@ body.modal-open {
 
 
 /* =========================
-   THU NHỎ BỘ ĐẾM CHI TIẾT
+   THU NHá» Bá»˜ Äáº¾M CHI TIáº¾T
 ========================= */
 
 .love-duration {
@@ -1389,7 +1389,7 @@ body.modal-open {
 }
 
 
-/* Dùng khung bên ngoài để tạo tai phía sau đầu */
+/* DĂ¹ng khung bĂªn ngoĂ i Ä‘á»ƒ táº¡o tai phĂ­a sau Ä‘áº§u */
 .love-counter {
     position: relative;
     overflow: visible;
@@ -1410,30 +1410,30 @@ body.modal-open {
         0 7px 17px rgba(93, 68, 83, 0.1);
 }
 
-/* Tai trái */
+/* Tai trĂ¡i */
 .love-counter::before {
     left: calc(50% - 118px);
 }
 
-/* Tai phải */
+/* Tai pháº£i */
 .love-counter::after {
     right: calc(50% - 118px);
 }
 
-/* Đưa phần đầu lên phía trước tai */
+/* ÄÆ°a pháº§n Ä‘áº§u lĂªn phĂ­a trÆ°á»›c tai */
 .love-counter-circle {
     position: relative;
     z-index: 1;
 }
 
-/* Giữ các ô thời gian phía trước */
+/* Giá»¯ cĂ¡c Ă´ thá»i gian phĂ­a trÆ°á»›c */
 .love-duration {
     position: relative;
     z-index: 1;
 }
 
 /* =========================
-   BẢNG LỊCH HÔM NAY
+   Báº¢NG Lá»CH HĂ”M NAY
 ========================= */
 
 .schedule-table-wrapper {
@@ -1446,7 +1446,7 @@ body.modal-open {
     table-layout: fixed;
 }
 
-/* Tiêu đề cột */
+/* TiĂªu Ä‘á» cá»™t */
 
 .schedule-table thead th {
     font-weight: 800;
@@ -1455,7 +1455,7 @@ body.modal-open {
 }
 
 
-/* Ghi đè kiểu thẻ cũ */
+/* Ghi Ä‘Ă¨ kiá»ƒu tháº» cÅ© */
 
 .today-schedule-table .schedule-item {
     display: table-row;
@@ -1466,7 +1466,7 @@ body.modal-open {
     box-shadow: none;
 }
 
-/* Các ô trong bảng */
+/* CĂ¡c Ă´ trong báº£ng */
 
 .today-schedule-table td {
     padding: 12px 9px;
@@ -1490,7 +1490,7 @@ body.modal-open {
 }
 
 
-/* Cột giờ */
+/* Cá»™t giá» */
 
 .schedule-table-time {
     font-size: 11px;
@@ -1499,7 +1499,7 @@ body.modal-open {
     white-space: nowrap;
 }
 
-/* Cột nội dung */
+/* Cá»™t ná»™i dung */
 
 .schedule-table-title {
     display: flex;
@@ -1519,7 +1519,7 @@ body.modal-open {
     line-height: 1.4;
 }
 
-/* Cột hoàn thành */
+/* Cá»™t hoĂ n thĂ nh */
 
 .schedule-table-status {
     text-align: center;
@@ -1534,7 +1534,7 @@ body.modal-open {
     font-size: 17px;
 }
 
-/* Khi đã hoàn thành */
+/* Khi Ä‘Ă£ hoĂ n thĂ nh */
 
 .today-schedule-table
 .schedule-item.completed
@@ -1546,7 +1546,7 @@ body.modal-open {
     text-decoration: line-through;
 }
 
-/* Dòng thông báo */
+/* DĂ²ng thĂ´ng bĂ¡o */
 
 .schedule-message-row td,
 .schedule-loading-row td {
@@ -1586,11 +1586,11 @@ body.modal-open {
 }
 
 /* =========================
-   TINH CHỈNH MÀU BẢNG HÔM NAY
+   TINH CHá»ˆNH MĂ€U Báº¢NG HĂ”M NAY
 ========================= */
 
 
-/* Hàng lịch học */
+/* HĂ ng lá»‹ch há»c */
 .today-schedule-table
 .study-schedule td {
     border-color: rgba(235, 177, 202, 0.28);
@@ -1603,7 +1603,7 @@ body.modal-open {
         inset 4px 0 0 #e8a8c3;
 }
 
-/* Hàng lịch làm */
+/* HĂ ng lá»‹ch lĂ m */
 .today-schedule-table
 .work-schedule td {
     border-color: rgba(183, 175, 225, 0.3);
@@ -1616,7 +1616,7 @@ body.modal-open {
         inset 4px 0 0 #aaa1dc;
 }
 
-/* Hàng ôn tập */
+/* HĂ ng Ă´n táº­p */
 .today-schedule-table
 .review-schedule td {
     border-color: rgba(229, 202, 130, 0.32);
@@ -1629,7 +1629,7 @@ body.modal-open {
         inset 4px 0 0 #e5c67f;
 }
 
-/* Màu chữ đồng đều */
+/* MĂ u chá»¯ Ä‘á»“ng Ä‘á»u */
 .schedule-table-time {
     color: #93697a;
 }
@@ -1643,21 +1643,21 @@ body.modal-open {
 }
 
 /* =========================
-   THANH TIÊU ĐỀ CỦA BẢNG
+   THANH TIĂU Äá»€ Cá»¦A Báº¢NG
 ========================= */
 
 
-/* Tạo nền liền cho ba tiêu đề */
+/* Táº¡o ná»n liá»n cho ba tiĂªu Ä‘á» */
 .schedule-table thead th {
     vertical-align: middle;
 }
 
 
 /* =========================
-   HOÀN THIỆN BẢNG LỊCH HÔM NAY
+   HOĂ€N THIá»†N Báº¢NG Lá»CH HĂ”M NAY
 ========================= */
 
-/* Khung chung bao quanh cả tiêu đề và dữ liệu */
+/* Khung chung bao quanh cáº£ tiĂªu Ä‘á» vĂ  dá»¯ liá»‡u */
 .schedule-table-wrapper {
     padding: 8px;
     overflow: visible;
@@ -1674,7 +1674,7 @@ body.modal-open {
     border-spacing: 0 7px;
 }
 
-/* Thanh tên cột liền mạch */
+/* Thanh tĂªn cá»™t liá»n máº¡ch */
 .schedule-table thead th {
     padding: 9px 10px;
     border: 0;
@@ -1704,7 +1704,7 @@ body.modal-open {
 }
 
 /* =========================
-   BẢNG LỊCH TUẦN FUBAO
+   Báº¢NG Lá»CH TUáº¦N FUBAO
 ========================= */
 
 .weekly-plan-section {
@@ -1790,7 +1790,7 @@ body.modal-open {
 }
 
 
-/* Cột ngày */
+/* Cá»™t ngĂ y */
 
 .week-date-cell strong,
 .week-date-cell span,
@@ -1824,7 +1824,7 @@ body.modal-open {
 }
 
 
-/* Ô chọn ca làm */
+/* Ă” chá»n ca lĂ m */
 
 .daily-shift-select {
     width: 100%;
@@ -1851,7 +1851,7 @@ body.modal-open {
 }
 
 
-/* Danh sách giờ học */
+/* Danh sĂ¡ch giá» há»c */
 
 .week-study-list {
     display: flex;
@@ -1901,7 +1901,7 @@ body.modal-open {
 }
 
 
-/* Nút thêm và xóa */
+/* NĂºt thĂªm vĂ  xĂ³a */
 
 .add-study-slot-button {
     width: 100%;
@@ -1940,7 +1940,7 @@ body.modal-open {
 }
 
 
-/* Trạng thái tải */
+/* Tráº¡ng thĂ¡i táº£i */
 
 .week-loading-row td {
     padding: 28px 15px;
@@ -1959,7 +1959,7 @@ body.modal-open {
 
 
 /* =========================
-   CỬA SỔ THÊM GIỜ HỌC
+   Cá»¬A Sá»” THĂM GIá»œ Há»ŒC
 ========================= */
 
 .study-slot-modal {
@@ -2014,7 +2014,7 @@ body.modal-open {
 
 
 /* =========================
-   ĐIỆN THOẠI
+   ÄIá»†N THOáº I
 ========================= */
 
 @media (max-width: 600px) {
@@ -2098,7 +2098,204 @@ body.modal-open {
 }
 
 /* =========================
-   TIÊU ĐỀ TRANG LỊCH TUẦN
+   THANH NGĂ€Y GIá»œ VĂ€ CĂ€I Äáº¶T
+========================= */
+
+.home-top-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 18px;
+}
+
+.home-date-time {
+    min-width: 0;
+    flex: 1;
+}
+
+.home-top-toolbar .home-current-date {
+    margin: 0;
+    color: #776970;
+    font-size: 13px;
+    line-height: 1.35;
+    text-align: left;
+}
+
+.home-current-time {
+    display: block;
+    margin-top: 4px;
+    color: #9a7d89;
+    font-size: 11px;
+    font-weight: 750;
+    letter-spacing: 0.2px;
+}
+
+.home-settings-button {
+    display: grid;
+    flex: 0 0 48px;
+    width: 48px;
+    height: 48px;
+    place-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.92);
+    border-radius: 16px;
+    color: #765d68;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.92),
+            rgba(249, 231, 239, 0.9)
+        );
+    box-shadow: 0 8px 20px rgba(91, 65, 77, 0.09);
+    font-size: 21px;
+    cursor: pointer;
+}
+
+.home-settings-button:active {
+    transform: scale(0.94);
+}
+
+.home-settings-modal {
+    background:
+        linear-gradient(
+            180deg,
+            #fffafc 0%,
+            #fffefe 100%
+        );
+}
+
+.home-settings-group,
+.home-settings-account {
+    padding: 17px;
+    border: 1px solid #eedfe5;
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.83);
+}
+
+.home-settings-account {
+    margin-top: 14px;
+}
+
+.settings-group-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.settings-group-icon {
+    display: grid;
+    flex: 0 0 43px;
+    width: 43px;
+    height: 43px;
+    place-items: center;
+    border-radius: 14px;
+    background-color: #edf7ff;
+    font-size: 21px;
+}
+
+.settings-group-heading strong {
+    display: block;
+    color: #4f4148;
+    font-size: 14px;
+}
+
+.settings-group-heading small {
+    display: block;
+    margin-top: 4px;
+    color: #938189;
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+#displayTimezoneSelect {
+    width: 100%;
+    min-height: 50px;
+    padding: 0 38px 0 13px;
+    border: 1px solid #d9e5eb;
+    border-radius: 15px;
+    outline: none;
+    color: #4b5054;
+    background-color: #f8fcff;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+#displayTimezoneSelect:focus {
+    border-color: #91bdd3;
+    box-shadow: 0 0 0 3px rgba(117, 174, 204, 0.14);
+}
+
+.settings-account-label {
+    display: block;
+    margin-bottom: 6px;
+    color: #9b828d;
+    font-size: 10px;
+    font-weight: 850;
+    letter-spacing: 1.2px;
+}
+
+.home-settings-account .current-user-email {
+    display: block !important;
+    margin-bottom: 13px;
+    font-size: 12px;
+}
+
+.home-settings-account .logout-button {
+    width: 100%;
+    min-height: 46px;
+    border-radius: 15px;
+    color: #9b516d;
+    background-color: #fbe9f0;
+    font-size: 13px;
+}
+
+/* =========================
+   NHĂƒN MĂI GIá»œ TRONG Lá»CH
+========================= */
+
+.week-timezone-note {
+    margin: 8px 0 0;
+    color: #917481;
+    font-size: 12px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.study-timezone-help {
+    margin: -6px 0 18px;
+    padding: 10px 12px;
+    border-radius: 13px;
+    color: #786873;
+    background-color: #f7eef2;
+    font-size: 11px;
+    line-height: 1.45;
+}
+
+.schedule-table-time {
+    line-height: 1.35;
+    white-space: normal;
+}
+
+@media (max-width: 370px) {
+    .home-top-toolbar {
+        gap: 10px;
+    }
+
+    .home-top-toolbar .home-current-date {
+        font-size: 12px;
+    }
+
+    .home-settings-button {
+        flex-basis: 44px;
+        width: 44px;
+        height: 44px;
+        border-radius: 14px;
+    }
+}
+
+/* =========================
+   TIĂU Äá»€ TRANG Lá»CH TUáº¦N
 ========================= */
 
 .week-heading {
@@ -2115,7 +2312,7 @@ body.modal-open {
 }
 
 
-/* Lịch tuần và khoảng ngày */
+/* Lá»‹ch tuáº§n vĂ  khoáº£ng ngĂ y */
 
 #currentWeekButton {
     display: flex;
@@ -2142,7 +2339,7 @@ body.modal-open {
 }
 
 
-/* Điện thoại */
+/* Äiá»‡n thoáº¡i */
 
 @media (max-width: 600px) {
     .week-heading {
@@ -2163,7 +2360,7 @@ body.modal-open {
     }
 }
 
-/* Căn giữa tiêu đề lịch tuần */
+/* CÄƒn giá»¯a tiĂªu Ä‘á» lá»‹ch tuáº§n */
 
 .week-heading {
     text-align: center;
@@ -2176,14 +2373,14 @@ body.modal-open {
 }
 
 
-/* Căn giữa tên các cột */
+/* CÄƒn giá»¯a tĂªn cĂ¡c cá»™t */
 
 .week-plan-table thead th {
     text-align: center;
 }
 
 
-/* Khoảng ngày trên thanh chuyển tuần */
+/* Khoáº£ng ngĂ y trĂªn thanh chuyá»ƒn tuáº§n */
 
 #currentWeekButton #weekRange {
     display: block;
@@ -2192,7 +2389,7 @@ body.modal-open {
 }
 
 
-/* Ngày trong từng dòng */
+/* NgĂ y trong tá»«ng dĂ²ng */
 
 .week-date-cell {
     text-align: center;
@@ -2218,7 +2415,7 @@ body.modal-open {
     text-align: center;
 }
 
-/* Ảnh nhỏ bên trái ba ô trang chủ */
+/* áº¢nh nhá» bĂªn trĂ¡i ba Ă´ trang chá»§ */
 
 .space-icon {
     overflow: hidden;
@@ -2234,7 +2431,7 @@ body.modal-open {
     object-position: center;
 }
 
-/* Ngày hiện tại trên đầu trang chủ */
+/* NgĂ y hiá»‡n táº¡i trĂªn Ä‘áº§u trang chá»§ */
 
 .home-current-date {
     margin: 0 0 18px;
@@ -2244,7 +2441,7 @@ body.modal-open {
     text-align: center;
 }
 
-/* Icon bên cạnh tiêu đề từng trang */
+/* Icon bĂªn cáº¡nh tiĂªu Ä‘á» tá»«ng trang */
 
 .profile-title {
     display: flex;
@@ -2284,7 +2481,7 @@ body.modal-open {
     }
 }
 
-/* Ngày bên dưới tiêu đề từng trang */
+/* NgĂ y bĂªn dÆ°á»›i tiĂªu Ä‘á» tá»«ng trang */
 
 .profile-current-date {
     margin: 14px 0 0;
@@ -2295,7 +2492,7 @@ body.modal-open {
 }
 
 /* =========================
-   HỌC TIẾNG ANH – TIOONG
+   Há»ŒC TIáº¾NG ANH â€“ TIOONG
 ========================= */
 
 .tioong-learning-section {
@@ -2362,7 +2559,7 @@ body.modal-open {
 }
 
 /* =========================
-   TRANG HỌC TIẾNG ANH
+   TRANG Há»ŒC TIáº¾NG ANH
 ========================= */
 
 .english-page-heading {
@@ -2392,7 +2589,7 @@ body.modal-open {
 }
 
 
-/* Danh sách chức năng */
+/* Danh sĂ¡ch chá»©c nÄƒng */
 
 .english-learning-menu {
     display: flex;
@@ -2489,7 +2686,7 @@ body.modal-open {
 }
 
 /* =========================
-   FLASHCARD TỪ VỰNG
+   FLASHCARD Tá»ª Vá»°NG
 ========================= */
 
 .vocabulary-heading {
@@ -2518,7 +2715,7 @@ body.modal-open {
 }
 
 
-/* Thanh tiến độ */
+/* Thanh tiáº¿n Ä‘á»™ */
 
 .vocabulary-progress-section {
     margin-bottom: 18px;
@@ -2559,7 +2756,7 @@ body.modal-open {
 }
 
 
-/* Thẻ Flashcard */
+/* Tháº» Flashcard */
 
 .vocabulary-flashcard {
     height: 390px;
@@ -2687,7 +2884,7 @@ body.modal-open {
 }
 
 
-/* Ba nút kết quả */
+/* Ba nĂºt káº¿t quáº£ */
 
 .vocabulary-answer-actions {
     display: grid;
@@ -2726,7 +2923,7 @@ body.modal-open {
 }
 
 
-/* Hoàn thành */
+/* HoĂ n thĂ nh */
 
 .vocabulary-finished {
     padding: 45px 25px;
@@ -2778,14 +2975,14 @@ body.modal-open {
     font-weight: 800;
 }
 
-/* Nút kết quả trong lúc lưu */
+/* NĂºt káº¿t quáº£ trong lĂºc lÆ°u */
 
 .answer-button:disabled {
     cursor: wait;
     opacity: 0.55;
 }
 
-/* Kết quả lượt học flashcard */
+/* Káº¿t quáº£ lÆ°á»£t há»c flashcard */
 
 .vocabulary-result-summary {
     display: grid;
@@ -2831,7 +3028,7 @@ body.modal-open {
     background-color: #eaf7ee;
 }
 
-/* Chọn số lượng từ mỗi lượt */
+/* Chá»n sá»‘ lÆ°á»£ng tá»« má»—i lÆ°á»£t */
 
 .vocabulary-session-setting {
     display: flex;
@@ -2874,7 +3071,7 @@ body.modal-open {
     opacity: 0.55;
 }
 
-/* Thống kê học từ vựng */
+/* Thá»‘ng kĂª há»c tá»« vá»±ng */
 
 .vocabulary-statistics {
     display: grid;
@@ -2914,7 +3111,7 @@ body.modal-open {
     font-weight: 700;
 }
 
-/* Chọn chế độ học từ vựng */
+/* Chá»n cháº¿ Ä‘á»™ há»c tá»« vá»±ng */
 
 .vocabulary-mode-selector {
     display: grid;
@@ -2964,10 +3161,10 @@ body.modal-open {
 }
 
 /* =========================
-   DANH SÁCH TỪ VỰNG
+   DANH SĂCH Tá»ª Vá»°NG
 ========================= */
 
-/* Nút mở danh sách */
+/* NĂºt má»Ÿ danh sĂ¡ch */
 
 .vocabulary-list-link {
     display: grid;
@@ -3027,7 +3224,7 @@ body.modal-open {
 }
 
 
-/* Tiêu đề trang */
+/* TiĂªu Ä‘á» trang */
 
 .vocabulary-list-heading {
     margin: 20px 0 25px;
@@ -3059,7 +3256,7 @@ body.modal-open {
 }
 
 
-/* Tìm kiếm */
+/* TĂ¬m kiáº¿m */
 
 .vocabulary-search-section {
     display: grid;
@@ -3108,7 +3305,7 @@ body.modal-open {
 }
 
 
-/* Số kết quả */
+/* Sá»‘ káº¿t quáº£ */
 
 .vocabulary-list-information {
     margin-bottom: 12px;
@@ -3117,7 +3314,7 @@ body.modal-open {
 }
 
 
-/* Các thẻ từ */
+/* CĂ¡c tháº» tá»« */
 
 .vocabulary-list-container {
     display: grid;
@@ -3197,7 +3394,7 @@ body.modal-open {
 }
 
 
-/* Trạng thái tải và trống */
+/* Tráº¡ng thĂ¡i táº£i vĂ  trá»‘ng */
 
 .vocabulary-list-loading,
 .vocabulary-list-empty {
@@ -3215,7 +3412,7 @@ body.modal-open {
 }
 
 
-/* Chuyển trang */
+/* Chuyá»ƒn trang */
 
 .vocabulary-pagination {
     display: grid;
@@ -3255,7 +3452,7 @@ body.modal-open {
     white-space: nowrap;
 }
 
-/* Lọc trạng thái từ vựng */
+/* Lá»c tráº¡ng thĂ¡i tá»« vá»±ng */
 
 .vocabulary-filter-section {
     display: flex;
@@ -3293,7 +3490,7 @@ body.modal-open {
     font-weight: 700;
 }
 
-/* Trạng thái học của từng từ */
+/* Tráº¡ng thĂ¡i há»c cá»§a tá»«ng tá»« */
 
 .vocabulary-status-badge {
     display: inline-flex;
@@ -3325,7 +3522,7 @@ body.modal-open {
     color: #4f865f;
 }
 
-/* Nút phát âm và yêu thích */
+/* NĂºt phĂ¡t Ă¢m vĂ  yĂªu thĂ­ch */
 
 .vocabulary-list-card-actions {
     display: flex;
@@ -3359,7 +3556,7 @@ body.modal-open {
 }
 
 /* =========================
-   NÚT MỞ TRANG FLASHCARD
+   NĂT Má» TRANG FLASHCARD
 ========================= */
 
 .vocabulary-mode-button {
@@ -3412,7 +3609,7 @@ body.modal-open {
 }
 
 /* =========================
-   TRANG TỔNG QUAN TỪ VỰNG
+   TRANG Tá»”NG QUAN Tá»ª Vá»°NG
 ========================= */
 
 .vocabulary-home-page .sub-page-container {
@@ -3456,7 +3653,7 @@ body.modal-open {
 }
 
 
-/* Thành quả hôm nay */
+/* ThĂ nh quáº£ hĂ´m nay */
 
 .vocabulary-today-result {
     display: grid;
@@ -3519,7 +3716,7 @@ body.modal-open {
 }
 
 
-/* Hai nút học */
+/* Hai nĂºt há»c */
 
 .vocabulary-home-page .vocabulary-mode-selector {
     gap: 14px;
@@ -3560,7 +3757,7 @@ body.modal-open {
 }
 
 
-/* Điện thoại */
+/* Äiá»‡n thoáº¡i */
 
 @media (max-width: 480px) {
     .vocabulary-home-page .vocabulary-heading {
@@ -3610,10 +3807,10 @@ body.modal-open {
 }
 
 /* =========================
-   KHÔNG GIAN POQY
+   KHĂ”NG GIAN POQY
 ========================= */
 
-/* Ô PoQy tại trang chủ */
+/* Ă” PoQy táº¡i trang chá»§ */
 
 .together-card {
     border-color: #c9e5f5;
@@ -3638,7 +3835,7 @@ body.modal-open {
 }
 
 
-/* Màu nền trang PoQy */
+/* MĂ u ná»n trang PoQy */
 
 body.together-page {
     background:
@@ -3661,7 +3858,7 @@ body.together-page {
 }
 
 
-/* Tiêu đề PoQy */
+/* TiĂªu Ä‘á» PoQy */
 
 .together-page .profile-heading h1 {
     color: #426f88;
@@ -3680,7 +3877,7 @@ body.together-page {
 }
 
 
-/* Phần nội dung bên trong */
+/* Pháº§n ná»™i dung bĂªn trong */
 
 .together-page .schedule-notice {
     border-color: #bcddec;
@@ -3700,7 +3897,7 @@ body.together-page {
     white-space: nowrap;
 }
 
-/* FIX LỊCH TUẦN TRÊN IPHONE */
+/* FIX Lá»CH TUáº¦N TRĂN IPHONE */
 
 @media (max-width: 600px) {
 
@@ -3755,7 +3952,7 @@ body.together-page {
     }
 
 
-    /* Thứ và ngày */
+    /* Thá»© vĂ  ngĂ y */
 
     .week-page .week-date-cell {
         display: flex !important;
@@ -3781,7 +3978,7 @@ body.together-page {
     }
 
 
-    /* Ca làm */
+    /* Ca lĂ m */
 
     .week-page .week-shift-cell {
         padding: 12px 14px 8px !important;
@@ -3794,7 +3991,7 @@ body.together-page {
         font-size: 10px;
         font-weight: 850;
         letter-spacing: 1px;
-        content: "CÔNG VIỆC";
+        content: "CĂ”NG VIá»†C";
     }
 
     .week-page .daily-shift-select {
@@ -3807,7 +4004,7 @@ body.together-page {
     }
 
 
-    /* Học tập */
+    /* Há»c táº­p */
 
     .week-page .week-study-cell {
         padding: 10px 14px 14px !important;
@@ -3820,7 +4017,7 @@ body.together-page {
         font-size: 10px;
         font-weight: 850;
         letter-spacing: 1px;
-        content: "HỌC TẬP";
+        content: "Há»ŒC Táº¬P";
     }
 
     .week-page .week-loading-row,
@@ -3828,5 +4025,122 @@ body.together-page {
         display: block !important;
         box-sizing: border-box;
         width: 100% !important;
+    }
+}
+
+/* =========================
+   CÀI ĐẶT THÔNG BÁO
+========================= */
+
+.notification-settings-group {
+    margin-top: 14px;
+}
+
+.notification-setting-label {
+    display: block;
+    margin: 0 0 7px 2px;
+    color: #8f7480;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.3px;
+}
+
+#notificationMinutesSelect {
+    width: 100%;
+    min-height: 50px;
+    padding: 0 38px 0 13px;
+    border: 1px solid #ead8e0;
+    border-radius: 15px;
+    outline: none;
+    color: #55454c;
+    background-color: #fff8fb;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+#notificationMinutesSelect:focus {
+    border-color: #d995b1;
+    box-shadow:
+        0 0 0 3px
+        rgba(217, 149, 177, 0.14);
+}
+
+.notification-action-row {
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1fr)
+        minmax(0, 1fr);
+    gap: 9px;
+    margin-top: 12px;
+}
+
+.notification-toggle-button,
+.test-notification-button {
+    min-height: 45px;
+    padding: 8px 10px;
+    border: 0;
+    border-radius: 14px;
+    font-size: 12px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.notification-toggle-button {
+    color: #ffffff;
+    background:
+        linear-gradient(
+            135deg,
+            #d98da9,
+            #bc708d
+        );
+    box-shadow:
+        0 8px 18px
+        rgba(185, 110, 139, 0.2);
+}
+
+.notification-toggle-button[
+    data-enabled="true"
+] {
+    color: #95556e;
+    background: #f9e6ee;
+    box-shadow: none;
+}
+
+.test-notification-button {
+    border: 1px solid #d8e6ed;
+    color: #52778a;
+    background: #eef8fd;
+}
+
+.notification-toggle-button:active,
+.test-notification-button:active {
+    transform: scale(0.97);
+}
+
+.notification-toggle-button:disabled,
+.test-notification-button:disabled {
+    opacity: 0.5;
+    cursor: default;
+    transform: none;
+}
+
+.notification-status {
+    margin: 11px 2px 0;
+    color: #778f81;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.45;
+}
+
+.notification-status.error {
+    color: #b35f7d;
+}
+
+
+/* Điện thoại nhỏ */
+
+@media (max-width: 370px) {
+    .notification-action-row {
+        grid-template-columns: 1fr;
     }
 }

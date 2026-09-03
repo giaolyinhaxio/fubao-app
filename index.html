@@ -18,25 +18,29 @@
 
     <meta name="apple-mobile-web-app-title" content="FuBao">
 
-    <link rel="stylesheet" href="style.css?v=51">
+    <link rel="stylesheet" href="style.css?v=57">
 </head>
 
 <body class="home-page">
 
     <div class="app-container">
 
-        <p class="home-current-date" id="currentDate">
-            Đang tải ngày...
-        </p>
+        <div class="home-top-toolbar">
 
-        <div class="home-account-bar">
-            <p class="current-user-email" id="currentUserEmail">
-                Đang tải tài khoản...
-            </p>
+            <div class="home-date-time">
+                <p class="home-current-date" id="currentDate">
+                    Đang tải ngày...
+                </p>
 
-            <button class="logout-button" id="logoutButton" type="button">
-                Đăng xuất
+                <small class="home-current-time" id="currentTime">
+                    Đang tải giờ...
+                </small>
+            </div>
+
+            <button class="home-settings-button" id="openHomeSettingsButton" type="button" aria-label="Mở cài đặt">
+                ⚙️
             </button>
+
         </div>
 
         <header class="home-header">
@@ -115,10 +119,152 @@
 
     </div>
 
+    <!-- Cửa sổ cài đặt chung -->
+
+    <div class="modal-overlay" id="homeSettingsModal" aria-hidden="true">
+        <section class="shift-modal home-settings-modal" role="dialog" aria-modal="true"
+            aria-labelledby="homeSettingsTitle">
+
+            <div class="modal-handle"></div>
+
+            <header class="modal-header">
+
+                <div>
+                    <p class="section-label">
+                        FUBAO
+                    </p>
+
+                    <h2 id="homeSettingsTitle">
+                        Cài đặt
+                    </h2>
+                </div>
+
+                <button class="close-modal-button" id="closeHomeSettingsButton" type="button" aria-label="Đóng cài đặt">
+                    ×
+                </button>
+
+            </header>
+
+            <section class="home-settings-group">
+
+                <div class="settings-group-heading">
+
+                    <span class="settings-group-icon">
+                        🌏
+                    </span>
+
+                    <div>
+                        <strong>Múi giờ hiển thị</strong>
+
+                        <small>
+                            Áp dụng cho toàn bộ lịch và thông báo
+                        </small>
+                    </div>
+
+                </div>
+
+                <select id="displayTimezoneSelect" aria-label="Chọn múi giờ hiển thị">
+                    <option value="Asia/Ho_Chi_Minh">
+                        Giờ Việt Nam (UTC+7)
+                    </option>
+
+                    <option value="Asia/Tokyo">
+                        Giờ Nhật Bản (UTC+9)
+                    </option>
+                </select>
+
+            </section>
+
+            <section class="home-settings-group notification-settings-group">
+
+                <div class="settings-group-heading">
+
+                    <span class="settings-group-icon">
+                        🔔
+                    </span>
+
+                    <div>
+                        <strong>Thông báo lịch trình</strong>
+
+                        <small>
+                            Nhắc trước khi công việc hoặc giờ học bắt đầu
+                        </small>
+                    </div>
+
+                </div>
+
+
+                <label class="notification-setting-label" for="notificationMinutesSelect">
+                    Thông báo trước
+                </label>
+
+                <select id="notificationMinutesSelect" aria-label="Chọn thời gian thông báo trước">
+                    <option value="5">
+                        5 phút
+                    </option>
+
+                    <option value="10">
+                        10 phút
+                    </option>
+
+                    <option value="15">
+                        15 phút
+                    </option>
+
+                    <option value="30" selected>
+                        30 phút
+                    </option>
+
+                    <option value="60">
+                        60 phút
+                    </option>
+                </select>
+
+
+                <div class="notification-action-row">
+
+                    <button class="notification-toggle-button" id="notificationToggleButton" type="button"
+                        data-enabled="false">
+                        Bật thông báo
+                    </button>
+
+                    <button class="test-notification-button" id="testNotificationButton" type="button" disabled>
+                        Gửi thông báo thử
+                    </button>
+
+                </div>
+
+
+                <p class="notification-status" id="notificationStatus">
+                    Thông báo đang tắt
+                </p>
+
+            </section>
+
+            <section class="home-settings-account">
+
+                <span class="settings-account-label">
+                    TÀI KHOẢN
+                </span>
+
+                <p class="current-user-email" id="currentUserEmail">
+                    Đang tải tài khoản...
+                </p>
+
+                <button class="logout-button" id="logoutButton" type="button">
+                    Đăng xuất
+                </button>
+
+            </section>
+
+        </section>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase-config.js"></script>
     <script src="auth-guard.js"></script>
-    <script src="app.js?v=25"></script>
+    <script src="app.js?v=29"></script>
+    <script src="notifications.js?v=1"></script>
     <script src="pwa.js"></script>
 </body>
 
