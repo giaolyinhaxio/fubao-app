@@ -827,68 +827,40 @@ function tinhLichOnTiepTheo(
     result,
     currentLevel
 ) {
-    const nextReview =
-        new Date();
-
     let level =
         Number(currentLevel) || 0;
 
 
-    /* Chưa nhớ: ôn lại sau 10 phút */
+    /* Chưa nhớ và Hơi nhớ:
+       luôn nằm trong Ôn tập */
 
     if (result === "again") {
         level = 0;
-
-        nextReview.setMinutes(
-            nextReview.getMinutes() + 10
-        );
     }
-
-
-    /* Hơi nhớ: ôn lại sau 1 ngày */
 
     if (result === "learning") {
         level = Math.min(
             level + 1,
             5
         );
-
-        nextReview.setDate(
-            nextReview.getDate() + 1
-        );
     }
 
 
-    /* Đã nhớ: giãn dần ngày ôn */
+    /* Đã nhớ:
+       không xuất hiện trong Ôn tập */
 
     if (result === "known") {
-        level = Math.min(
-            level + 1,
-            5
-        );
-
-        const reviewDays = [
-            1,
-            3,
-            7,
-            14,
-            30
-        ];
-
-        const days =
-            reviewDays[level - 1];
-
-        nextReview.setDate(
-            nextReview.getDate() +
-            days
-        );
+        level = 5;
     }
 
 
     return {
         level: level,
+
         nextReviewAt:
-            nextReview.toISOString()
+            result === "known"
+                ? null
+                : new Date().toISOString()
     };
 }
 

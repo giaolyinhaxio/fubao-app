@@ -3,7 +3,7 @@
 ========================= */
 
 const VAPID_PUBLIC_KEY =
-    "dán-publicKey-mới-vào-đây";
+    "BEPkKbTgm1KlNZLKHafOWOn8rCMhTM04pbwsJSVbJQI2J2RUJRlHMHf9hDF0pyFXqOBX7hKHQwSJQbbpDrNo1e0";
 
 const NOTIFICATION_FUNCTION_NAME =
     "dynamic-processor";
@@ -15,25 +15,47 @@ const TIMEZONE_STORAGE_KEY =
 /* Chuyển VAPID Public Key sang dạng trình duyệt cần */
 
 function chuyenVapidKey(base64String) {
+    const cleanKey =
+        String(base64String).trim();
+
+
+    if (
+        !/^[A-Za-z0-9_-]{87}$/.test(
+            cleanKey
+        )
+    ) {
+        throw new Error(
+            "VAPID Public Key chưa đúng. Khóa phải có đúng 87 ký tự."
+        );
+    }
+
+
     const padding =
         "=".repeat(
-            (4 - base64String.length % 4) % 4
+            (
+                4 -
+                cleanKey.length % 4
+            ) % 4
         );
+
 
     const base64 =
         (
-            base64String + padding
+            cleanKey + padding
         )
             .replaceAll("-", "+")
             .replaceAll("_", "/");
 
+
     const rawData =
         window.atob(base64);
+
 
     return Uint8Array.from(
         [...rawData].map(
             function (character) {
-                return character.charCodeAt(0);
+                return character
+                    .charCodeAt(0);
             }
         )
     );
