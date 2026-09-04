@@ -1,4 +1,4 @@
-const CACHE_NAME = "fubao-v11";
+const CACHE_NAME = "fubao-v12";
 
 const APP_FILES = [
     "./",
@@ -20,6 +20,8 @@ const APP_FILES = [
     "./style.css",
     "./app.js",
     "./notifications.js",
+    "./tioong-calendar.html",
+    "./tioong-calendar.js",
     "./auth.js",
     "./auth-guard.js",
     "./supabase-config.js",

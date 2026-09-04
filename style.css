@@ -4144,3 +4144,808 @@ body.together-page {
         grid-template-columns: 1fr;
     }
 }
+
+/* =========================================================
+   TIOONG CALENDAR
+========================================================= */
+
+body.tioong-calendar-page {
+  min-height: 100vh;
+  min-height: 100svh;
+  margin: 0;
+  color: #553f49;
+  background:
+    radial-gradient(
+      circle at 10% 10%,
+      rgba(255, 215, 229, 0.9),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 90% 90%,
+      rgba(218, 242, 226, 0.9),
+      transparent 38%
+    ),
+    #fff8fa;
+}
+
+.tioong-calendar-page button,
+.tioong-calendar-page input,
+.tioong-calendar-page select,
+.tioong-calendar-page textarea {
+  font: inherit;
+}
+
+.tioong-calendar-page button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.calendar-heading {
+  margin: 22px 0 28px;
+  text-align: center;
+}
+
+.calendar-heading-label {
+  margin: 0 0 7px;
+  color: #79a28b;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+}
+
+.calendar-heading h1 {
+  margin: 0;
+  color: #49343e;
+  font-size: clamp(36px, 9vw, 58px);
+  font-weight: 850;
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+}
+
+.calendar-heading > p:last-child {
+  margin: 10px 0 0;
+  color: #9b838d;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* Thanh điều khiển */
+
+.calendar-controls {
+  padding: 16px;
+  border: 1px solid rgba(217, 180, 196, 0.55);
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.76);
+  box-shadow: 0 15px 35px rgba(93, 61, 74, 0.08);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.calendar-navigation {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr) 52px;
+  align-items: center;
+  gap: 10px;
+}
+
+.calendar-navigation-button {
+  display: grid;
+  width: 52px;
+  height: 52px;
+  padding: 0;
+  border: 0;
+  border-radius: 18px;
+  color: #9b657c;
+  background: #faedf2;
+  place-items: center;
+  font-size: 36px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.calendar-navigation-button:active {
+  transform: scale(0.94);
+}
+
+.calendar-period-label {
+  overflow: hidden;
+  color: #513b45;
+  font-size: 20px;
+  font-weight: 800;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.calendar-period-label.loading {
+  opacity: 0.55;
+}
+
+.calendar-view-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.calendar-view-switch {
+  display: grid;
+  flex: 1;
+  grid-template-columns: repeat(2, 1fr);
+  max-width: 270px;
+  padding: 4px;
+  border-radius: 16px;
+  background: #f7edf1;
+}
+
+.calendar-view-button {
+  min-height: 42px;
+  padding: 8px 18px;
+  border: 0;
+  border-radius: 13px;
+  color: #9a7c89;
+  background: transparent;
+  font-size: 15px;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.calendar-view-button.active {
+  color: #ffffff;
+  background: #d17b9e;
+  box-shadow: 0 6px 15px rgba(190, 97, 135, 0.25);
+}
+
+.calendar-today-button {
+  min-height: 45px;
+  padding: 8px 17px;
+  border: 1px solid #cce3d4;
+  border-radius: 15px;
+  color: #638f76;
+  background: #eff9f2;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+/* Lịch tháng */
+
+.calendar-month-view {
+  margin-top: 18px;
+  padding: 15px 10px 18px;
+  border: 1px solid rgba(217, 180, 196, 0.5);
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.83);
+  box-shadow: 0 15px 35px rgba(93, 61, 74, 0.07);
+}
+
+.calendar-weekday-row {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  margin-bottom: 8px;
+}
+
+.calendar-weekday-row span {
+  padding: 7px 0;
+  color: #a58391;
+  font-size: 12px;
+  font-weight: 850;
+  text-align: center;
+}
+
+.calendar-month-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 4px;
+}
+
+.calendar-day-button {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  min-height: 55px;
+  padding: 7px 2px;
+  border: 1px solid transparent;
+  border-radius: 15px;
+  color: #5a424c;
+  background: transparent;
+  align-items: center;
+  flex-direction: column;
+  justify-content: flex-start;
+  cursor: pointer;
+}
+
+.calendar-day-button.outside-month {
+  color: #ccb9c1;
+}
+
+.calendar-day-button.today {
+  border-color: #bedfc9;
+  background: #eff9f2;
+}
+
+.calendar-day-button.selected {
+  border-color: #d17b9e;
+  color: #ffffff;
+  background: #d17b9e;
+  box-shadow: 0 7px 17px rgba(194, 102, 140, 0.27);
+}
+
+.calendar-day-button.selected.outside-month {
+  color: #ffffff;
+}
+
+.calendar-day-number {
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.calendar-day-indicators {
+  display: flex;
+  min-height: 7px;
+  margin-top: 7px;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+}
+
+.calendar-event-dot {
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #d17b9e;
+}
+
+.calendar-event-dot.category-study {
+  background: #81b493;
+}
+
+.calendar-event-dot.category-work {
+  background: #8596d4;
+}
+
+.calendar-event-dot.category-personal {
+  background: #dda75d;
+}
+
+.calendar-event-dot.category-event {
+  background: #d17b9e;
+}
+
+.calendar-day-button.selected .calendar-event-dot {
+  background: #ffffff;
+}
+
+/* Lịch tuần */
+
+.calendar-week-view {
+  margin-top: 18px;
+}
+
+.calendar-week-list {
+  display: grid;
+  gap: 12px;
+}
+
+.calendar-week-day {
+  overflow: hidden;
+  padding: 14px;
+  border: 1px solid rgba(217, 180, 196, 0.5);
+  border-left: 6px solid #e7a4c0;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.84);
+  box-shadow: 0 10px 25px rgba(93, 61, 74, 0.06);
+}
+
+.calendar-week-day.today {
+  border-color: #acd3ba;
+  border-left-color: #71a987;
+  background: rgba(242, 251, 245, 0.94);
+}
+
+.calendar-week-day.selected {
+  box-shadow: 0 0 0 2px rgba(209, 123, 158, 0.22);
+}
+
+.calendar-week-day-heading {
+  width: 100%;
+  padding: 2px 0 11px;
+  border: 0;
+  color: #563e49;
+  background: transparent;
+  font-size: 17px;
+  font-weight: 850;
+  text-align: left;
+  cursor: pointer;
+}
+
+.calendar-week-day-events {
+  display: grid;
+  gap: 8px;
+}
+
+.calendar-week-empty-text {
+  margin: 0;
+  padding: 10px 12px;
+  color: #aa929c;
+  font-size: 14px;
+}
+
+/* Lịch của ngày được chọn */
+
+.calendar-agenda-section {
+  margin: 18px 0 35px;
+  padding: 20px 16px;
+  border: 1px solid rgba(217, 180, 196, 0.55);
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.84);
+  box-shadow: 0 15px 35px rgba(93, 61, 74, 0.08);
+}
+
+.calendar-agenda-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.calendar-agenda-label {
+  margin: 0 0 5px;
+  color: #af7890;
+  font-size: 11px;
+  font-weight: 850;
+  letter-spacing: 0.16em;
+}
+
+.calendar-agenda-heading h2 {
+  margin: 0;
+  color: #4f3943;
+  font-size: 18px;
+  line-height: 1.35;
+}
+
+.calendar-add-event-button {
+  flex: 0 0 auto;
+  min-height: 46px;
+  padding: 10px 15px;
+  border: 0;
+  border-radius: 16px;
+  color: #ffffff;
+  background: #d17b9e;
+  box-shadow: 0 8px 18px rgba(190, 97, 135, 0.22);
+  font-size: 14px;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.calendar-event-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 17px;
+}
+
+.calendar-event-card {
+  position: relative;
+  display: grid;
+  width: 100%;
+  min-height: 84px;
+  padding: 14px 46px 14px 17px;
+  border: 0;
+  border-left: 7px solid #d17b9e;
+  border-radius: 19px;
+  color: #553f49;
+  background: #fff0f5;
+  grid-template-columns: 1fr;
+  gap: 3px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.calendar-event-card::after {
+  position: absolute;
+  top: 50%;
+  right: 18px;
+  content: "›";
+  color: #a17f8d;
+  font-size: 27px;
+  font-weight: 700;
+  transform: translateY(-50%);
+}
+
+.calendar-event-card.category-study {
+  border-left-color: #78ad8a;
+  background: #edf8f1;
+}
+
+.calendar-event-card.category-work {
+  border-left-color: #8090cf;
+  background: #f0f2ff;
+}
+
+.calendar-event-card.category-personal {
+  border-left-color: #d5a257;
+  background: #fff7e7;
+}
+
+.calendar-event-card.category-event {
+  border-left-color: #d17b9e;
+  background: #fff0f5;
+}
+
+.calendar-event-card.compact {
+  min-height: 65px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.calendar-event-time {
+  color: #b26685;
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.calendar-event-title {
+  overflow: hidden;
+  color: #523c46;
+  font-size: 16px;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+}
+
+.calendar-event-category {
+  color: #a18791;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.calendar-empty-state {
+  padding: 34px 15px 25px;
+  text-align: center;
+}
+
+.calendar-empty-icon {
+  display: grid;
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 15px;
+  border-radius: 24px;
+  background: #eff8f2;
+  place-items: center;
+  font-size: 32px;
+}
+
+.calendar-empty-state h3 {
+  margin: 0;
+  color: #553f49;
+  font-size: 20px;
+}
+
+.calendar-empty-state p {
+  margin: 8px 0 0;
+  color: #a18a94;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Cửa sổ thêm và sửa lịch */
+
+body.calendar-modal-open {
+  overflow: hidden;
+}
+
+.calendar-event-modal {
+  position: fixed;
+  z-index: 10000;
+  inset: 0;
+  display: flex;
+  padding-top: max(30px, env(safe-area-inset-top));
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.calendar-event-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(61, 43, 51, 0.38);
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+}
+
+.calendar-event-modal-content {
+  position: relative;
+  z-index: 1;
+  overflow-y: auto;
+  width: min(100%, 620px);
+  max-height: calc(100svh - 35px);
+  padding:
+    12px
+    22px
+    calc(25px + env(safe-area-inset-bottom));
+  border-radius: 34px 34px 0 0;
+  background: #fffafc;
+  box-shadow: 0 -20px 50px rgba(69, 45, 55, 0.18);
+}
+
+.calendar-event-modal-handle {
+  width: 55px;
+  height: 6px;
+  margin: 0 auto 20px;
+  border-radius: 999px;
+  background: #e4d2da;
+}
+
+.calendar-event-modal-header {
+  display: flex;
+  margin-bottom: 20px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.calendar-event-modal-label {
+  margin: 0 0 4px;
+  color: #b36f8b;
+  font-size: 12px;
+  font-weight: 850;
+  letter-spacing: 0.18em;
+}
+
+.calendar-event-modal-header h2 {
+  margin: 0;
+  color: #48333d;
+  font-size: 31px;
+  line-height: 1.1;
+}
+
+.calendar-event-modal-close {
+  display: grid;
+  flex: 0 0 auto;
+  width: 50px;
+  height: 50px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  color: #937782;
+  background: #f6e9ee;
+  place-items: center;
+  font-size: 32px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+#calendarEventForm {
+  display: grid;
+  gap: 16px;
+}
+
+.calendar-form-field {
+  display: grid;
+  gap: 7px;
+}
+
+.calendar-form-field > span,
+.calendar-checkbox-field > span {
+  color: #856a76;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.calendar-form-field input,
+.calendar-form-field select,
+.calendar-form-field textarea {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 52px;
+  padding: 12px 14px;
+  border: 1px solid #e6ccd7;
+  border-radius: 16px;
+  outline: none;
+  color: #513c45;
+  background: #ffffff;
+  font-size: 16px;
+}
+
+.calendar-form-field textarea {
+  min-height: 105px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.calendar-form-field input:focus,
+.calendar-form-field select:focus,
+.calendar-form-field textarea:focus {
+  border-color: #ce7b9c;
+  box-shadow: 0 0 0 4px rgba(206, 123, 156, 0.12);
+}
+
+.calendar-checkbox-field {
+  display: flex;
+  min-height: 52px;
+  padding: 12px 14px;
+  border: 1px solid #e6ccd7;
+  border-radius: 16px;
+  background: #ffffff;
+  align-items: center;
+  gap: 11px;
+}
+
+.calendar-checkbox-field input {
+  width: 22px;
+  height: 22px;
+  margin: 0;
+  accent-color: #cc7799;
+}
+
+.calendar-time-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.calendar-time-fields.disabled {
+  opacity: 0.42;
+}
+
+.calendar-form-message {
+  min-height: 20px;
+  margin: -3px 0 0;
+  color: #669078;
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.calendar-form-message.error {
+  color: #bd5571;
+}
+
+.calendar-form-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 2px;
+}
+
+.calendar-form-actions button {
+  min-height: 52px;
+  padding: 11px 14px;
+  border: 0;
+  border-radius: 17px;
+  font-size: 15px;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.calendar-delete-event-button {
+  grid-column: 1 / -1;
+  color: #bd5571;
+  background: #fdebf0;
+}
+
+.calendar-cancel-button {
+  color: #927682;
+  background: #f4e9ed;
+}
+
+.calendar-save-event-button {
+  color: #ffffff;
+  background: #ce7799;
+}
+
+.calendar-form-actions button:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+/* Bảo đảm các phần có hidden được ẩn */
+
+.calendar-event-modal[hidden],
+.calendar-month-view[hidden],
+.calendar-week-view[hidden],
+.calendar-empty-state[hidden],
+.calendar-delete-event-button[hidden] {
+  display: none !important;
+}
+
+/* Màn hình điện thoại nhỏ */
+
+@media (max-width: 480px) {
+  .calendar-heading {
+    margin-top: 12px;
+  }
+
+  .calendar-controls {
+    padding: 13px;
+    border-radius: 24px;
+  }
+
+  .calendar-navigation {
+    grid-template-columns: 47px minmax(0, 1fr) 47px;
+  }
+
+  .calendar-navigation-button {
+    width: 47px;
+    height: 47px;
+    border-radius: 15px;
+  }
+
+  .calendar-period-label {
+    font-size: 17px;
+  }
+
+  .calendar-view-controls {
+    align-items: stretch;
+  }
+
+  .calendar-view-switch {
+    max-width: none;
+  }
+
+  .calendar-today-button {
+    padding-right: 13px;
+    padding-left: 13px;
+  }
+
+  .calendar-month-view {
+    padding-right: 6px;
+    padding-left: 6px;
+    border-radius: 24px;
+  }
+
+  .calendar-month-grid {
+    gap: 2px;
+  }
+
+  .calendar-day-button {
+    min-height: 49px;
+    border-radius: 13px;
+  }
+
+  .calendar-day-number {
+    font-size: 14px;
+  }
+
+  .calendar-agenda-section {
+    padding-right: 14px;
+    padding-left: 14px;
+    border-radius: 24px;
+  }
+
+  .calendar-agenda-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .calendar-add-event-button {
+    width: 100%;
+  }
+
+  .calendar-event-modal-content {
+    padding-right: 18px;
+    padding-left: 18px;
+  }
+}
+
+/* Danh sách chức năng TiOong */
+
+.tioong-learning-section {
+  display: grid;
+  gap: 17px;
+}
+
+.tioong-calendar-card {
+  border-color: #eed5a1;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 250, 235, 0.96),
+      rgba(255, 255, 255, 0.93)
+    );
+}
+
+.tioong-calendar-icon {
+  color: #a97a35;
+  background: #fff4d7;
+  font-size: 27px;
+}

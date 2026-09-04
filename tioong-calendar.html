@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  >
+
+  <meta name="theme-color" content="#fff3f7">
+  <title>Thời gian biểu | FuBao</title>
+
+  <link rel="manifest" href="manifest.json">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="FuBao">
+
+  <link rel="stylesheet" href="style.css?v=56">
+</head>
+
+<body class="tioong-calendar-page">
+  <div class="app-container sub-page-container">
+
+    <!-- Đầu trang -->
+    <header class="sub-page-header">
+      <a class="back-button" href="tioong.html">
+        <span>‹</span>
+        TiOong
+      </a>
+    </header>
+
+    <!-- Tiêu đề -->
+    <section class="calendar-heading">
+      <p class="calendar-heading-label">TIOONG</p>
+      <h1>Thời gian biểu</h1>
+      <p>Ghi lại lịch học, công việc và sự kiện</p>
+    </section>
+
+    <!-- Thanh điều khiển -->
+    <section class="calendar-controls">
+      <div class="calendar-navigation">
+        <button
+          id="calendarPreviousButton"
+          class="calendar-navigation-button"
+          type="button"
+          aria-label="Thời gian trước"
+        >
+          ‹
+        </button>
+
+        <div
+          id="calendarPeriodLabel"
+          class="calendar-period-label"
+        >
+          Đang tải...
+        </div>
+
+        <button
+          id="calendarNextButton"
+          class="calendar-navigation-button"
+          type="button"
+          aria-label="Thời gian tiếp theo"
+        >
+          ›
+        </button>
+      </div>
+
+      <div class="calendar-view-controls">
+        <div class="calendar-view-switch">
+          <button
+            class="calendar-view-button active"
+            type="button"
+            data-calendar-view="month"
+          >
+            Tháng
+          </button>
+
+          <button
+            class="calendar-view-button"
+            type="button"
+            data-calendar-view="week"
+          >
+            Tuần
+          </button>
+        </div>
+
+        <button
+          id="calendarTodayButton"
+          class="calendar-today-button"
+          type="button"
+        >
+          Hôm nay
+        </button>
+      </div>
+    </section>
+
+    <!-- Lịch tháng -->
+    <section
+      id="calendarMonthView"
+      class="calendar-month-view"
+    >
+      <div class="calendar-weekday-row">
+        <span>T2</span>
+        <span>T3</span>
+        <span>T4</span>
+        <span>T5</span>
+        <span>T6</span>
+        <span>T7</span>
+        <span>CN</span>
+      </div>
+
+      <div
+        id="calendarMonthGrid"
+        class="calendar-month-grid"
+      ></div>
+    </section>
+
+    <!-- Lịch tuần -->
+    <section
+      id="calendarWeekView"
+      class="calendar-week-view"
+      hidden
+    >
+      <div
+        id="calendarWeekList"
+        class="calendar-week-list"
+      ></div>
+    </section>
+
+    <!-- Lịch của ngày đang chọn -->
+    <section class="calendar-agenda-section">
+      <div class="calendar-agenda-heading">
+        <div>
+          <p class="calendar-agenda-label">LỊCH TRONG NGÀY</p>
+
+          <h2 id="calendarSelectedDateLabel">
+            Đang tải...
+          </h2>
+        </div>
+
+        <button
+          id="calendarAddEventButton"
+          class="calendar-add-event-button"
+          type="button"
+        >
+          + Thêm lịch
+        </button>
+      </div>
+
+      <div
+        id="calendarSelectedDayEvents"
+        class="calendar-event-list"
+      ></div>
+
+      <div
+        id="calendarEmptyState"
+        class="calendar-empty-state"
+      >
+        <span class="calendar-empty-icon">📅</span>
+        <h3>Ngày này chưa có lịch</h3>
+        <p>Nhấn “Thêm lịch” để tạo ghi chú mới.</p>
+      </div>
+    </section>
+  </div>
+
+  <!-- Cửa sổ thêm và sửa lịch -->
+  <div
+    id="calendarEventModal"
+    class="calendar-event-modal"
+    hidden
+  >
+    <div
+      class="calendar-event-modal-backdrop"
+      data-calendar-close-modal
+    ></div>
+
+    <section
+      class="calendar-event-modal-content"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="calendarEventModalTitle"
+    >
+      <div class="calendar-event-modal-handle"></div>
+
+      <header class="calendar-event-modal-header">
+        <div>
+          <p class="calendar-event-modal-label">TIOONG</p>
+
+          <h2 id="calendarEventModalTitle">
+            Thêm lịch
+          </h2>
+        </div>
+
+        <button
+          class="calendar-event-modal-close"
+          type="button"
+          aria-label="Đóng"
+          data-calendar-close-modal
+        >
+          ×
+        </button>
+      </header>
+
+      <form id="calendarEventForm">
+        <input
+          id="calendarEventId"
+          type="hidden"
+        >
+
+        <label class="calendar-form-field">
+          <span>Tên lịch</span>
+
+          <input
+            id="calendarEventTitle"
+            type="text"
+            maxlength="120"
+            placeholder="Ví dụ: Học tiếng Nhật"
+            required
+          >
+        </label>
+
+        <label class="calendar-form-field">
+          <span>Ngày</span>
+
+          <input
+            id="calendarEventDate"
+            type="date"
+            required
+          >
+        </label>
+
+        <label class="calendar-checkbox-field">
+          <input
+            id="calendarEventAllDay"
+            type="checkbox"
+          >
+
+          <span>Cả ngày</span>
+        </label>
+
+        <div
+          id="calendarEventTimeFields"
+          class="calendar-time-fields"
+        >
+          <label class="calendar-form-field">
+            <span>Bắt đầu</span>
+
+            <input
+              id="calendarEventStartTime"
+              type="time"
+            >
+          </label>
+
+          <label class="calendar-form-field">
+            <span>Kết thúc</span>
+
+            <input
+              id="calendarEventEndTime"
+              type="time"
+            >
+          </label>
+        </div>
+
+        <label class="calendar-form-field">
+          <span>Phân loại</span>
+
+          <select id="calendarEventCategory">
+            <option value="study">Học tập</option>
+            <option value="work">Công việc</option>
+            <option value="personal">Cá nhân</option>
+            <option value="event">Sự kiện</option>
+          </select>
+        </label>
+
+        <label class="calendar-form-field">
+          <span>Thông báo trước</span>
+
+          <select id="calendarEventReminder">
+            <option value="">Không thông báo</option>
+            <option value="5">5 phút</option>
+            <option value="10">10 phút</option>
+            <option value="15">15 phút</option>
+            <option value="30">30 phút</option>
+            <option value="60">1 giờ</option>
+          </select>
+        </label>
+
+        <label class="calendar-form-field">
+          <span>Ghi chú</span>
+
+          <textarea
+            id="calendarEventNote"
+            rows="4"
+            maxlength="500"
+            placeholder="Nội dung cần ghi nhớ..."
+          ></textarea>
+        </label>
+
+        <p
+          id="calendarEventFormMessage"
+          class="calendar-form-message"
+          aria-live="polite"
+        ></p>
+
+        <div class="calendar-form-actions">
+          <button
+            id="calendarDeleteEventButton"
+            class="calendar-delete-event-button"
+            type="button"
+            hidden
+          >
+            Xóa lịch
+          </button>
+
+          <button
+            class="calendar-cancel-button"
+            type="button"
+            data-calendar-close-modal
+          >
+            Hủy
+          </button>
+
+          <button
+            id="calendarSaveEventButton"
+            class="calendar-save-event-button"
+            type="submit"
+          >
+            Lưu lịch
+          </button>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="auth-guard.js"></script>
+  <script src="pwa.js"></script>
+  <script src="app.js?v=26"></script>
+  <script src="tioong-calendar.js?v=1"></script>
+</body>
+</html>
