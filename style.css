@@ -5698,3 +5698,305 @@ body.task-modal-open {
   font-size: 30px;
   font-weight: 900;
 }
+
+/* =========================================================
+   VIỆC LẶP HẰNG NGÀY
+========================================================= */
+
+.daily-routines-section {
+  margin-bottom: 20px;
+  padding: 20px;
+  border: 1px solid #c9e1d2;
+  border-radius: 28px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(238, 249, 242, 0.96),
+      rgba(255, 250, 252, 0.96)
+    );
+  box-shadow: 0 14px 32px rgba(74, 100, 83, 0.08);
+}
+
+.daily-routines-header {
+  display: flex;
+  margin-bottom: 17px;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.daily-routines-label {
+  margin: 0 0 5px;
+  color: #719b81;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.17em;
+}
+
+.daily-routines-header h2 {
+  margin: 0;
+  color: #4d3a43;
+  font-size: 22px;
+  font-weight: 850;
+  line-height: 1.25;
+}
+
+#dailyRoutinesDateLabel {
+  margin: 5px 0 0;
+  color: #9a818c;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.daily-routine-add-button {
+  flex: 0 0 auto;
+  min-height: 44px;
+  padding: 9px 16px;
+  border: 0;
+  border-radius: 15px;
+  color: #ffffff;
+  background: #78a98a;
+  box-shadow: 0 7px 16px rgba(91, 147, 111, 0.22);
+  font-size: 14px;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.daily-routine-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 11px;
+}
+
+.daily-routine-card {
+  --routine-color: #78a98a;
+  --routine-light: #edf8f1;
+  --routine-border: #bedec9;
+
+  position: relative;
+  display: grid;
+  min-width: 0;
+  min-height: 88px;
+  padding: 13px;
+  border: 1px solid var(--routine-border);
+  border-left: 6px solid var(--routine-color);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.87);
+  grid-template-columns: 39px minmax(0, 1fr);
+  align-items: center;
+  gap: 9px;
+}
+
+.daily-routine-card.routine-quadrant-1 {
+  --routine-color: #cc6686;
+  --routine-light: #fff0f4;
+  --routine-border: #efbfcd;
+}
+
+.daily-routine-card.routine-quadrant-2 {
+  --routine-color: #72a486;
+  --routine-light: #edf8f1;
+  --routine-border: #c4dfcd;
+}
+
+.daily-routine-card.routine-quadrant-3 {
+  --routine-color: #c99a50;
+  --routine-light: #fff7e6;
+  --routine-border: #ead39e;
+}
+
+.daily-routine-card.routine-quadrant-4 {
+  --routine-color: #8c85aa;
+  --routine-light: #f4f2fb;
+  --routine-border: #d7d2ea;
+}
+
+.daily-routine-card.overdue {
+  border-color: #d75d7c;
+  box-shadow: 0 0 0 2px rgba(215, 93, 124, 0.08);
+}
+
+.daily-routine-card.completed {
+  opacity: 0.7;
+}
+
+.daily-routine-complete {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 2px solid var(--routine-color);
+  border-radius: 50%;
+  color: #ffffff;
+  background: #ffffff;
+  place-items: center;
+  font-size: 18px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.daily-routine-card.completed
+.daily-routine-complete {
+  background: var(--routine-color);
+}
+
+.daily-routine-content {
+  display: grid;
+  min-width: 0;
+  padding: 3px 70px 3px 0;
+  border: 0;
+  color: inherit;
+  background: transparent;
+  gap: 5px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.daily-routine-content strong {
+  overflow: hidden;
+  color: #4e3a43;
+  font-size: 16px;
+  font-weight: 850;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+}
+
+.daily-routine-content span {
+  color: #967d88;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.daily-routine-card.completed
+.daily-routine-content strong {
+  text-decoration: line-through;
+}
+
+.daily-routine-badge {
+  position: absolute;
+  top: 11px;
+  right: 11px;
+  padding: 5px 8px;
+  border-radius: 999px;
+  color: var(--routine-color);
+  background: var(--routine-light);
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.daily-routine-empty {
+  padding: 25px 15px;
+  border: 2px dashed #c9dfd0;
+  border-radius: 19px;
+  color: #91a99a;
+  background: rgba(255, 255, 255, 0.48);
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* =========================================================
+   CÁC TRƯỜNG MỚI TRONG BIỂU MẪU
+========================================================= */
+
+.task-target-fields {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(0, 1fr);
+  gap: 12px;
+}
+
+.task-type-help {
+  margin: -8px 0 0;
+  padding: 11px 13px;
+  border-radius: 14px;
+  color: #8b7480;
+  background: #f8eef2;
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.45;
+}
+
+#taskEditScopeField {
+  padding: 13px;
+  border: 1px solid #cce2d4;
+  border-radius: 17px;
+  background: #f0f9f3;
+}
+
+#taskEditScopeField > span {
+  color: #658b73;
+}
+
+/* Bảo đảm các trường hidden được ẩn */
+
+.daily-routine-empty[hidden],
+.task-target-fields[hidden],
+#taskCustomTitleField[hidden],
+#taskEditScopeField[hidden] {
+  display: none !important;
+}
+
+/* Điện thoại */
+
+@media (max-width: 720px) {
+  .daily-routine-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .daily-routines-section {
+    padding: 16px;
+    border-radius: 24px;
+  }
+
+  .daily-routines-header {
+    align-items: center;
+  }
+
+  .daily-routines-header h2 {
+    font-size: 20px;
+  }
+
+  .daily-routine-add-button {
+    padding-right: 14px;
+    padding-left: 14px;
+  }
+
+  .daily-routine-card {
+    min-height: 86px;
+  }
+
+  .daily-routine-content {
+    padding-right: 63px;
+  }
+
+  .task-target-fields {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Căn đều khoảng cách 3 thẻ ở trang TiOong */
+body.tioong-page .tioong-learning-section {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 20px !important;
+}
+
+body.tioong-page
+.tioong-learning-section
+> .tioong-learning-card {
+  width: 100%;
+  margin: 0 !important;
+  box-sizing: border-box;
+}
+
+body.tioong-page
+.tioong-learning-section
+> .tioong-learning-card
++ .tioong-learning-card {
+  margin-top: 0 !important;
+}

@@ -18,7 +18,7 @@
 
     <meta name="apple-mobile-web-app-title" content="FuBao">
 
-    <link rel="stylesheet" href="style.css?v=57">
+    <link rel="stylesheet" href="style.css?v=59">
 </head>
 
 <body class="tioong-tasks-page">
@@ -84,6 +84,34 @@
             <button class="tasks-filter-button" type="button" data-task-filter="completed">
                 Đã xong
             </button>
+        </section>
+
+        <!-- Việc lặp hằng ngày -->
+
+        <section id="dailyRoutinesSection" class="daily-routines-section">
+            <header class="daily-routines-header">
+                <div>
+                    <p class="daily-routines-label">
+                        VIỆC HẰNG NGÀY
+                    </p>
+
+                    <h2>Thói quen hôm nay</h2>
+
+                    <p id="dailyRoutinesDateLabel">
+                        Đang tải ngày...
+                    </p>
+                </div>
+
+                <button id="dailyRoutineAddButton" class="daily-routine-add-button" type="button">
+                    + Thêm
+                </button>
+            </header>
+
+            <div id="dailyRoutineList" class="daily-routine-list"></div>
+
+            <div id="dailyRoutineEmpty" class="daily-routine-empty" hidden>
+                Hôm nay chưa có việc lặp hằng ngày
+            </div>
         </section>
 
         <!-- Ma trận bốn nhóm -->
@@ -254,14 +282,78 @@
 
                 <input id="taskId" type="hidden">
 
-                <!-- Tên công việc -->
+                <input id="taskRecordType" type="hidden" value="task">
+
+                <!-- Công việc có sẵn -->
 
                 <label class="task-form-field">
+                    <span>Chọn công việc</span>
+
+                    <select id="taskPreset" required>
+                        <option value="" selected disabled>
+                            Chọn một công việc
+                        </option>
+
+                        <option value="english_vocabulary">
+                            Học từ vựng tiếng Anh
+                        </option>
+
+                        <option value="reading">
+                            Đọc sách
+                        </option>
+
+                        <option value="sap">
+                            Học SAP
+                        </option>
+
+                        <option value="japanese">
+                            Học tiếng Nhật
+                        </option>
+
+                        <option value="catechism">
+                            Làm việc Ban Giáo lý
+                        </option>
+
+                        <option value="gym">
+                            Tập gym
+                        </option>
+
+                        <option value="housework">
+                            Việc nhà
+                        </option>
+
+                        <option value="custom">
+                            Khác
+                        </option>
+                    </select>
+                </label>
+
+
+                <!-- Tên tự nhập khi chọn Khác -->
+
+                <label id="taskCustomTitleField" class="task-form-field" hidden>
                     <span>Tên công việc</span>
 
-                    <input id="taskTitle" type="text" maxlength="200" placeholder="Ví dụ: Hoàn thành bài học C_AIG"
-                        required>
+                    <input id="taskTitle" type="text" maxlength="200" placeholder="Nhập tên công việc...">
                 </label>
+
+
+                <!-- Kiểu công việc -->
+
+                <label class="task-form-field">
+                    <span>Kiểu công việc</span>
+
+                    <select id="taskType" required>
+                        <option value="once">
+                            Chỉ làm một lần
+                        </option>
+
+                        <option value="daily">
+                            Lặp hằng ngày
+                        </option>
+                    </select>
+                </label>
+
 
                 <!-- Nhóm công việc -->
 
@@ -270,40 +362,90 @@
 
                     <select id="taskQuadrant" required>
                         <option value="1">
-                            I — Quan trọng & Khẩn cấp
+                            I — Quan trọng &amp; Khẩn cấp
                         </option>
 
-                        <option value="2">
-                            II — Quan trọng & Không khẩn cấp
+                        <option value="2" selected>
+                            II — Quan trọng &amp; Không khẩn cấp
                         </option>
 
                         <option value="3">
-                            III — Không quan trọng & Khẩn cấp
+                            III — Không quan trọng &amp; Khẩn cấp
                         </option>
 
                         <option value="4">
-                            IV — Không quan trọng & Không khẩn cấp
+                            IV — Không quan trọng &amp; Không khẩn cấp
                         </option>
                     </select>
                 </label>
 
-                <!-- Thời hạn -->
 
-                <div class="task-deadline-fields">
+                <!-- Mục tiêu hằng ngày -->
+
+                <div id="taskTargetFields" class="task-target-fields" hidden>
                     <label class="task-form-field">
-                        <span>Ngày hết hạn</span>
+                        <span>Mục tiêu</span>
+
+                        <input id="taskTargetValue" type="number" min="1" step="1" inputmode="numeric" placeholder="10">
+                    </label>
+
+                    <label class="task-form-field">
+                        <span>Đơn vị</span>
+
+                        <select id="taskTargetUnit">
+                            <option value="từ">từ</option>
+                            <option value="phút">phút</option>
+                            <option value="giờ">giờ</option>
+                            <option value="trang">trang</option>
+                            <option value="bài">bài</option>
+                            <option value="lần">lần</option>
+                            <option value="buổi">buổi</option>
+                            <option value="việc">việc</option>
+                        </select>
+                    </label>
+                </div>
+
+                <!-- Ngày và giờ -->
+
+                <div id="taskDeadlineFields" class="task-deadline-fields">
+                    <label class="task-form-field">
+                        <span id="taskDateFieldLabel">
+                            Ngày hết hạn
+                        </span>
 
                         <input id="taskDueDate" type="date">
                     </label>
 
                     <label class="task-form-field">
-                        <span>Giờ hết hạn</span>
+                        <span id="taskTimeFieldLabel">
+                            Giờ hết hạn
+                        </span>
 
                         <input id="taskDueTime" type="time">
                     </label>
                 </div>
 
+                <p id="taskTypeHelp" class="task-type-help">
+                    Công việc sẽ chỉ xuất hiện một lần.
+                </p>
+
                 <!-- Thông báo -->
+
+                <!-- Phạm vi chỉnh sửa việc hằng ngày -->
+
+                <label id="taskEditScopeField" class="task-form-field" hidden>
+                    <span>Áp dụng thay đổi</span>
+
+                    <select id="taskEditScope">
+                        <option value="future">
+                            Từ hôm nay trở đi
+                        </option>
+
+                        <option value="today">
+                            Chỉ riêng hôm nay
+                        </option>
+                    </select>
+                </label>
 
                 <label class="task-form-field">
                     <span>Thông báo trước</span>
@@ -373,7 +515,7 @@
     <script src="auth-guard.js"></script>
     <script src="pwa.js"></script>
     <script src="app.js?v=26"></script>
-    <script src="tioong-tasks.js?v=1"></script>
+    <script src="tioong-tasks.js?v=2"></script>
 </body>
 
 </html>
