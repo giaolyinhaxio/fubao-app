@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+    <meta name="theme-color" content="#fff5f8">
+
+    <title>Việc cần làm | FuBao</title>
+
+    <link rel="manifest" href="manifest.json">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+    <meta name="apple-mobile-web-app-title" content="FuBao">
+
+    <link rel="stylesheet" href="style.css?v=57">
+</head>
+
+<body class="tioong-tasks-page">
+    <div class="app-container sub-page-container">
+
+        <!-- Nút quay lại -->
+
+        <header class="sub-page-header">
+            <a class="back-button" href="tioong.html">
+                <span>‹</span>
+                TiOong
+            </a>
+        </header>
+
+        <!-- Tiêu đề -->
+
+        <section class="tasks-heading">
+            <p class="tasks-heading-label">
+                TIOONG
+            </p>
+
+            <h1>Việc cần làm</h1>
+
+            <p>
+                Sắp xếp công việc theo mức độ quan trọng và khẩn cấp
+            </p>
+        </section>
+
+        <!-- Thống kê -->
+
+        <section class="tasks-summary">
+            <article class="tasks-summary-item">
+                <strong id="tasksActiveCount">0</strong>
+                <span>Đang làm</span>
+            </article>
+
+            <article class="tasks-summary-item overdue">
+                <strong id="tasksOverdueCount">0</strong>
+                <span>Quá hạn</span>
+            </article>
+
+            <article class="tasks-summary-item completed">
+                <strong id="tasksCompletedCount">0</strong>
+                <span>Hoàn thành</span>
+            </article>
+        </section>
+
+        <!-- Bộ lọc -->
+
+        <section class="tasks-filter-bar">
+            <button class="tasks-filter-button active" type="button" data-task-filter="all">
+                Tất cả
+            </button>
+
+            <button class="tasks-filter-button" type="button" data-task-filter="today">
+                Hôm nay
+            </button>
+
+            <button class="tasks-filter-button" type="button" data-task-filter="overdue">
+                Quá hạn
+            </button>
+
+            <button class="tasks-filter-button" type="button" data-task-filter="completed">
+                Đã xong
+            </button>
+        </section>
+
+        <!-- Ma trận bốn nhóm -->
+
+        <main id="tasksQuadrantGrid" class="tasks-quadrant-grid">
+
+            <!-- Nhóm 1 -->
+
+            <section class="task-quadrant task-quadrant-1" data-quadrant="1">
+                <header class="task-quadrant-header">
+                    <div class="task-quadrant-heading">
+                        <span class="task-quadrant-number">
+                            I
+                        </span>
+
+                        <div>
+                            <h2>Quan trọng &amp; Khẩn cấp</h2>
+                            <p>Làm ngay</p>
+                        </div>
+                    </div>
+
+                    <span id="taskQuadrant1Count" class="task-quadrant-count">
+                        0
+                    </span>
+                </header>
+
+                <div id="taskQuadrant1List" class="task-list"></div>
+
+                <div id="taskQuadrant1Empty" class="task-empty-state">
+                    Chưa có công việc
+                </div>
+
+                <button class="task-add-button" type="button" data-add-task="1">
+                    + Thêm công việc
+                </button>
+            </section>
+
+            <!-- Nhóm 2 -->
+
+            <section class="task-quadrant task-quadrant-2" data-quadrant="2">
+                <header class="task-quadrant-header">
+                    <div class="task-quadrant-heading">
+                        <span class="task-quadrant-number">
+                            II
+                        </span>
+
+                        <div>
+                            <h2>Quan trọng &amp; Không khẩn cấp</h2>
+                            <p>Lên kế hoạch</p>
+                        </div>
+                    </div>
+
+                    <span id="taskQuadrant2Count" class="task-quadrant-count">
+                        0
+                    </span>
+                </header>
+
+                <div id="taskQuadrant2List" class="task-list"></div>
+
+                <div id="taskQuadrant2Empty" class="task-empty-state">
+                    Chưa có công việc
+                </div>
+
+                <button class="task-add-button" type="button" data-add-task="2">
+                    + Thêm công việc
+                </button>
+            </section>
+
+            <!-- Nhóm 3 -->
+
+            <section class="task-quadrant task-quadrant-3" data-quadrant="3">
+                <header class="task-quadrant-header">
+                    <div class="task-quadrant-heading">
+                        <span class="task-quadrant-number">
+                            III
+                        </span>
+
+                        <div>
+                            <h2>Không quan trọng &amp; Khẩn cấp</h2>
+                            <p>Cân nhắc xử lý</p>
+                        </div>
+                    </div>
+
+                    <span id="taskQuadrant3Count" class="task-quadrant-count">
+                        0
+                    </span>
+                </header>
+
+                <div id="taskQuadrant3List" class="task-list"></div>
+
+                <div id="taskQuadrant3Empty" class="task-empty-state">
+                    Chưa có công việc
+                </div>
+
+                <button class="task-add-button" type="button" data-add-task="3">
+                    + Thêm công việc
+                </button>
+            </section>
+
+            <!-- Nhóm 4 -->
+
+            <section class="task-quadrant task-quadrant-4" data-quadrant="4">
+                <header class="task-quadrant-header">
+                    <div class="task-quadrant-heading">
+                        <span class="task-quadrant-number">
+                            IV
+                        </span>
+
+                        <div>
+                            <h2>Không quan trọng &amp; Không khẩn cấp</h2>
+                            <p>Hạn chế hoặc loại bỏ</p>
+                        </div>
+                    </div>
+
+                    <span id="taskQuadrant4Count" class="task-quadrant-count">
+                        0
+                    </span>
+                </header>
+
+                <div id="taskQuadrant4List" class="task-list"></div>
+
+                <div id="taskQuadrant4Empty" class="task-empty-state">
+                    Chưa có công việc
+                </div>
+
+                <button class="task-add-button" type="button" data-add-task="4">
+                    + Thêm công việc
+                </button>
+            </section>
+        </main>
+
+        <!-- Thông báo lỗi tải dữ liệu -->
+
+        <p id="tasksPageMessage" class="tasks-page-message" aria-live="polite"></p>
+    </div>
+
+    <!-- Nút thêm nhanh -->
+
+    <button id="tasksGlobalAddButton" class="tasks-global-add-button" type="button" aria-label="Thêm công việc">
+        +
+    </button>
+
+    <!-- Cửa sổ thêm và sửa công việc -->
+
+    <div id="taskModal" class="task-modal" hidden>
+        <div class="task-modal-backdrop" data-close-task-modal></div>
+
+        <section class="task-modal-content" role="dialog" aria-modal="true" aria-labelledby="taskModalTitle">
+            <div class="task-modal-handle"></div>
+
+            <header class="task-modal-header">
+                <div>
+                    <p class="task-modal-label">
+                        TIOONG
+                    </p>
+
+                    <h2 id="taskModalTitle">
+                        Thêm công việc
+                    </h2>
+                </div>
+
+                <button class="task-modal-close" type="button" aria-label="Đóng" data-close-task-modal>
+                    ×
+                </button>
+            </header>
+
+            <form id="taskForm">
+
+                <input id="taskId" type="hidden">
+
+                <!-- Tên công việc -->
+
+                <label class="task-form-field">
+                    <span>Tên công việc</span>
+
+                    <input id="taskTitle" type="text" maxlength="200" placeholder="Ví dụ: Hoàn thành bài học C_AIG"
+                        required>
+                </label>
+
+                <!-- Nhóm công việc -->
+
+                <label class="task-form-field">
+                    <span>Loại công việc</span>
+
+                    <select id="taskQuadrant" required>
+                        <option value="1">
+                            I — Quan trọng & Khẩn cấp
+                        </option>
+
+                        <option value="2">
+                            II — Quan trọng & Không khẩn cấp
+                        </option>
+
+                        <option value="3">
+                            III — Không quan trọng & Khẩn cấp
+                        </option>
+
+                        <option value="4">
+                            IV — Không quan trọng & Không khẩn cấp
+                        </option>
+                    </select>
+                </label>
+
+                <!-- Thời hạn -->
+
+                <div class="task-deadline-fields">
+                    <label class="task-form-field">
+                        <span>Ngày hết hạn</span>
+
+                        <input id="taskDueDate" type="date">
+                    </label>
+
+                    <label class="task-form-field">
+                        <span>Giờ hết hạn</span>
+
+                        <input id="taskDueTime" type="time">
+                    </label>
+                </div>
+
+                <!-- Thông báo -->
+
+                <label class="task-form-field">
+                    <span>Thông báo trước</span>
+
+                    <select id="taskReminder">
+                        <option value="">
+                            Không thông báo
+                        </option>
+
+                        <option value="5">
+                            5 phút
+                        </option>
+
+                        <option value="10">
+                            10 phút
+                        </option>
+
+                        <option value="15">
+                            15 phút
+                        </option>
+
+                        <option value="30">
+                            30 phút
+                        </option>
+
+                        <option value="60">
+                            1 giờ
+                        </option>
+
+                        <option value="1440">
+                            1 ngày
+                        </option>
+                    </select>
+                </label>
+
+                <!-- Ghi chú -->
+
+                <label class="task-form-field">
+                    <span>Ghi chú</span>
+
+                    <textarea id="taskNote" rows="4" maxlength="1000" placeholder="Thông tin bổ sung..."></textarea>
+                </label>
+
+                <p id="taskFormMessage" class="task-form-message" aria-live="polite"></p>
+
+                <!-- Các nút -->
+
+                <div class="task-form-actions">
+                    <button id="taskDeleteButton" class="task-delete-button" type="button" hidden>
+                        Xóa công việc
+                    </button>
+
+                    <button class="task-cancel-button" type="button" data-close-task-modal>
+                        Hủy
+                    </button>
+
+                    <button id="taskSaveButton" class="task-save-button" type="submit">
+                        Lưu công việc
+                    </button>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="auth-guard.js"></script>
+    <script src="pwa.js"></script>
+    <script src="app.js?v=26"></script>
+    <script src="tioong-tasks.js?v=1"></script>
+</body>
+
+</html>

@@ -4949,3 +4949,752 @@ body.calendar-modal-open {
   background: #fff4d7;
   font-size: 27px;
 }
+
+/* =========================================================
+   TIOONG TASKS
+========================================================= */
+
+body.tioong-tasks-page {
+  min-height: 100vh;
+  min-height: 100svh;
+  margin: 0;
+  padding-bottom: calc(90px + env(safe-area-inset-bottom));
+  color: #543f48;
+  background:
+    radial-gradient(
+      circle at 8% 8%,
+      rgba(255, 216, 229, 0.85),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 92% 92%,
+      rgba(219, 241, 226, 0.9),
+      transparent 36%
+    ),
+    #fff9fb;
+}
+
+.tioong-tasks-page .sub-page-container {
+  width: min(calc(100% - 32px), 1080px);
+  max-width: 1080px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.tioong-tasks-page button,
+.tioong-tasks-page input,
+.tioong-tasks-page select,
+.tioong-tasks-page textarea {
+  font: inherit;
+}
+
+.tioong-tasks-page button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Tiêu đề */
+
+.tasks-heading {
+  margin: 22px 0 26px;
+  text-align: center;
+}
+
+.tasks-heading-label {
+  margin: 0 0 7px;
+  color: #78a08a;
+  font-size: 13px;
+  font-weight: 850;
+  letter-spacing: 0.22em;
+}
+
+.tasks-heading h1 {
+  margin: 0;
+  color: #49353e;
+  font-size: clamp(37px, 7vw, 60px);
+  font-weight: 850;
+  line-height: 1.08;
+  letter-spacing: -0.045em;
+}
+
+.tasks-heading > p:last-child {
+  margin: 10px 0 0;
+  color: #9c838e;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* Thống kê */
+
+.tasks-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.tasks-summary-item {
+  display: grid;
+  min-height: 95px;
+  padding: 14px 10px;
+  border: 1px solid #ead3dc;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 10px 26px rgba(83, 56, 68, 0.06);
+  align-content: center;
+  text-align: center;
+}
+
+.tasks-summary-item strong {
+  color: #624751;
+  font-size: 30px;
+  font-weight: 850;
+  line-height: 1;
+}
+
+.tasks-summary-item span {
+  margin-top: 7px;
+  color: #9b828d;
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.tasks-summary-item.overdue {
+  border-color: #efc5d1;
+  background: rgba(255, 240, 244, 0.9);
+}
+
+.tasks-summary-item.overdue strong {
+  color: #c45f7e;
+}
+
+.tasks-summary-item.completed {
+  border-color: #cde4d5;
+  background: rgba(239, 249, 242, 0.9);
+}
+
+.tasks-summary-item.completed strong {
+  color: #669276;
+}
+
+/* Bộ lọc */
+
+.tasks-filter-bar {
+  display: flex;
+  overflow-x: auto;
+  margin-bottom: 20px;
+  padding: 5px;
+  border: 1px solid rgba(226, 202, 212, 0.72);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.76);
+  gap: 5px;
+  scrollbar-width: none;
+}
+
+.tasks-filter-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.tasks-filter-button {
+  flex: 1 0 auto;
+  min-height: 44px;
+  padding: 9px 18px;
+  border: 0;
+  border-radius: 14px;
+  color: #987c88;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 800;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.tasks-filter-button.active {
+  color: #ffffff;
+  background: #cf7a9b;
+  box-shadow: 0 6px 16px rgba(193, 94, 133, 0.23);
+}
+
+/* Ma trận bốn nhóm */
+
+.tasks-quadrant-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 17px;
+}
+
+.task-quadrant {
+  --quadrant-color: #cc7898;
+  --quadrant-light: #fff0f5;
+  --quadrant-border: #eabccc;
+
+  display: flex;
+  min-width: 0;
+  min-height: 300px;
+  padding: 18px;
+  border: 1px solid var(--quadrant-border);
+  border-top: 7px solid var(--quadrant-color);
+  border-radius: 27px;
+  background: rgba(255, 255, 255, 0.87);
+  box-shadow: 0 14px 32px rgba(82, 54, 66, 0.07);
+  flex-direction: column;
+}
+
+.task-quadrant-1 {
+  --quadrant-color: #ce6888;
+  --quadrant-light: #fff0f4;
+  --quadrant-border: #efc0ce;
+}
+
+.task-quadrant-2 {
+  --quadrant-color: #72a486;
+  --quadrant-light: #eef8f1;
+  --quadrant-border: #c6e0cf;
+}
+
+.task-quadrant-3 {
+  --quadrant-color: #c89b52;
+  --quadrant-light: #fff7e7;
+  --quadrant-border: #ebd49f;
+}
+
+.task-quadrant-4 {
+  --quadrant-color: #8c85aa;
+  --quadrant-light: #f4f2fb;
+  --quadrant-border: #d8d3eb;
+}
+
+.task-quadrant-header {
+  display: flex;
+  margin-bottom: 15px;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.task-quadrant-heading {
+  display: flex;
+  min-width: 0;
+  align-items: flex-start;
+  gap: 11px;
+}
+
+.task-quadrant-number {
+  display: grid;
+  flex: 0 0 auto;
+  min-width: 42px;
+  height: 42px;
+  padding: 0 7px;
+  border-radius: 14px;
+  color: #ffffff;
+  background: var(--quadrant-color);
+  place-items: center;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.task-quadrant-heading h2 {
+  margin: 0;
+  color: #503a44;
+  font-size: 17px;
+  font-weight: 850;
+  line-height: 1.28;
+}
+
+.task-quadrant-heading p {
+  margin: 4px 0 0;
+  color: var(--quadrant-color);
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.task-quadrant-count {
+  display: grid;
+  flex: 0 0 auto;
+  min-width: 31px;
+  height: 31px;
+  padding: 0 7px;
+  border-radius: 999px;
+  color: var(--quadrant-color);
+  background: var(--quadrant-light);
+  place-items: center;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+/* Danh sách công việc */
+
+.task-list {
+  display: grid;
+  gap: 9px;
+}
+
+.task-card {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  min-height: 78px;
+  padding: 11px;
+  border: 1px solid var(--quadrant-border);
+  border-radius: 18px;
+  background: var(--quadrant-light);
+  grid-template-columns: 38px minmax(0, 1fr) 18px;
+  align-items: center;
+  gap: 8px;
+}
+
+.task-card.overdue {
+  border-color: #d85d7d;
+  box-shadow: 0 0 0 2px rgba(216, 93, 125, 0.09);
+}
+
+.task-complete-button {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 2px solid var(--quadrant-color);
+  border-radius: 50%;
+  color: #ffffff;
+  background: #ffffff;
+  place-items: center;
+  font-size: 18px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.task-card.completed .task-complete-button {
+  background: var(--quadrant-color);
+}
+
+.task-card-content {
+  display: grid;
+  min-width: 0;
+  padding: 3px 0;
+  border: 0;
+  color: inherit;
+  background: transparent;
+  gap: 3px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.task-card-title {
+  overflow: hidden;
+  color: #523d46;
+  font-size: 15px;
+  font-weight: 850;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+}
+
+.task-card-deadline {
+  color: var(--quadrant-color);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.task-card.overdue .task-card-deadline {
+  color: #bd4f70;
+}
+
+.task-card-note {
+  display: -webkit-box;
+  overflow: hidden;
+  margin-top: 2px;
+  color: #9a818c;
+  font-size: 12px;
+  line-height: 1.4;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.task-card-arrow {
+  color: #aa909b;
+  font-size: 25px;
+  font-weight: 700;
+}
+
+.task-card.completed {
+  opacity: 0.68;
+}
+
+.task-card.completed .task-card-title {
+  text-decoration: line-through;
+}
+
+.task-empty-state {
+  display: grid;
+  flex: 1;
+  min-height: 100px;
+  padding: 20px;
+  color: #ae969f;
+  place-items: center;
+  font-size: 13px;
+  font-weight: 650;
+  text-align: center;
+}
+
+/* Nút thêm trong từng nhóm */
+
+.task-add-button {
+  width: 100%;
+  min-height: 48px;
+  margin-top: 13px;
+  padding: 10px 14px;
+  border: 2px dashed var(--quadrant-border);
+  border-radius: 16px;
+  color: var(--quadrant-color);
+  background: rgba(255, 255, 255, 0.62);
+  font-size: 14px;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.task-add-button:active {
+  transform: scale(0.98);
+}
+
+/* Thông báo trên trang */
+
+.tasks-page-message {
+  min-height: 22px;
+  margin: 16px 0 0;
+  color: #71927d;
+  font-size: 14px;
+  font-weight: 750;
+  text-align: center;
+}
+
+.tasks-page-message.error {
+  color: #c45473;
+}
+
+/* Nút thêm nhanh */
+
+.tasks-global-add-button {
+  position: fixed;
+  z-index: 200;
+  right: max(20px, env(safe-area-inset-right));
+  bottom: calc(20px + env(safe-area-inset-bottom));
+  display: grid;
+  width: 62px;
+  height: 62px;
+  padding: 0;
+  border: 0;
+  border-radius: 21px;
+  color: #ffffff;
+  background: #cc7698;
+  box-shadow: 0 12px 28px rgba(172, 77, 114, 0.32);
+  place-items: center;
+  font-size: 36px;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.tasks-global-add-button:active {
+  transform: scale(0.94);
+}
+
+/* Cửa sổ thêm và sửa */
+
+body.task-modal-open {
+  overflow: hidden;
+}
+
+.task-modal {
+  position: fixed;
+  z-index: 10000;
+  inset: 0;
+  display: flex;
+  padding-top: max(30px, env(safe-area-inset-top));
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.task-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(57, 40, 48, 0.4);
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+}
+
+.task-modal-content {
+  position: relative;
+  z-index: 1;
+  overflow-y: auto;
+  box-sizing: border-box;
+  width: min(100%, 620px);
+  max-height: calc(100svh - 30px);
+  padding:
+    12px
+    22px
+    calc(25px + env(safe-area-inset-bottom));
+  border-radius: 34px 34px 0 0;
+  background: #fffafc;
+  box-shadow: 0 -20px 50px rgba(66, 43, 53, 0.2);
+}
+
+.task-modal-handle {
+  width: 56px;
+  height: 6px;
+  margin: 0 auto 20px;
+  border-radius: 999px;
+  background: #e2d0d8;
+}
+
+.task-modal-header {
+  display: flex;
+  margin-bottom: 21px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.task-modal-label {
+  margin: 0 0 4px;
+  color: #b36e8a;
+  font-size: 12px;
+  font-weight: 850;
+  letter-spacing: 0.18em;
+}
+
+.task-modal-header h2 {
+  margin: 0;
+  color: #49343e;
+  font-size: 30px;
+  line-height: 1.1;
+}
+
+.task-modal-close {
+  display: grid;
+  flex: 0 0 auto;
+  width: 50px;
+  height: 50px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  color: #947782;
+  background: #f5e8ed;
+  place-items: center;
+  font-size: 32px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+/* Biểu mẫu */
+
+#taskForm {
+  display: grid;
+  gap: 16px;
+}
+
+.task-form-field {
+  display: grid;
+  gap: 7px;
+}
+
+.task-form-field > span {
+  color: #856a76;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.task-form-field input,
+.task-form-field select,
+.task-form-field textarea {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 52px;
+  padding: 12px 14px;
+  border: 1px solid #e5cad6;
+  border-radius: 16px;
+  outline: none;
+  color: #503b44;
+  background: #ffffff;
+  font-size: 16px;
+}
+
+.task-form-field textarea {
+  min-height: 105px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.task-form-field input:focus,
+.task-form-field select:focus,
+.task-form-field textarea:focus {
+  border-color: #cb7798;
+  box-shadow: 0 0 0 4px rgba(203, 119, 152, 0.12);
+}
+
+.task-deadline-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.task-form-message {
+  min-height: 20px;
+  margin: -3px 0 0;
+  color: #6c947a;
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.task-form-message.error {
+  color: #bd5572;
+}
+
+.task-form-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.task-form-actions button {
+  min-height: 52px;
+  padding: 11px 14px;
+  border: 0;
+  border-radius: 17px;
+  font-size: 15px;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.task-delete-button {
+  grid-column: 1 / -1;
+  color: #bd5572;
+  background: #fdebf1;
+}
+
+.task-cancel-button {
+  color: #927681;
+  background: #f4e8ed;
+}
+
+.task-save-button {
+  color: #ffffff;
+  background: #cd7698;
+}
+
+.task-form-actions button:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+/* Hidden */
+
+.task-modal[hidden],
+.task-empty-state[hidden],
+.task-delete-button[hidden] {
+  display: none !important;
+}
+
+/* Máy tính bảng và điện thoại */
+
+@media (max-width: 760px) {
+  .tasks-quadrant-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .task-quadrant {
+    min-height: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .tioong-tasks-page .sub-page-container {
+    width: min(calc(100% - 24px), 1080px);
+  }
+
+  .tasks-heading {
+    margin-top: 12px;
+  }
+
+  .tasks-heading h1 {
+    font-size: 42px;
+  }
+
+  .tasks-heading > p:last-child {
+    padding: 0 15px;
+    font-size: 15px;
+  }
+
+  .tasks-summary {
+    gap: 8px;
+  }
+
+  .tasks-summary-item {
+    min-height: 86px;
+    padding: 12px 5px;
+    border-radius: 19px;
+  }
+
+  .tasks-summary-item strong {
+    font-size: 27px;
+  }
+
+  .tasks-summary-item span {
+    font-size: 12px;
+  }
+
+  .tasks-filter-bar {
+    justify-content: flex-start;
+  }
+
+  .tasks-filter-button {
+    flex: 0 0 auto;
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  .task-quadrant {
+    padding: 15px;
+    border-radius: 24px;
+  }
+
+  .task-quadrant-heading h2 {
+    font-size: 16px;
+  }
+
+  .task-card {
+    grid-template-columns: 36px minmax(0, 1fr) 15px;
+  }
+
+  .task-modal-content {
+    padding-right: 18px;
+    padding-left: 18px;
+  }
+
+  .task-deadline-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .tasks-global-add-button {
+    width: 58px;
+    height: 58px;
+    border-radius: 19px;
+  }
+}
+
+/* Thẻ Việc cần làm trong trang TiOong */
+
+.tioong-tasks-card {
+  border-color: #d8d2ec;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(245, 243, 252, 0.97),
+      rgba(255, 255, 255, 0.94)
+    );
+}
+
+.tioong-tasks-icon {
+  color: #ffffff;
+  background: #8b84aa;
+  font-size: 30px;
+  font-weight: 900;
+}
