@@ -3,70 +3,695 @@
 
 <head>
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
-    <meta name="theme-color" content="#eef8ff">
+    <meta name="theme-color" content="#eef9ff">
 
-    <title>PoQy | FuBao</title>
+    <title>PoQy · Goal chung</title>
 
     <link rel="manifest" href="manifest.json">
-
-    <meta name="apple-mobile-web-app-capable" content="yes">
-
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-
-    <meta name="apple-mobile-web-app-title" content="FuBao">
-
-    <link rel="stylesheet" href="style.css?v=51">
+    <link rel="stylesheet" href="assets/css/style.css?v=60">
+    <link rel="stylesheet" href="assets/css/poqy.css?v=1">
 </head>
 
-<body class="together-page">
+<body class="together-page poqy-page">
 
-    <div class="app-container sub-page-container">
+    <main class="poqy-shell">
 
-        <header class="sub-page-header">
-            <a class="back-button" href="index.html">
-                <span>‹</span>
-                Trang chủ
+        <nav class="poqy-topbar">
+            <a class="poqy-back" href="index.html">
+                ‹ Trang chủ
             </a>
 
+            <button class="poqy-icon-button" id="refreshGoalButton" type="button" aria-label="Làm mới">
+                ↻
+            </button>
+        </nav>
+
+        <header class="poqy-brand">
+            <small>GOAL CHUNG</small>
+            <h1>PoQy</h1>
         </header>
 
-        <section class="profile-heading">
-            <div class="profile-title">
-                <img class="profile-title-icon" src="images/chung-minh.PNG" alt="PoQy">
+        <section class="poqy-loading" id="goalLoading">
+            Đang tải mục tiêu chung...
+        </section>
 
-                <h1>PoQy</h1>
+        <section class="poqy-empty hidden" id="goalEmpty">
+            <div class="poqy-empty-icon">🎯</div>
+
+            <h2>Chưa có mục tiêu chung</h2>
+
+            <p>
+                Tạo goal đầu tiên để cùng theo dõi countdown,
+                chi phí, checklist và các mốc quan trọng.
+            </p>
+
+            <button class="poqy-primary" id="createFirstGoalButton" type="button">
+                ＋ Tạo mục tiêu
+            </button>
+        </section>
+
+        <div class="hidden" id="goalWorkspace">
+
+            <div class="poqy-toolbar">
+                <select id="goalSelect" aria-label="Chọn mục tiêu">
+                </select>
+
+                <button class="poqy-primary" id="createGoalButton" type="button">
+                    ＋ Goal mới
+                </button>
             </div>
 
-            <p class="profile-current-date">
-                Đang tải ngày...
-            </p>
-        </section>
+            <section class="poqy-hero" id="goalHero">
+                <div class="poqy-hero-content">
 
-        <section class="today-schedule-section">
-            <article class="schedule-notice">
-                <span>📋</span>
+                    <div class="poqy-hero-emoji" id="goalEmoji">
+                        🎯
+                    </div>
 
-                <div>
-                    <h3>Chưa có kế hoạch chung</h3>
+                    <h2 id="goalTitle">
+                        Mục tiêu chung
+                    </h2>
 
-                    <p>
-                        Sau này mình sẽ thêm lịch hẹn,
-                        mục tiêu và danh sách việc cần làm.
+                    <p class="poqy-countdown" id="goalCountdown">
+                        Còn 0 ngày
                     </p>
-                </div>
-            </article>
-        </section>
 
+                    <p class="poqy-target-date" id="goalTargetDate">
+                        --/--/----
+                    </p>
+
+                    <p class="poqy-countdown-detail" id="goalCountdownDetail">
+                    </p>
+
+                    <div class="poqy-progress-panel">
+
+                        <div class="poqy-progress-heading">
+                            <span>Tiến độ mục tiêu</span>
+                            <strong id="goalProgressText">0%</strong>
+                        </div>
+
+                        <div class="poqy-progress-track">
+                            <div class="poqy-progress-fill" id="goalProgressFill">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <div class="poqy-summary-grid">
+
+                <article class="poqy-summary-card">
+                    <span>💰</span>
+                    <small>Ngân sách dự kiến</small>
+                    <strong id="summaryBudget">0 ₫</strong>
+                </article>
+
+                <article class="poqy-summary-card">
+                    <span>✅</span>
+                    <small>Checklist</small>
+                    <strong id="summaryChecklist">0/0 việc</strong>
+                </article>
+
+                <article class="poqy-summary-card">
+                    <span>📅</span>
+                    <small>Mốc quan trọng</small>
+                    <strong id="summaryMilestones">0 mốc</strong>
+                </article>
+
+            </div>
+
+            <section class="poqy-section">
+
+                <div class="poqy-section-heading">
+                    <div>
+                        <h3>🎯 Mục tiêu</h3>
+                        <p>Thông tin và tiến độ chung</p>
+                    </div>
+
+                    <button class="poqy-secondary" id="editGoalButton" type="button">
+                        Chỉnh sửa
+                    </button>
+                </div>
+
+                <div class="poqy-summary-row">
+                    <span>Ngày bắt đầu</span>
+                    <strong id="goalStartDate">
+                        --/--/----
+                    </strong>
+                </div>
+
+            </section>
+
+            <section class="poqy-section">
+
+                <div class="poqy-section-heading">
+
+                    <div>
+                        <h3>💰 Ngân sách</h3>
+                        <p>Các khoản dự kiến và số tiền đã chi</p>
+                    </div>
+
+                    <div class="poqy-heading-actions">
+
+                        <button class="poqy-secondary" id="addContributionButton" type="button">
+                            ＋ Đóng góp
+                        </button>
+
+                        <button class="poqy-primary" id="addExpenseButton" type="button">
+                            ＋ Khoản chi
+                        </button>
+
+                    </div>
+                </div>
+
+                <div class="poqy-money-grid">
+
+                    <div class="poqy-money-item">
+                        <small>Tổng dự kiến</small>
+                        <strong id="budgetTotal">0 ₫</strong>
+                    </div>
+
+                    <div class="poqy-money-item">
+                        <small>Đã chi</small>
+                        <strong id="budgetSpent">0 ₫</strong>
+                    </div>
+
+                    <div class="poqy-money-item">
+                        <small>Còn lại</small>
+                        <strong id="budgetRemaining">0 ₫</strong>
+                    </div>
+
+                </div>
+
+                <div class="poqy-contribution-grid" id="contributionSummary">
+                </div>
+
+                <div class="poqy-list" id="expenseList">
+                </div>
+
+            </section>
+
+            <section class="poqy-section">
+
+                <div class="poqy-section-heading">
+
+                    <div>
+                        <h3>✅ Danh sách cần làm</h3>
+                        <p>Cùng thêm việc và đánh dấu hoàn thành</p>
+                    </div>
+
+                    <button class="poqy-primary" id="addTaskButton" type="button">
+                        ＋ Thêm việc
+                    </button>
+
+                </div>
+
+                <div class="poqy-check-progress">
+
+                    <strong id="checklistProgressText">
+                        0/0 việc đã hoàn thành – 0%
+                    </strong>
+
+                    <div class="poqy-progress-track">
+                        <div class="poqy-progress-fill" id="checklistProgressFill">
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="poqy-list" id="taskList">
+                </div>
+
+            </section>
+
+            <section class="poqy-section">
+
+                <div class="poqy-section-heading">
+
+                    <div>
+                        <h3>📅 Milestones</h3>
+                        <p>Các mốc quan trọng trên hành trình</p>
+                    </div>
+
+                    <button class="poqy-primary" id="addMilestoneButton" type="button">
+                        ＋ Thêm mốc
+                    </button>
+
+                </div>
+
+                <div class="poqy-list" id="milestoneList">
+                </div>
+
+            </section>
+
+            <section class="poqy-section">
+
+                <div class="poqy-section-heading">
+                    <div>
+                        <h3>📝 Ghi chú</h3>
+                        <p>Thông tin chung cho mục tiêu này</p>
+                    </div>
+                </div>
+
+                <textarea class="poqy-notes" id="goalNotes" placeholder="Viết ghi chú chung..."></textarea>
+
+                <div class="poqy-notes-actions">
+                    <button class="poqy-primary" id="saveNotesButton" type="button">
+                        Lưu ghi chú
+                    </button>
+                </div>
+
+            </section>
+
+            <section class="poqy-section">
+
+                <div class="poqy-section-heading">
+                    <div>
+                        <h3>🔔 Hoạt động gần đây</h3>
+                        <p>Các cập nhật mới nhất của hai người</p>
+                    </div>
+                </div>
+
+                <div class="poqy-activity-list" id="activityList">
+                </div>
+
+            </section>
+
+        </div>
+    </main>
+
+    <!-- FORM TẠO VÀ SỬA GOAL -->
+
+    <div class="poqy-modal-overlay" id="goalModal" aria-hidden="true">
+
+        <section class="poqy-modal" role="dialog" aria-modal="true">
+
+            <header class="poqy-modal-header">
+                <h2 id="goalModalTitle">
+                    Tạo mục tiêu
+                </h2>
+
+                <button class="poqy-icon-button" data-close-modal="goalModal" type="button">
+                    ×
+                </button>
+            </header>
+
+            <form id="goalForm">
+
+                <input id="goalId" type="hidden">
+
+                <div class="poqy-form-grid">
+
+                    <div class="poqy-field full">
+                        <label for="goalNameInput">
+                            Tên mục tiêu
+                        </label>
+
+                        <input id="goalNameInput" required maxlength="120" placeholder="Đi Nhật tháng 4/2028">
+                    </div>
+
+                    <div class="poqy-field">
+                        <label for="goalEmojiInput">
+                            Biểu tượng
+                        </label>
+
+                        <input id="goalEmojiInput" maxlength="8" value="🎯" placeholder="🇯🇵">
+                    </div>
+
+                    <div class="poqy-field">
+                        <label for="goalProgressInput">
+                            Tiến độ (%)
+                        </label>
+
+                        <input id="goalProgressInput" type="number" min="0" max="100" value="0" required>
+                    </div>
+
+                    <div class="poqy-field">
+                        <label for="goalStartInput">
+                            Ngày bắt đầu
+                        </label>
+
+                        <input id="goalStartInput" type="date" required>
+                    </div>
+
+                    <div class="poqy-field">
+                        <label for="goalTargetInput">
+                            Ngày mục tiêu
+                        </label>
+
+                        <input id="goalTargetInput" type="date" required>
+                    </div>
+
+                    <div class="poqy-field">
+                        <label for="goalPersonAInput">
+                            Người thứ nhất
+                        </label>
+
+                        <input id="goalPersonAInput" required maxlength="60" placeholder="Phong">
+                    </div>
+
+                    <div class="poqy-field">
+                        <label for="goalPersonBInput">
+                            Người thứ hai
+                        </label>
+
+                        <input id="goalPersonBInput" required maxlength="60" placeholder="Tên người cùng goal">
+                    </div>
+
+                    <div class="poqy-field full">
+                        <label for="goalCoverInput">
+                            Đường dẫn ảnh cover
+                        </label>
+
+                        <input id="goalCoverInput" type="url" placeholder="https://...">
+                    </div>
+
+                    <div class="poqy-field full">
+                        <label for="goalCoverFileInput">
+                            Hoặc chọn ảnh từ thiết bị
+                        </label>
+
+                        <input id="goalCoverFileInput" type="file"
+                            accept="image/jpeg,image/png,image/webp,image/heic,image/heif">
+                    </div>
+
+                </div>
+
+                <p class="poqy-form-message" id="goalFormMessage">
+                </p>
+
+                <div class="poqy-form-actions">
+                    <button class="poqy-secondary" data-close-modal="goalModal" type="button">
+                        Hủy
+                    </button>
+
+                    <button class="poqy-primary" type="submit">
+                        Lưu mục tiêu
+                    </button>
+                </div>
+
+            </form>
+        </section>
+    </div>
+
+    <!-- FORM KHOẢN CHI -->
+
+    <div class="poqy-modal-overlay" id="expenseModal" aria-hidden="true">
+
+        <section class="poqy-modal" role="dialog" aria-modal="true">
+
+            <header class="poqy-modal-header">
+                <h2 id="expenseModalTitle">
+                    Thêm khoản chi
+                </h2>
+
+                <button class="poqy-icon-button" data-close-modal="expenseModal" type="button">
+                    ×
+                </button>
+            </header>
+
+            <form id="expenseForm">
+
+                <input id="expenseId" type="hidden">
+
+                <div class="poqy-form-grid">
+
+                    <div class="poqy-field full">
+                        <label for="expenseNameInput">
+                            Tên khoản chi
+                        </label>
+
+                        <input id="expenseNameInput" required maxlength="120" placeholder="Vé máy bay">
+                    </div>
+
+                    <div class="poqy-field">
+                        <label for="expenseAmountInput">
+                            Số tiền (VNĐ)
+                        </label>
+
+                        <input id="expenseAmountInput" type="number" min="0" step="1000" required>
+                    </div>
+
+                    <div class="poqy-field">
+                        <label for="expenseAuthorInput">
+                            Người nhập
+                        </label>
+
+                        <select id="expenseAuthorInput" required>
+                        </select>
+                    </div>
+
+                    <div class="poqy-field">
+                        <label for="expenseStatusInput">
+                            Trạng thái
+                        </label>
+
+                        <select id="expenseStatusInput">
+                            <option value="pending">
+                                Chưa chi
+                            </option>
+
+                            <option value="paid">
+                                Đã chi
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="poqy-field full">
+                        <label for="expenseNoteInput">
+                            Ghi chú
+                        </label>
+
+                        <textarea id="expenseNoteInput" placeholder="Ghi chú nếu cần..."></textarea>
+                    </div>
+
+                </div>
+
+                <p class="poqy-form-message" id="expenseFormMessage">
+                </p>
+
+                <div class="poqy-form-actions">
+                    <button class="poqy-secondary" data-close-modal="expenseModal" type="button">
+                        Hủy
+                    </button>
+
+                    <button class="poqy-primary" type="submit">
+                        Lưu khoản chi
+                    </button>
+                </div>
+
+            </form>
+        </section>
+    </div>
+
+    <!-- FORM ĐÓNG GÓP -->
+
+    <div class="poqy-modal-overlay" id="contributionModal" aria-hidden="true">
+
+        <section class="poqy-modal" role="dialog" aria-modal="true">
+
+            <header class="poqy-modal-header">
+                <h2>Thêm khoản đóng góp</h2>
+
+                <button class="poqy-icon-button" data-close-modal="contributionModal" type="button">
+                    ×
+                </button>
+            </header>
+
+            <form id="contributionForm">
+
+                <div class="poqy-form-grid">
+
+                    <div class="poqy-field">
+                        <label for="contributionPersonInput">
+                            Người đóng
+                        </label>
+
+                        <select id="contributionPersonInput" required>
+                        </select>
+                    </div>
+
+                    <div class="poqy-field">
+                        <label for="contributionAmountInput">
+                            Số tiền (VNĐ)
+                        </label>
+
+                        <input id="contributionAmountInput" type="number" min="0" step="1000" required>
+                    </div>
+
+                    <div class="poqy-field full">
+                        <label for="contributionNoteInput">
+                            Ghi chú
+                        </label>
+
+                        <textarea id="contributionNoteInput" placeholder="Ví dụ: Tiết kiệm tháng 9"></textarea>
+                    </div>
+
+                </div>
+
+                <p class="poqy-form-message" id="contributionFormMessage">
+                </p>
+
+                <div class="poqy-form-actions">
+                    <button class="poqy-secondary" data-close-modal="contributionModal" type="button">
+                        Hủy
+                    </button>
+
+                    <button class="poqy-primary" type="submit">
+                        Lưu đóng góp
+                    </button>
+                </div>
+
+            </form>
+        </section>
+    </div>
+
+    <!-- FORM CHECKLIST -->
+
+    <div class="poqy-modal-overlay" id="taskModal" aria-hidden="true">
+
+        <section class="poqy-modal" role="dialog" aria-modal="true">
+
+            <header class="poqy-modal-header">
+                <h2 id="taskModalTitle">Thêm việc cần làm</h2>
+
+                <button class="poqy-icon-button" data-close-modal="taskModal" type="button">
+                    ×
+                </button>
+            </header>
+
+            <form id="taskForm">
+
+                <input id="taskId" type="hidden">
+
+                <div class="poqy-form-grid">
+
+                    <div class="poqy-field full">
+                        <label for="taskTitleInput">
+                            Tên công việc
+                        </label>
+
+                        <input id="taskTitleInput" required maxlength="160" placeholder="Làm hộ chiếu">
+                    </div>
+
+                    <div class="poqy-field">
+                        <label for="taskAuthorInput">
+                            Người thêm
+                        </label>
+
+                        <select id="taskAuthorInput" required>
+                        </select>
+                    </div>
+
+                </div>
+
+                <p class="poqy-form-message" id="taskFormMessage">
+                </p>
+
+                <div class="poqy-form-actions">
+                    <button class="poqy-secondary" data-close-modal="taskModal" type="button">
+                        Hủy
+                    </button>
+
+                    <button class="poqy-primary" type="submit">
+                        Lưu công việc
+                    </button>
+                </div>
+
+            </form>
+        </section>
+    </div>
+
+    <!-- FORM MILESTONE -->
+
+    <div class="poqy-modal-overlay" id="milestoneModal" aria-hidden="true">
+
+        <section class="poqy-modal" role="dialog" aria-modal="true">
+
+            <header class="poqy-modal-header">
+                <h2 id="milestoneModalTitle">Thêm mốc quan trọng</h2>
+
+                <button class="poqy-icon-button" data-close-modal="milestoneModal" type="button">
+                    ×
+                </button>
+            </header>
+
+            <form id="milestoneForm">
+
+                <input id="milestoneId" type="hidden">
+
+                <div class="poqy-form-grid">
+
+                    <div class="poqy-field">
+                        <label for="milestoneIconInput">
+                            Biểu tượng
+                        </label>
+
+                        <input id="milestoneIconInput" maxlength="8" value="🎯">
+                    </div>
+
+                    <div class="poqy-field">
+                        <label for="milestoneDateInput">
+                            Ngày
+                        </label>
+
+                        <input id="milestoneDateInput" type="date" required>
+                    </div>
+
+                    <div class="poqy-field full">
+                        <label for="milestoneTitleInput">
+                            Tên cột mốc
+                        </label>
+
+                        <input id="milestoneTitleInput" required maxlength="160" placeholder="Bắt đầu tiết kiệm">
+                    </div>
+
+                    <div class="poqy-field full">
+                        <label for="milestoneNoteInput">
+                            Ghi chú
+                        </label>
+
+                        <textarea id="milestoneNoteInput" placeholder="Ghi chú nếu cần..."></textarea>
+                    </div>
+
+                </div>
+
+                <p class="poqy-form-message" id="milestoneFormMessage">
+                </p>
+
+                <div class="poqy-form-actions">
+                    <button class="poqy-secondary" data-close-modal="milestoneModal" type="button">
+                        Hủy
+                    </button>
+
+                    <button class="poqy-primary" type="submit">
+                        Lưu cột mốc
+                    </button>
+                </div>
+
+            </form>
+        </section>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supabase-config.js"></script>
-    <script src="auth-guard.js"></script>
-    <script src="pwa.js"></script>
-    <script src="app.js?v=25"></script>
+    <script src="assets/js/core/supabase-config.js"></script>
+
+    <script>
+        window.supabaseClient =
+            window.supabaseClient ||
+            window.supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_PUBLISHABLE_KEY
+            );
+    </script>
+
+    <script src="assets/js/core/auth-guard.js"></script>
+    <script src="assets/js/poqy/poqy.js?v=3"></script>
+    <script src="assets/js/core/pwa.js"></script>
+
 </body>
 
 </html>

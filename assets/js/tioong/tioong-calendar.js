@@ -11,6 +11,7 @@
 
   const CATEGORY_NAMES = {
     study: "Học tập",
+    catechism: "Giáo lý",
     work: "Công việc",
     personal: "Cá nhân",
     event: "Sự kiện",
@@ -450,9 +451,9 @@
 
       const isDifferentMonth =
         selectedMonth !==
-          state.currentMonth.getUTCMonth() ||
+        state.currentMonth.getUTCMonth() ||
         selectedYear !==
-          state.currentMonth.getUTCFullYear();
+        state.currentMonth.getUTCFullYear();
 
       if (isDifferentMonth) {
         state.currentMonth = makeDate(
@@ -682,7 +683,7 @@
       title,
       note:
         elements.calendarEventNote.value.trim() ||
-        null,
+        "",
       category:
         elements.calendarEventCategory.value,
       reminder_minutes: reminderValue
@@ -716,7 +717,7 @@
 
       setFormMessage(
         result.error.message ||
-          "Không thể lưu lịch.",
+        "Không thể lưu lịch.",
         true
       );
 
@@ -771,7 +772,7 @@
 
       setFormMessage(
         error.message ||
-          "Không thể xóa lịch.",
+        "Không thể xóa lịch.",
         true
       );
 

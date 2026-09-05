@@ -599,7 +599,7 @@ function taoLichRiki() {
             "Lớp học tại Riki",
             "study"
         ),
-                taoCongViec(
+        taoCongViec(
             "💼",
             "13:00–21:00",
             "Lab Helpdesk",
@@ -842,34 +842,34 @@ function taoBoChonCaLam(
             aria-label="Chọn ca làm"
         >
             ${taoOptionCaLam(
-                "off",
-                "Nghỉ làm",
-                selectedShift
-            )}
+        "off",
+        "Nghỉ làm",
+        selectedShift
+    )}
 
             ${taoOptionCaLam(
-                "morning",
-                chuyenKhoangGioHienThi(
-                    "07:00–16:00"
-                ),
-                selectedShift
-            )}
+        "morning",
+        chuyenKhoangGioHienThi(
+            "07:00–16:00"
+        ),
+        selectedShift
+    )}
 
             ${taoOptionCaLam(
-                "normal",
-                chuyenKhoangGioHienThi(
-                    "09:00–18:00"
-                ),
-                selectedShift
-            )}
+        "normal",
+        chuyenKhoangGioHienThi(
+            "09:00–18:00"
+        ),
+        selectedShift
+    )}
 
             ${taoOptionCaLam(
-                "afternoon",
-                chuyenKhoangGioHienThi(
-                    "13:00–21:00"
-                ),
-                selectedShift
-            )}
+        "afternoon",
+        chuyenKhoangGioHienThi(
+            "13:00–21:00"
+        ),
+        selectedShift
+    )}
         </select>
     `;
 }
@@ -885,14 +885,14 @@ function taoMucGioHocMacDinh(task) {
         <div class="week-study-item default">
             <span>
                 ${baoVeNoiDungHTML(
-                    displayTime
-                )}
+        displayTime
+    )}
             </span>
 
             <strong>
                 ${baoVeNoiDungHTML(
-                    task.title
-                )}
+        task.title
+    )}
             </strong>
         </div>
     `;
@@ -952,14 +952,14 @@ function taoMucLichTuThem(
         <div class="week-study-item custom ${typeClass}">
             <span>
                 ${baoVeNoiDungHTML(
-                    displayTime
-                )}
+        displayTime
+    )}
             </span>
 
             <strong>
                 ${baoVeNoiDungHTML(
-                    slot.title
-                )}
+        slot.title
+    )}
             </strong>
 
             ${detailHTML}
@@ -969,8 +969,8 @@ function taoMucLichTuThem(
                 type="button"
                 data-plan-date="${planDate}"
                 data-slot-id="${baoVeNoiDungHTML(
-                    slot.id
-                )}"
+        slot.id
+    )}"
                 aria-label="Chỉnh sửa kế hoạch"
             >
                 ✎
@@ -981,14 +981,29 @@ function taoMucLichTuThem(
                 type="button"
                 data-plan-date="${planDate}"
                 data-slot-id="${baoVeNoiDungHTML(
-                    slot.id
-                )}"
+        slot.id
+    )}"
                 aria-label="Xóa kế hoạch"
             >
                 ×
             </button>
         </div>
     `;
+}
+
+function laySoPhutBatDauTrongTuan(timeValue) {
+    const match =
+        String(timeValue || "")
+            .match(/(\d{1,2}):(\d{2})/);
+
+    if (!match) {
+        return 9999;
+    }
+
+    return (
+        Number(match[1]) * 60 +
+        Number(match[2])
+    );
 }
 
 
@@ -1042,23 +1057,52 @@ function taoNgayHTML(
             }
         );
 
-    let studyHTML = "";
+    const allStudyItems = [
+        ...defaultStudyTasks.map(
+            function (task) {
+                return {
+                    startTime: task.time,
+                    html:
+                        taoMucGioHocMacDinh(
+                            task
+                        )
+                };
+            }
+        ),
 
-    studyHTML +=
-        defaultStudyTasks
-            .map(taoMucGioHocMacDinh)
-            .join("");
+        ...customStudySlots.map(
+            function (slot) {
+                return {
+                    startTime:
+                        slot.start_time,
+                    html:
+                        taoMucLichTuThem(
+                            slot,
+                            planDate
+                        )
+                };
+            }
+        )
+    ];
 
-    studyHTML +=
-        customStudySlots
-            .map(
-                function (slot) {
-                    return taoMucLichTuThem(
-                        slot,
-                        planDate
-                    );
-                }
-            )
+    allStudyItems.sort(
+        function (itemA, itemB) {
+            return (
+                laySoPhutBatDauTrongTuan(
+                    itemA.startTime
+                ) -
+                laySoPhutBatDauTrongTuan(
+                    itemB.startTime
+                )
+            );
+        }
+    );
+
+    let studyHTML =
+        allStudyItems
+            .map(function (item) {
+                return item.html;
+            })
             .join("");
 
     if (!studyHTML) {
@@ -1069,8 +1113,22 @@ function taoNgayHTML(
         `;
     }
 
+    const sortedPersonalSlots =
+        [...personalSlots].sort(
+            function (slotA, slotB) {
+                return (
+                    laySoPhutBatDauTrongTuan(
+                        slotA.start_time
+                    ) -
+                    laySoPhutBatDauTrongTuan(
+                        slotB.start_time
+                    )
+                );
+            }
+        );
+
     let personalHTML =
-        personalSlots
+        sortedPersonalSlots
             .map(
                 function (slot) {
                     return taoMucLichTuThem(
@@ -1099,16 +1157,16 @@ function taoNgayHTML(
                 </span>
 
                 ${todayClass
-                    ? `<small>Hôm nay</small>`
-                    : ""
-                }
+            ? `<small>Hôm nay</small>`
+            : ""
+        }
             </td>
 
             <td class="week-shift-cell">
                 ${taoBoChonCaLam(
-                    planDate,
-                    selectedShift
-                )}
+            planDate,
+            selectedShift
+        )}
             </td>
 
             <td class="week-study-cell">
@@ -1202,7 +1260,7 @@ async function luuKeHoachNgay(
                     new Date().toISOString()
             },
             {
-                                onConflict: "plan_date"
+                onConflict: "plan_date"
             }
         );
 
@@ -1523,14 +1581,14 @@ function hienThiCuaSoKeHoach(
         document.getElementById(
             "personalPreset"
         ).value = preset
-            ? preset[0]
-            : "other";
+                ? preset[0]
+                : "other";
 
         document.getElementById(
             "personalCustomTitle"
         ).value = preset
-            ? ""
-            : slot.title || "";
+                ? ""
+                : slot.title || "";
 
         document.getElementById(
             "personalStartTime"
@@ -1798,11 +1856,11 @@ async function xuLyThemGioHoc(event) {
             preset === "other"
                 ? customTitle
                 : PERSONAL_PRESET_TITLES[
-                    preset
+                preset
                 ];
 
         if (
-                        !planDate ||
+            !planDate ||
             !startTime ||
             !endTime ||
             !title

@@ -420,6 +420,50 @@ function ganSuKienCaiDatTrangChu() {
     );
 }
 
+function laySoPhutBatDau(timeRange) {
+    const match =
+        String(timeRange || "")
+            .match(/(\d{1,2}):(\d{2})/);
+
+    if (!match) {
+        return 9999;
+    }
+
+    return (
+        Number(match[1]) * 60 +
+        Number(match[2])
+    );
+}
+
+
+function sapXepLichHomNayTheoGio(container) {
+    const scheduleItems =
+        Array.from(
+            container.querySelectorAll(
+                ".schedule-item"
+            )
+        );
+
+    scheduleItems.sort(
+        function (itemA, itemB) {
+            return (
+                Number(
+                    itemA.dataset.startMinutes
+                ) -
+                Number(
+                    itemB.dataset.startMinutes
+                )
+            );
+        }
+    );
+
+    scheduleItems.forEach(
+        function (item) {
+            container.appendChild(item);
+        }
+    );
+}
+
 
 function taoTheLich(
     icon,
@@ -436,8 +480,14 @@ function taoTheLich(
     const displayTime =
         chuyenKhoangGioHienThi(time);
 
+    const startMinutes =
+        laySoPhutBatDau(time);
+
     return `
-        <tr class="schedule-item ${type}">
+        <tr
+    class="schedule-item ${type}"
+    data-start-minutes="${startMinutes}"
+>
             <td class="schedule-table-time">
                 ${displayTime}
             </td>
@@ -963,6 +1013,8 @@ async function taoLichDiquyHomNay() {
         }
 
         container.innerHTML = html;
+
+        sapXepLichHomNayTheoGio(container);
 
         await apDungTrangThaiHoanThanh();
 

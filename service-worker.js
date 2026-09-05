@@ -1,4 +1,4 @@
-const CACHE_NAME = "fubao-v15";
+const CACHE_NAME = "fubao-v18";
 
 const APP_FILES = [
     "./",
@@ -11,30 +11,32 @@ const APP_FILES = [
 
     "./english.html",
     "./vocabulary.html",
-    "./vocabulary-home.js",
+    "./assets/js/english/vocabulary-home.js",
     "./vocabulary-list.html",
-    "./vocabulary-list.js",
+    "./assets/js/english/vocabulary-list.js",
     "./flashcard.html",
-    "./flashcard.js",
+    "./assets/js/english/flashcard.js",
 
-    "./style.css",
-    "./app.js",
-    "./notifications.js",
+    "./assets/css/style.css",
+    "./assets/js/core/app.js",
+    "./assets/css/poqy.css",
+    "./assets/js/poqy/poqy.js",
+    "./assets/js/core/notifications.js",
     "./tioong-calendar.html",
-    "./tioong-calendar.js",
+    "./assets/js/tioong/tioong-calendar.js",
     "./tioong-tasks.html",
-    "./tioong-tasks.js",
-    "./auth.js",
-    "./auth-guard.js",
-    "./supabase-config.js",
-    "./week.js",
-    "./pwa.js",
+    "./assets/js/tioong/tioong-tasks.js",
+    "./assets/js/core/auth.js",
+    "./assets/js/core/auth-guard.js",
+    "./assets/js/core/supabase-config.js",
+    "./assets/js/diquy/week.js",
+    "./assets/js/core/pwa.js",
 
     "./manifest.json",
-    "./icon.svg",
-    "./icon-192.png",
-    "./icon-512.png",
-    "./apple-touch-icon.png"
+    "./assets/icons/icon.svg",
+    "./assets/icons/icon-192.png",
+    "./assets/icons/icon-512.png",
+    "./assets/icons/apple-touch-icon.png"
 ];
 
 
@@ -228,11 +230,11 @@ self.addEventListener(
 
             icon:
                 notificationData.icon ||
-                "./icon-192.png",
+                "./assets/icons/icon-192.png",
 
             badge:
                 notificationData.badge ||
-                "./icon-192.png",
+                "./assets/icons/icon-192.png",
 
             tag:
                 notificationData.tag ||
