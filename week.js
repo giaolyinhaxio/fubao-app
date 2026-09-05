@@ -19,6 +19,17 @@ const JAPAN_TIMEZONE =
 
 let weekOffset = 0;
 
+const PERSONAL_PRESET_TITLES = {
+    church: "Đi lễ",
+    running: "Chạy bộ",
+    shopping: "Đi mua đồ",
+    friends: "Hẹn bạn bè",
+    other: "Việc cá nhân khác"
+};
+
+const POMODORO_STUDY_MINUTES = 25;
+const POMODORO_SHORT_BREAK_MINUTES = 5;
+
 
 document.addEventListener(
     "DOMContentLoaded",
@@ -435,6 +446,7 @@ function timCaLamChoNgay(
     ) || null;
 }
 
+
 /* =========================
    KẾ HOẠCH RIÊNG TỪNG NGÀY
 ========================= */
@@ -556,6 +568,7 @@ function layCaMacDinhChoNgay(
         : "off";
 }
 
+
 /* =========================
    TẠO NỘI DUNG MỖI NGÀY
 ========================= */
@@ -586,8 +599,7 @@ function taoLichRiki() {
             "Lớp học tại Riki",
             "study"
         ),
-
-        taoCongViec(
+                taoCongViec(
             "💼",
             "13:00–21:00",
             "Lab Helpdesk",
@@ -747,6 +759,7 @@ function taoLichChoNgay(
     return taoLichNgayNghi();
 }
 
+
 function taoLichHocTheoCaDaChon(
     date,
     selectedShift
@@ -770,6 +783,7 @@ function taoLichHocTheoCaDaChon(
 
     return taoLichTheoCa(selectedShift);
 }
+
 
 function baoVeNoiDungHTML(value) {
     return String(value || "")
@@ -885,17 +899,57 @@ function taoMucGioHocMacDinh(task) {
 }
 
 
-function taoMucGioHocTuThem(
+function layLoaiMucLich(slot) {
+    return slot && slot.kind === "personal"
+        ? "personal"
+        : "study";
+}
+
+
+function taoMucLichTuThem(
     slot,
     planDate
 ) {
-    const displayTime =
+    const slotType =
+        layLoaiMucLich(slot);
+
+    let displayTime =
         chuyenKhoangGioHienThi(
             `${slot.start_time}–${slot.end_time}`
         );
 
+    if (
+        Number(slot.end_day_offset) > 0 &&
+        !String(displayTime).includes("ngày")
+    ) {
+        displayTime += " (+1 ngày)";
+    }
+
+    const typeClass =
+        slotType === "personal"
+            ? "week-personal-item"
+            : "";
+
+    const detailText =
+        slot.note ||
+        (
+            slotType === "study" &&
+                Number(slot.pomodoro_sessions) > 0
+                ? `${Number(
+                    slot.pomodoro_sessions
+                )} ca Pomodoro · 25 phút học/ca`
+                : ""
+        );
+
+    const detailHTML =
+        detailText
+            ? `<small>${baoVeNoiDungHTML(
+                detailText
+            )}</small>`
+            : "";
+
     return `
-        <div class="week-study-item custom">
+        <div class="week-study-item custom ${typeClass}">
             <span>
                 ${baoVeNoiDungHTML(
                     displayTime
@@ -908,6 +962,20 @@ function taoMucGioHocTuThem(
                 )}
             </strong>
 
+            ${detailHTML}
+
+            <button
+                class="edit-study-slot-button"
+                type="button"
+                data-plan-date="${planDate}"
+                data-slot-id="${baoVeNoiDungHTML(
+                    slot.id
+                )}"
+                aria-label="Chỉnh sửa kế hoạch"
+            >
+                ✎
+            </button>
+
             <button
                 class="delete-study-slot-button"
                 type="button"
@@ -915,7 +983,7 @@ function taoMucGioHocTuThem(
                 data-slot-id="${baoVeNoiDungHTML(
                     slot.id
                 )}"
-                aria-label="Xóa giờ học"
+                aria-label="Xóa kế hoạch"
             >
                 ×
             </button>
@@ -946,13 +1014,33 @@ function taoNgayHTML(
             }
         );
 
-    const customStudySlots =
+    const customSlots =
         dailyPlan &&
             Array.isArray(
                 dailyPlan.study_slots
             )
             ? dailyPlan.study_slots
             : [];
+
+    const customStudySlots =
+        customSlots.filter(
+            function (slot) {
+                return (
+                    layLoaiMucLich(slot) ===
+                    "study"
+                );
+            }
+        );
+
+    const personalSlots =
+        customSlots.filter(
+            function (slot) {
+                return (
+                    layLoaiMucLich(slot) ===
+                    "personal"
+                );
+            }
+        );
 
     let studyHTML = "";
 
@@ -965,7 +1053,7 @@ function taoNgayHTML(
         customStudySlots
             .map(
                 function (slot) {
-                    return taoMucGioHocTuThem(
+                    return taoMucLichTuThem(
                         slot,
                         planDate
                     );
@@ -981,6 +1069,26 @@ function taoNgayHTML(
         `;
     }
 
+    let personalHTML =
+        personalSlots
+            .map(
+                function (slot) {
+                    return taoMucLichTuThem(
+                        slot,
+                        planDate
+                    );
+                }
+            )
+            .join("");
+
+    if (!personalHTML) {
+        personalHTML = `
+            <small class="week-no-study">
+                Chưa có việc riêng
+            </small>
+        `;
+    }
+
     return `
         <tr class="week-plan-row ${todayClass}">
             <td class="week-date-cell">
@@ -991,35 +1099,63 @@ function taoNgayHTML(
                 </span>
 
                 ${todayClass
-            ? `<small>Hôm nay</small>`
-            : ""
-        }
+                    ? `<small>Hôm nay</small>`
+                    : ""
+                }
             </td>
 
             <td class="week-shift-cell">
                 ${taoBoChonCaLam(
-            planDate,
-            selectedShift
-        )}
+                    planDate,
+                    selectedShift
+                )}
             </td>
 
             <td class="week-study-cell">
-                <div class="week-study-list">
-                    ${studyHTML}
-                </div>
+                <section class="week-plan-group">
+                    <p class="week-plan-group-title">
+                        HỌC TẬP
+                    </p>
 
-                <button
-                    class="add-study-slot-button"
-                    type="button"
-                    data-plan-date="${planDate}"
-                    data-day-name="${dayName}"
-                >
-                    ＋ Thêm
-                </button>
+                    <div class="week-study-list">
+                        ${studyHTML}
+                    </div>
+
+                    <button
+                        class="add-study-slot-button"
+                        type="button"
+                        data-plan-date="${planDate}"
+                        data-day-name="${dayName}"
+                        data-slot-type="study"
+                    >
+                        ＋ Thêm giờ học
+                    </button>
+                </section>
+
+                <section class="week-plan-group">
+                    <p class="week-plan-group-title">
+                        VIỆC RIÊNG
+                    </p>
+
+                    <div class="week-study-list">
+                        ${personalHTML}
+                    </div>
+
+                    <button
+                        class="add-study-slot-button"
+                        type="button"
+                        data-plan-date="${planDate}"
+                        data-day-name="${dayName}"
+                        data-slot-type="personal"
+                    >
+                        ＋ Thêm việc riêng
+                    </button>
+                </section>
             </td>
         </tr>
     `;
 }
+
 
 /* =========================
    LƯU KẾ HOẠCH TỪNG NGÀY
@@ -1066,7 +1202,7 @@ async function luuKeHoachNgay(
                     new Date().toISOString()
             },
             {
-                onConflict: "plan_date"
+                                onConflict: "plan_date"
             }
         );
 
@@ -1099,23 +1235,210 @@ function layCaDangChonTrongBang(planDate) {
 
 
 /* =========================
-   CỬA SỔ THÊM GIỜ HỌC
+   CỬA SỔ THÊM / SỬA KẾ HOẠCH
 ========================= */
 
-function moCuaSoThemGioHoc(button) {
+function congPhutVaoGio(
+    timeText,
+    addedMinutes
+) {
+    const match =
+        /^(\d{2}):(\d{2})$/.exec(
+            String(timeText || "")
+        );
+
+    if (!match) {
+        return null;
+    }
+
+    const totalMinutes =
+        Number(match[1]) * 60 +
+        Number(match[2]) +
+        Number(addedMinutes || 0);
+
+    const minutesInDay =
+        ((totalMinutes % 1440) + 1440) %
+        1440;
+
+    return {
+        time:
+            `${String(
+                Math.floor(minutesInDay / 60)
+            ).padStart(2, "0")}:${String(
+                minutesInDay % 60
+            ).padStart(2, "0")}`,
+        dayOffset:
+            Math.floor(totalMinutes / 1440)
+    };
+}
+
+
+function tinhGioKetThucPomodoro() {
+    const startInput =
+        document.getElementById(
+            "studyStartTime"
+        );
+
+    const sessionsInput =
+        document.getElementById(
+            "pomodoroSessions"
+        );
+
+    const endOutput =
+        document.getElementById(
+            "studyEndTimeText"
+        );
+
+    const summary =
+        document.getElementById(
+            "pomodoroSummary"
+        );
+
+    if (
+        !startInput ||
+        !sessionsInput ||
+        !endOutput
+    ) {
+        return null;
+    }
+
+    const sessions =
+        Number(sessionsInput.value || 2);
+
+    /* Theo yêu cầu: mỗi ca chiếm 30 phút,
+       gồm 25 phút học và 5 phút nghỉ. */
+    const totalMinutes =
+        sessions *
+        (
+            POMODORO_STUDY_MINUTES +
+            POMODORO_SHORT_BREAK_MINUTES
+        );
+
+    const result =
+        congPhutVaoGio(
+            startInput.value,
+            totalMinutes
+        );
+
+    if (!result) {
+        endOutput.value = "--:--";
+        endOutput.textContent = "--:--";
+        return null;
+    }
+
+    const endText =
+        result.dayOffset > 0
+            ? `${result.time} (+1 ngày)`
+            : result.time;
+
+    endOutput.value = endText;
+    endOutput.textContent = endText;
+
+    if (summary) {
+        summary.textContent =
+            `${sessions} ca: ` +
+            `${sessions * POMODORO_STUDY_MINUTES} phút học, ` +
+            `${sessions * POMODORO_SHORT_BREAK_MINUTES} phút nghỉ ` +
+            `· Kết thúc ${endText}. ` +
+            "Sau 4 ca liên tục sẽ nghỉ dài 30 phút.";
+    }
+
+    return result;
+}
+
+
+function capNhatLoaiBieuMau() {
+    const typeInput =
+        document.getElementById(
+            "scheduleItemType"
+        );
+
+    const studyFields =
+        document.getElementById(
+            "studyScheduleFields"
+        );
+
+    const personalFields =
+        document.getElementById(
+            "personalScheduleFields"
+        );
+
+    const modalTitle =
+        document.getElementById(
+            "studySlotModalTitle"
+        );
+
+    if (
+        !typeInput ||
+        !studyFields ||
+        !personalFields
+    ) {
+        return;
+    }
+
+    const isPersonal =
+        typeInput.value === "personal";
+
+    studyFields.classList.toggle(
+        "is-hidden",
+        isPersonal
+    );
+
+    personalFields.classList.toggle(
+        "is-hidden",
+        !isPersonal
+    );
+
+    if (modalTitle) {
+        const isEditing =
+            Boolean(
+                document.getElementById(
+                    "studySlotId"
+                ).value
+            );
+
+        modalTitle.textContent =
+            `${isEditing ? "Sửa" : "Thêm"} ` +
+            `${isPersonal ? "việc riêng" : "giờ học"}`;
+    }
+
+    if (!isPersonal) {
+        tinhGioKetThucPomodoro();
+    }
+}
+
+
+function capNhatOTheoCongViecRieng() {
+    const presetInput =
+        document.getElementById(
+            "personalPreset"
+        );
+
+    const customGroup =
+        document.getElementById(
+            "personalCustomTitleGroup"
+        );
+
+    if (!presetInput || !customGroup) {
+        return;
+    }
+
+    customGroup.classList.toggle(
+        "is-hidden",
+        presetInput.value !== "other"
+    );
+}
+
+
+function hienThiCuaSoKeHoach(
+    planDate,
+    dayName,
+    slotType,
+    slot
+) {
     const modal =
         document.getElementById(
             "studySlotModal"
-        );
-
-    const dateInput =
-        document.getElementById(
-            "studySlotDate"
-        );
-
-    const dateLabel =
-        document.getElementById(
-            "studySlotDateLabel"
         );
 
     const form =
@@ -1123,20 +1446,11 @@ function moCuaSoThemGioHoc(button) {
             "studySlotForm"
         );
 
-    if (
-        !modal ||
-        !dateInput ||
-        !dateLabel ||
-        !form
-    ) {
+    if (!modal || !form) {
         return;
     }
 
-    const planDate =
-        button.dataset.planDate;
-
-    const dayName =
-        button.dataset.dayName;
+    form.reset();
 
     const dateParts =
         planDate.split("-");
@@ -1144,25 +1458,164 @@ function moCuaSoThemGioHoc(button) {
     const displayDate =
         `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
 
-    form.reset();
+    document.getElementById(
+        "studySlotDate"
+    ).value = planDate;
 
-    dateInput.value = planDate;
+    document.getElementById(
+        "studySlotId"
+    ).value = slot ? slot.id : "";
 
-    dateLabel.textContent =
-        `${dayName} · ${displayDate}`;
+    document.getElementById(
+        "studySlotDateLabel"
+    ).textContent =
+        `${dayName || "Kế hoạch"} · ${displayDate}`;
+
+    const selectedType =
+        slot
+            ? layLoaiMucLich(slot)
+            : slotType || "study";
+
+    document.getElementById(
+        "scheduleItemType"
+    ).value = selectedType;
+
+    const saveButton =
+        document.getElementById(
+            "saveStudySlotButton"
+        );
+
+    if (saveButton) {
+        saveButton.textContent = slot
+            ? "Lưu thay đổi"
+            : "＋ Thêm vào lịch";
+    }
+
+    if (slot && selectedType === "study") {
+        document.getElementById(
+            "studyStartTime"
+        ).value = slot.start_time || "";
+
+        document.getElementById(
+            "pomodoroSessions"
+        ).value = String(
+            slot.pomodoro_sessions || 2
+        );
+
+        document.getElementById(
+            "studyTitle"
+        ).value = slot.title || "Tự học N5";
+    }
+
+    if (slot && selectedType === "personal") {
+        const preset =
+            Object.entries(
+                PERSONAL_PRESET_TITLES
+            ).find(
+                function (entry) {
+                    return (
+                        entry[0] !== "other" &&
+                        entry[1] === slot.title
+                    );
+                }
+            );
+
+        document.getElementById(
+            "personalPreset"
+        ).value = preset
+            ? preset[0]
+            : "other";
+
+        document.getElementById(
+            "personalCustomTitle"
+        ).value = preset
+            ? ""
+            : slot.title || "";
+
+        document.getElementById(
+            "personalStartTime"
+        ).value = slot.start_time || "";
+
+        document.getElementById(
+            "personalEndTime"
+        ).value = slot.end_time || "";
+
+        document.getElementById(
+            "personalNote"
+        ).value = slot.note || "";
+    }
+
+    capNhatLoaiBieuMau();
+    capNhatOTheoCongViecRieng();
 
     modal.classList.add("open");
     document.body.classList.add(
         "modal-open"
     );
+}
 
-    const startTimeInput =
-        document.getElementById(
-            "studyStartTime"
+
+function moCuaSoThemGioHoc(button) {
+    hienThiCuaSoKeHoach(
+        button.dataset.planDate,
+        button.dataset.dayName,
+        button.dataset.slotType,
+        null
+    );
+}
+
+
+async function moCuaSoChinhSuaKeHoach(
+    button
+) {
+    try {
+        const dailyPlan =
+            await layKeHoachMotNgay(
+                button.dataset.planDate
+            );
+
+        const slots =
+            dailyPlan &&
+                Array.isArray(
+                    dailyPlan.study_slots
+                )
+                ? dailyPlan.study_slots
+                : [];
+
+        const slot =
+            slots.find(
+                function (item) {
+                    return (
+                        String(item.id) ===
+                        String(
+                            button.dataset.slotId
+                        )
+                    );
+                }
+            );
+
+        if (!slot) {
+            alert(
+                "Không tìm thấy kế hoạch cần sửa."
+            );
+            return;
+        }
+
+        hienThiCuaSoKeHoach(
+            button.dataset.planDate,
+            "Chỉnh sửa",
+            layLoaiMucLich(slot),
+            slot
+        );
+    } catch (error) {
+        console.error(
+            "Không thể mở kế hoạch:",
+            error
         );
 
-    if (startTimeInput) {
-        startTimeInput.focus();
+        alert(
+            "Chưa mở được kế hoạch để chỉnh sửa."
+        );
     }
 }
 
@@ -1235,7 +1688,7 @@ async function xuLyDoiCaLam(selectElement) {
 
 
 /* =========================
-   XỬ LÝ THÊM GIỜ HỌC
+   XỬ LÝ LƯU GIỜ HỌC / VIỆC RIÊNG
 ========================= */
 
 async function xuLyThemGioHoc(event) {
@@ -1246,42 +1699,140 @@ async function xuLyThemGioHoc(event) {
             "studySlotDate"
         ).value;
 
-    const startTime =
+    const slotId =
         document.getElementById(
-            "studyStartTime"
+            "studySlotId"
         ).value;
 
-    const endTime =
+    const slotType =
         document.getElementById(
-            "studyEndTime"
+            "scheduleItemType"
         ).value;
-
-    const title =
-        document.getElementById(
-            "studyTitle"
-        ).value.trim();
 
     const saveButton =
         document.getElementById(
             "saveStudySlotButton"
         );
 
-    if (
-        !planDate ||
-        !startTime ||
-        !endTime ||
-        !title
-    ) {
-        alert("Hãy nhập đầy đủ thông tin.");
-        return;
-    }
+    let slotData = null;
 
-    if (endTime <= startTime) {
-        alert(
-            "Giờ kết thúc phải sau giờ bắt đầu."
-        );
+    if (slotType === "study") {
+        const startTime =
+            document.getElementById(
+                "studyStartTime"
+            ).value;
 
-        return;
+        const title =
+            document.getElementById(
+                "studyTitle"
+            ).value.trim();
+
+        const sessions =
+            Number(
+                document.getElementById(
+                    "pomodoroSessions"
+                ).value
+            );
+
+        const endResult =
+            tinhGioKetThucPomodoro();
+
+        if (
+            !planDate ||
+            !startTime ||
+            !title ||
+            ![2, 3].includes(sessions) ||
+            !endResult
+        ) {
+            alert(
+                "Hãy chọn giờ bắt đầu, số ca và nội dung học."
+            );
+            return;
+        }
+
+        slotData = {
+            id:
+                slotId ||
+                `${Date.now()}-${Math.random()
+                    .toString(16)
+                    .slice(2)}`,
+            kind: "study",
+            start_time: startTime,
+            end_time: endResult.time,
+            end_day_offset:
+                endResult.dayOffset,
+            title: title,
+            pomodoro_sessions: sessions,
+            session_minutes:
+                POMODORO_STUDY_MINUTES,
+            short_break_minutes:
+                POMODORO_SHORT_BREAK_MINUTES
+        };
+    } else {
+        const preset =
+            document.getElementById(
+                "personalPreset"
+            ).value;
+
+        const customTitle =
+            document.getElementById(
+                "personalCustomTitle"
+            ).value.trim();
+
+        const startTime =
+            document.getElementById(
+                "personalStartTime"
+            ).value;
+
+        const endTime =
+            document.getElementById(
+                "personalEndTime"
+            ).value;
+
+        const note =
+            document.getElementById(
+                "personalNote"
+            ).value.trim();
+
+        const title =
+            preset === "other"
+                ? customTitle
+                : PERSONAL_PRESET_TITLES[
+                    preset
+                ];
+
+        if (
+                        !planDate ||
+            !startTime ||
+            !endTime ||
+            !title
+        ) {
+            alert(
+                "Hãy nhập đầy đủ công việc và thời gian."
+            );
+            return;
+        }
+
+        if (endTime <= startTime) {
+            alert(
+                "Giờ kết thúc phải sau giờ bắt đầu."
+            );
+            return;
+        }
+
+        slotData = {
+            id:
+                slotId ||
+                `${Date.now()}-${Math.random()
+                    .toString(16)
+                    .slice(2)}`,
+            kind: "personal",
+            preset: preset,
+            start_time: startTime,
+            end_time: endTime,
+            title: title,
+            note: note
+        };
     }
 
     if (saveButton) {
@@ -1308,28 +1859,35 @@ async function xuLyThemGioHoc(event) {
                 Array.isArray(
                     dailyPlan.study_slots
                 )
-                ? [
-                    ...dailyPlan.study_slots
-                ]
+                ? [...dailyPlan.study_slots]
                 : [];
 
-        studySlots.push({
-            id:
-                `${Date.now()}-${Math.random()
-                    .toString(16)
-                    .slice(2)}`,
+        const existingIndex =
+            studySlots.findIndex(
+                function (slot) {
+                    return (
+                        String(slot.id) ===
+                        String(slotId)
+                    );
+                }
+            );
 
-            start_time: startTime,
-            end_time: endTime,
-            title: title
-        });
+        if (existingIndex >= 0) {
+            studySlots[existingIndex] =
+                slotData;
+        } else {
+            studySlots.push(slotData);
+        }
 
         studySlots.sort(
             function (firstSlot, secondSlot) {
-                return firstSlot.start_time
-                    .localeCompare(
-                        secondSlot.start_time
-                    );
+                return String(
+                    firstSlot.start_time || ""
+                ).localeCompare(
+                    String(
+                        secondSlot.start_time || ""
+                    )
+                );
             }
         );
 
@@ -1344,25 +1902,27 @@ async function xuLyThemGioHoc(event) {
         await hienThiLichTuan();
     } catch (error) {
         console.error(
-            "Không thể thêm giờ học:",
+            "Không thể lưu kế hoạch:",
             error
         );
 
         alert(
-            "Chưa thêm được giờ học. Hãy kiểm tra mạng rồi thử lại."
+            "Chưa lưu được kế hoạch. Hãy kiểm tra mạng rồi thử lại."
         );
     } finally {
         if (saveButton) {
             saveButton.disabled = false;
             saveButton.textContent =
-                "＋ Thêm vào lịch";
+                slotId
+                    ? "Lưu thay đổi"
+                    : "＋ Thêm vào lịch";
         }
     }
 }
 
 
 /* =========================
-   XỬ LÝ XÓA GIỜ HỌC
+   XỬ LÝ XÓA KẾ HOẠCH
 ========================= */
 
 async function xuLyXoaGioHoc(button) {
@@ -1374,7 +1934,7 @@ async function xuLyXoaGioHoc(button) {
 
     const confirmed =
         window.confirm(
-            "Xóa khoảng giờ học này?"
+            "Xóa kế hoạch này?"
         );
 
     if (!confirmed) {
@@ -1416,12 +1976,12 @@ async function xuLyXoaGioHoc(button) {
         await hienThiLichTuan();
     } catch (error) {
         console.error(
-            "Không thể xóa giờ học:",
+            "Không thể xóa kế hoạch:",
             error
         );
 
         alert(
-            "Chưa xóa được giờ học. Hãy thử lại."
+            "Chưa xóa được kế hoạch. Hãy thử lại."
         );
 
         button.disabled = false;
@@ -1454,6 +2014,26 @@ function ganSuKienKeHoachTuan() {
             "studySlotForm"
         );
 
+    const typeInput =
+        document.getElementById(
+            "scheduleItemType"
+        );
+
+    const startInput =
+        document.getElementById(
+            "studyStartTime"
+        );
+
+    const sessionsInput =
+        document.getElementById(
+            "pomodoroSessions"
+        );
+
+    const presetInput =
+        document.getElementById(
+            "personalPreset"
+        );
+
     if (scheduleElement) {
         scheduleElement.addEventListener(
             "change",
@@ -1482,6 +2062,19 @@ function ganSuKienKeHoachTuan() {
                 if (addButton) {
                     moCuaSoThemGioHoc(
                         addButton
+                    );
+
+                    return;
+                }
+
+                const editButton =
+                    event.target.closest(
+                        ".edit-study-slot-button"
+                    );
+
+                if (editButton) {
+                    moCuaSoChinhSuaKeHoach(
+                        editButton
                     );
 
                     return;
@@ -1526,6 +2119,34 @@ function ganSuKienKeHoachTuan() {
         );
     }
 
+    if (typeInput) {
+        typeInput.addEventListener(
+            "change",
+            capNhatLoaiBieuMau
+        );
+    }
+
+    if (startInput) {
+        startInput.addEventListener(
+            "input",
+            tinhGioKetThucPomodoro
+        );
+    }
+
+    if (sessionsInput) {
+        sessionsInput.addEventListener(
+            "change",
+            tinhGioKetThucPomodoro
+        );
+    }
+
+    if (presetInput) {
+        presetInput.addEventListener(
+            "change",
+            capNhatOTheoCongViecRieng
+        );
+    }
+
     document.addEventListener(
         "keydown",
         function (event) {
@@ -1536,15 +2157,21 @@ function ganSuKienKeHoachTuan() {
     );
 }
 
+
 /* =========================
    HIỂN THỊ LỊCH TUẦN
 ========================= */
+
 async function hienThiLichTuan() {
     const scheduleElement =
-        document.getElementById("weekSchedule");
+        document.getElementById(
+            "weekSchedule"
+        );
 
     const rangeElement =
-        document.getElementById("weekRange");
+        document.getElementById(
+            "weekRange"
+        );
 
     if (!scheduleElement || !rangeElement) {
         return;
@@ -1559,9 +2186,9 @@ async function hienThiLichTuan() {
     `;
 
     const currentMonday =
-    layNgayThuHai(
-        layNgayLichGocHienTai()
-    );
+        layNgayThuHai(
+            layNgayLichGocHienTai()
+        );
 
     const selectedMonday =
         themNgay(
@@ -1570,7 +2197,10 @@ async function hienThiLichTuan() {
         );
 
     const selectedSunday =
-        themNgay(selectedMonday, 6);
+        themNgay(
+            selectedMonday,
+            6
+        );
 
     const weekRangeText =
         dinhDangKhoangTuan(
@@ -1579,12 +2209,12 @@ async function hienThiLichTuan() {
         );
 
     rangeElement.innerHTML =
-    weekOffset === 0
-        ? `${weekRangeText}
-           <span class="current-week-label">
-               (Tuần này)
-           </span>`
-        : weekRangeText;
+        weekOffset === 0
+            ? `${weekRangeText}
+               <span class="current-week-label">
+                   (Tuần này)
+               </span>`
+            : weekRangeText;
 
     try {
         const [
@@ -1592,6 +2222,7 @@ async function hienThiLichTuan() {
             dailyPlans
         ] = await Promise.all([
             layTatCaCauHinhCaLam(),
+
             layKeHoachNgayTrongKhoang(
                 selectedMonday,
                 selectedSunday
@@ -1599,7 +2230,9 @@ async function hienThiLichTuan() {
         ]);
 
         const dailyPlanMap =
-            taoBanDoKeHoachNgay(dailyPlans);
+            taoBanDoKeHoachNgay(
+                dailyPlans
+            );
 
         let weekHTML = "";
 
@@ -1624,7 +2257,9 @@ async function hienThiLichTuan() {
                 );
 
             const dailyPlan =
-                dailyPlanMap.get(planDate) || null;
+                dailyPlanMap.get(
+                    planDate
+                ) || null;
 
             const selectedShift =
                 dailyPlan

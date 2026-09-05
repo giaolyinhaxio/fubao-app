@@ -18,7 +18,125 @@
 
     <meta name="apple-mobile-web-app-title" content="FuBao">
 
-    <link rel="stylesheet" href="style.css?v=58">
+    <link rel="stylesheet" href="style.css?v=60">
+
+    <style>
+        .schedule-item-type-grid,
+        .pomodoro-grid,
+        .personal-time-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .study-slot-modal select,
+        .study-slot-modal textarea,
+        .study-slot-modal output {
+            width: 100%;
+            min-height: 48px;
+            padding: 11px 13px;
+            border: 1px solid #ead4dd;
+            border-radius: 14px;
+            outline: none;
+            color: #513e47;
+            font: inherit;
+            background-color: #fff;
+            box-sizing: border-box;
+        }
+
+        .study-slot-modal output {
+            display: flex;
+            align-items: center;
+            font-weight: 800;
+            background: #fff5f8;
+        }
+
+        .study-slot-modal textarea {
+            min-height: 84px;
+            resize: vertical;
+        }
+
+        .schedule-form-section.is-hidden,
+        .form-group.is-hidden {
+            display: none !important;
+        }
+
+        .pomodoro-summary {
+            margin: -4px 0 15px;
+            color: #9b7485;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .week-plan-group + .week-plan-group {
+            margin-top: 14px;
+            padding-top: 13px;
+            border-top: 1px dashed #e6cbd7;
+        }
+
+        .week-plan-group-title {
+            margin: 0 0 8px;
+            color: #9b7485;
+            font-size: 11px;
+            font-weight: 850;
+            letter-spacing: 0.12em;
+        }
+
+        .week-personal-item {
+            background-color: rgba(237, 247, 242, 0.9) !important;
+        }
+
+        .week-study-item.custom {
+            padding-right: 70px !important;
+        }
+
+        .week-study-item small {
+            grid-column: 2;
+            color: #987d89;
+            font-size: 10px;
+            line-height: 1.35;
+        }
+
+        .edit-study-slot-button,
+        .delete-study-slot-button {
+            position: absolute;
+            top: 50%;
+            width: 26px;
+            height: 26px;
+            padding: 0;
+            border: 0;
+            border-radius: 50%;
+            color: #966579;
+            font: inherit;
+            line-height: 26px;
+            background: rgba(255, 255, 255, 0.9);
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+
+        .edit-study-slot-button {
+            right: 39px;
+            font-size: 13px;
+        }
+
+        .delete-study-slot-button {
+            right: 8px;
+            font-size: 18px;
+        }
+
+        @media (max-width: 600px) {
+            .schedule-item-type-grid,
+            .pomodoro-grid,
+            .personal-time-grid {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .week-study-item small {
+                grid-column: auto;
+            }
+        }
+    </style>
 </head>
 
 <body class="week-page">
@@ -70,7 +188,7 @@
                         <tr>
                             <th>Ngày</th>
                             <th>Công việc</th>
-                            <th>Học tập</th>
+                            <th>Kế hoạch</th>
                         </tr>
                     </thead>
 
@@ -88,7 +206,7 @@
 
     </div>
 
-    <!-- Cửa sổ thêm giờ tự học -->
+    <!-- Cửa sổ thêm hoặc sửa lịch học và việc riêng -->
     <div class="modal-overlay" id="studySlotModal">
         <section class="shift-modal study-slot-modal">
 
@@ -100,7 +218,7 @@
                         THÊM VÀO LỊCH
                     </p>
 
-                    <h2>Giờ tự học</h2>
+                    <h2 id="studySlotModalTitle">Thêm kế hoạch</h2>
 
                     <p id="studySlotDateLabel">
                         Chưa chọn ngày
@@ -116,37 +234,98 @@
 
                 <input id="studySlotDate" name="studySlotDate" type="hidden">
 
-                <div class="study-time-grid">
+                <input id="studySlotId" name="studySlotId" type="hidden">
 
-                    <div class="form-group">
-                        <label for="studyStartTime">
-                            Bắt đầu
-                        </label>
+                <div class="form-group">
+                    <label for="scheduleItemType">Loại kế hoạch</label>
 
-                        <input id="studyStartTime" name="studyStartTime" type="time" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="studyEndTime">
-                            Kết thúc
-                        </label>
-
-                        <input id="studyEndTime" name="studyEndTime" type="time" required>
-                    </div>
-
+                    <select id="scheduleItemType" name="scheduleItemType">
+                        <option value="study">Học tập</option>
+                        <option value="personal">Việc riêng</option>
+                    </select>
                 </div>
+
+                <section class="schedule-form-section" id="studyScheduleFields">
+
+                    <div class="pomodoro-grid">
+                        <div class="form-group">
+                            <label for="studyStartTime">Bắt đầu</label>
+
+                            <input id="studyStartTime" name="studyStartTime" type="time">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="pomodoroSessions">Số ca học</label>
+
+                            <select id="pomodoroSessions" name="pomodoroSessions">
+                                <option value="2">2 ca</option>
+                                <option value="3">3 ca</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Giờ kết thúc tự động</label>
+                        <output id="studyEndTimeText">--:--</output>
+                    </div>
+
+                    <p class="pomodoro-summary" id="pomodoroSummary">
+                        Mỗi ca gồm 25 phút học và 5 phút nghỉ.
+                    </p>
+
+                    <div class="form-group">
+                        <label for="studyTitle">Nội dung học</label>
+
+                        <input id="studyTitle" name="studyTitle" type="text" value="Tự học N5" maxlength="80">
+                    </div>
+
+                </section>
+
+                <section class="schedule-form-section is-hidden" id="personalScheduleFields">
+
+                    <div class="form-group">
+                        <label for="personalPreset">Công việc</label>
+
+                        <select id="personalPreset" name="personalPreset">
+                            <option value="church">Đi lễ</option>
+                            <option value="running">Chạy bộ</option>
+                            <option value="shopping">Đi mua đồ</option>
+                            <option value="friends">Hẹn bạn bè</option>
+                            <option value="other">Việc cá nhân khác</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group is-hidden" id="personalCustomTitleGroup">
+                        <label for="personalCustomTitle">Tên công việc</label>
+
+                        <input id="personalCustomTitle" name="personalCustomTitle" type="text" maxlength="80" placeholder="Nhập tên công việc">
+                    </div>
+
+                    <div class="personal-time-grid">
+                        <div class="form-group">
+                            <label for="personalStartTime">Bắt đầu</label>
+
+                            <input id="personalStartTime" name="personalStartTime" type="time">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="personalEndTime">Kết thúc</label>
+
+                            <input id="personalEndTime" name="personalEndTime" type="time">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="personalNote">Ghi chú (không bắt buộc)</label>
+
+                        <textarea id="personalNote" name="personalNote" maxlength="200" placeholder="Ví dụ: địa điểm, đồ cần mang..."></textarea>
+                    </div>
+
+                </section>
 
                 <p class="study-timezone-help" id="studyTimezoneHelp">
                     Nhập giờ theo múi giờ Việt Nam. App sẽ tự quy đổi khi hiển thị.
                 </p>
-
-                <div class="form-group">
-                    <label for="studyTitle">
-                        Nội dung học
-                    </label>
-
-                    <input id="studyTitle" name="studyTitle" type="text" value="Tự học N5" maxlength="80" required>
-                </div>
 
                 <button class="save-shift-button" id="saveStudySlotButton" type="submit">
                     ＋ Thêm vào lịch
@@ -160,7 +339,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase-config.js"></script>
     <script src="auth-guard.js"></script>
-    <script src="week.js?v=28"></script>
+    <script src="week.js?v=29"></script>
     <script src="pwa.js"></script>
 </body>
 
