@@ -7,11 +7,11 @@
 
     <meta name="theme-color" content="#eef9ff">
 
-    <title>PoQy · Mục tiêu chung</title>
+    <title>PoQy · Goal chung</title>
 
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="assets/css/style.css?v=60">
-    <link rel="stylesheet" href="assets/css/poqy.css?v=2">
+    <link rel="stylesheet" href="assets/css/poqy.css?v=1">
 </head>
 
 <body class="together-page poqy-page">
@@ -19,8 +19,8 @@
     <main class="poqy-shell">
 
         <nav class="poqy-topbar">
-            <a class="poqy-back" href="index.html">
-                ‹ Trang chủ
+            <a class="poqy-back" href="chung-minh.html">
+                ‹ Mục tiêu
             </a>
 
             <button class="poqy-icon-button" id="refreshGoalButton" type="button" aria-label="Làm mới">
@@ -43,7 +43,7 @@
             <h2>Chưa có mục tiêu chung</h2>
 
             <p>
-                Tạo mục tiêu đầu tiên để cùng theo dõi countdown,
+                Tạo goal đầu tiên để cùng theo dõi countdown,
                 chi phí, checklist và các mốc quan trọng.
             </p>
 
@@ -52,34 +52,15 @@
             </button>
         </section>
 
-        <section class="poqy-goal-overview hidden" id="goalOverview">
-
-            <div class="poqy-toolbar">
-
-                <div>
-                    <small class="poqy-section-label">
-                        MỤC TIÊU CHUNG
-                    </small>
-
-                    <h2>Các mục tiêu</h2>
-                </div>
-
-                <button class="poqy-primary" id="createGoalButton" type="button">
-                    ＋ Mục tiêu mới
-                </button>
-
-            </div>
-
-            <div class="poqy-goal-grid" id="goalCardList">
-            </div>
-
-        </section>
-
-        <div class="hidden" id="goalWorkspace" hidden>
+        <div class="hidden" id="goalWorkspace">
 
             <div class="poqy-toolbar">
                 <select id="goalSelect" aria-label="Chọn mục tiêu">
                 </select>
+
+                <button class="poqy-primary" id="createGoalButton" type="button">
+                    ＋ Mục tiêu mới
+                </button>
             </div>
 
             <section class="poqy-hero" id="goalHero">
@@ -708,7 +689,7 @@
     </script>
 
     <script src="assets/js/core/auth-guard.js"></script>
-    <script src="assets/js/poqy/poqy.js?v=4"></script>
+    <script src="assets/js/poqy/poqy-detail.js?v=1"></script>
     <script src="assets/js/core/pwa.js"></script>
 
 </body>

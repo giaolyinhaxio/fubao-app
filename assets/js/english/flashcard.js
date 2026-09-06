@@ -29,7 +29,7 @@ const urlParameters =
 
 const vocabularyMode =
     urlParameters.get("mode") ===
-    "review"
+        "review"
         ? "review"
         : "new";
 
@@ -144,12 +144,91 @@ async function taiDanhSachTuVung() {
     vocabularyList =
         data || [];
 
+    if (vocabularyMode === "review") {
+        vocabularyList =
+            xaoTronDanhSachTu(
+                vocabularyList
+            );
+
+        const lastFirstWordId =
+            localStorage.getItem(
+                "fubao_last_review_first_word"
+            );
+
+        if (
+            vocabularyList.length > 1 &&
+            String(vocabularyList[0].id) ===
+            lastFirstWordId
+        ) {
+            const replacementIndex =
+                1 +
+                Math.floor(
+                    Math.random() *
+                    (
+                        vocabularyList.length -
+                        1
+                    )
+                );
+
+            [
+                vocabularyList[0],
+                vocabularyList[
+                replacementIndex
+                ]
+            ] = [
+                    vocabularyList[
+                    replacementIndex
+                    ],
+                    vocabularyList[0]
+                ];
+        }
+
+        if (vocabularyList.length > 0) {
+            localStorage.setItem(
+                "fubao_last_review_first_word",
+                String(
+                    vocabularyList[0].id
+                )
+            );
+        }
+    }
+
     currentVocabularyIndex = 0;
 
     isFlashcardFlipped = false;
 
     repeatedVocabularyIds =
         new Set();
+}
+
+/* Xáo trộn thứ tự từ khi ôn tập */
+function xaoTronDanhSachTu(list) {
+    const shuffledList = [
+        ...list
+    ];
+
+    for (
+        let index =
+            shuffledList.length - 1;
+        index > 0;
+        index -= 1
+    ) {
+        const randomIndex =
+            Math.floor(
+                Math.random() *
+                (index + 1)
+            );
+
+        [
+            shuffledList[index],
+            shuffledList[randomIndex]
+        ] = [
+                shuffledList[randomIndex],
+                shuffledList[index]
+            ];
+    }
+
+    return shuffledList;
 }
 
 
@@ -234,7 +313,7 @@ function ganSuKienFlashcard() {
 function hienThiFlashcard() {
     const vocabulary =
         vocabularyList[
-            currentVocabularyIndex
+        currentVocabularyIndex
         ];
 
 
@@ -367,7 +446,7 @@ function phatAmTuHienTai() {
 
     const vocabulary =
         vocabularyList[
-            currentVocabularyIndex
+        currentVocabularyIndex
         ];
 
 
@@ -405,7 +484,7 @@ async function chuyenSangTuTiepTheo(
     try {
         const vocabulary =
             vocabularyList[
-                currentVocabularyIndex
+            currentVocabularyIndex
             ];
 
 

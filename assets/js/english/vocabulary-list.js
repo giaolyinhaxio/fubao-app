@@ -4,7 +4,28 @@ let currentVocabularyPage = 1;
 
 let currentSearchText = "";
 
-let currentStatusFilter = "all";
+const allowedStatusFilters = [
+    "all",
+    "studied",
+    "review",
+    "favorite",
+    "new",
+    "again",
+    "learning",
+    "known"
+];
+
+const requestedStatusFilter =
+    new URLSearchParams(
+        window.location.search
+    ).get("status");
+
+let currentStatusFilter =
+    allowedStatusFilters.includes(
+        requestedStatusFilter
+    )
+        ? requestedStatusFilter
+        : "all";
 
 let totalVocabularyCount = 0;
 
@@ -12,6 +33,15 @@ let totalVocabularyCount = 0;
 document.addEventListener(
     "DOMContentLoaded",
     async function () {
+        const statusFilter =
+            document.getElementById(
+                "vocabularyStatusFilter"
+            );
+
+        if (statusFilter) {
+            statusFilter.value =
+                currentStatusFilter;
+        }
         const countElement =
             document.getElementById(
                 "vocabularyListCount"
@@ -180,7 +210,7 @@ async function taiDanhSachTrongKho() {
             data,
             error
         } = await supabaseClient.rpc(
-            "get_vocabulary_list_v2",
+            "get_vocabulary_list",
             {
                 p_search:
                     currentSearchText,

@@ -1,4 +1,4 @@
-const CACHE_NAME = "fubao-v18";
+const CACHE_NAME = "fubao-v19";
 
 const APP_FILES = [
     "./",
@@ -31,6 +31,8 @@ const APP_FILES = [
     "./assets/js/core/supabase-config.js",
     "./assets/js/diquy/week.js",
     "./assets/js/core/pwa.js",
+    "./poqy-detail.html",
+    "./assets/js/poqy/poqy-detail.js",
 
     "./manifest.json",
     "./assets/icons/icon.svg",

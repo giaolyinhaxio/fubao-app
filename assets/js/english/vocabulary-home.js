@@ -212,3 +212,41 @@ function hienThiLoiThongKe() {
             "Chưa tải được kết quả hôm nay.";
     }
 }
+
+/* Mở danh sách từ khi nhấn vào thẻ thống kê */
+document.addEventListener("DOMContentLoaded", function () {
+    const statisticCards =
+        document.querySelectorAll(
+            "[data-list-url]"
+        );
+
+    statisticCards.forEach(function (card) {
+        function openVocabularyList() {
+            const listUrl =
+                card.dataset.listUrl;
+
+            if (listUrl) {
+                window.location.href =
+                    listUrl;
+            }
+        }
+
+        card.addEventListener(
+            "click",
+            openVocabularyList
+        );
+
+        card.addEventListener(
+            "keydown",
+            function (event) {
+                if (
+                    event.key === "Enter" ||
+                    event.key === " "
+                ) {
+                    event.preventDefault();
+                    openVocabularyList();
+                }
+            }
+        );
+    });
+});

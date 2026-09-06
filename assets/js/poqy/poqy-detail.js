@@ -263,7 +263,24 @@ async function taiPoQy() {
             return;
         }
 
-        hienThiDanhSachMucTieu();
+        const goalIdFromUrl =
+            new URLSearchParams(
+                window.location.search
+            ).get("id");
+
+        const savedId =
+            goalIdFromUrl ||
+            localStorage.getItem(
+                POQY_SELECTED_GOAL_KEY
+            );
+
+        const selectedGoal =
+            poqyGoals.find(function (goal) {
+                return String(goal.id) ===
+                    String(savedId);
+            }) || poqyGoals[0];
+
+        await chonGoal(selectedGoal.id);
 
     } catch (error) {
         console.error(
@@ -273,26 +290,6 @@ async function taiPoQy() {
 
         hienThiLoiTai(error);
     }
-}
-
-function hienThiDanhSachMucTieu() {
-    layPhanTu("goalLoading")
-        .classList
-        .add("hidden");
-
-    layPhanTu("goalEmpty")
-        .classList
-        .add("hidden");
-
-    layPhanTu("goalWorkspace")
-        .classList
-        .add("hidden");
-
-    layPhanTu("goalOverview")
-        .classList
-        .remove("hidden");
-
-    capNhatDanhSachGoal();
 }
 
 function hienThiTrangThaiTai(isLoading) {
@@ -305,10 +302,6 @@ function hienThiTrangThaiTai(isLoading) {
         .add("hidden");
 
     layPhanTu("goalWorkspace")
-        .classList
-        .add("hidden");
-
-    layPhanTu("goalOverview")
         .classList
         .add("hidden");
 }
@@ -325,10 +318,6 @@ function hienThiGoalTrong() {
     layPhanTu("goalEmpty")
         .classList
         .remove("hidden");
-
-    layPhanTu("goalOverview")
-        .classList
-        .add("hidden");
 }
 
 function hienThiLoiTai(error) {
@@ -366,93 +355,37 @@ async function chonGoal(goalId) {
         goalId
     );
 
+    window.history.replaceState(
+        null,
+        "",
+        `poqy-detail.html?id=${encodeURIComponent(goalId)}`
+    );
+
     capNhatDanhSachGoal();
 
     await taiDuLieuGoal(goalId, true);
 }
 
 function capNhatDanhSachGoal() {
-    const goalCardList =
-        layPhanTu("goalCardList");
+    const select =
+        layPhanTu("goalSelect");
 
-    if (!goalCardList) {
-        return;
-    }
-
-    goalCardList.innerHTML =
+    select.innerHTML =
         poqyGoals.map(function (goal) {
-            const countdown =
-                tinhCountdown(
-                    goal.target_date
-                );
-
-            const progress = Math.min(
-                100,
-                Math.max(
-                    0,
-                    Number(goal.progress || 0)
-                )
-            );
-
-            const coverContent =
-                goal.cover_url
-                    ? `
-                        <img
-                            class="poqy-goal-card-cover"
-                            src="${baoVeHTML(goal.cover_url)}"
-                            alt=""
-                            loading="lazy">
-                    `
-                    : `
-                        <div class="poqy-goal-card-placeholder">
-                            ${baoVeHTML(goal.emoji || "🎯")}
-                        </div>
-                    `;
+            const selected =
+                goal.id === poqyCurrentGoal?.id
+                    ? "selected"
+                    : "";
 
             return `
-                <a
-                    class="poqy-goal-card"
-                    href="poqy-detail.html?id=${encodeURIComponent(goal.id)}">
+                <option
+                    value="${baoVeHTML(goal.id)}"
+                    ${selected}>
 
-                    ${coverContent}
+                    ${baoVeHTML(goal.emoji || "🎯")}
+                    ${baoVeHTML(goal.title)}
 
-                    <div class="poqy-goal-card-content">
-
-                        <div class="poqy-goal-card-heading">
-                            <span>
-                                ${baoVeHTML(goal.emoji || "🎯")}
-                            </span>
-
-                            <h3>
-                                ${baoVeHTML(goal.title)}
-                            </h3>
-                        </div>
-
-                        <strong class="poqy-goal-card-countdown">
-                            ${baoVeHTML(countdown.title)}
-                        </strong>
-
-                        <p>
-                            ${baoVeHTML(
-                dinhDangNgay(goal.target_date)
-            )}
-                        </p>
-
-                        <div class="poqy-goal-card-progress">
-                            <span style="width: ${progress}%"></span>
-                        </div>
-
-                        <small>
-                            Tiến độ ${progress}%
-                        </small>
-
-                    </div>
-
-                    <span class="poqy-goal-card-arrow">
-                        ›
-                    </span>
-
-                </a>
+                </option>
             `;
         }).join("");
 }

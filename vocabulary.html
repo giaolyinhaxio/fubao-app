@@ -18,7 +18,7 @@
 
     <meta name="apple-mobile-web-app-title" content="FuBao">
 
-    <link rel="stylesheet" href="assets/css/style.css?v=60">
+    <link rel="stylesheet" href="assets/css/style.css?v=63">
 </head>
 
 <body class="tioong-page vocabulary-home-page">
@@ -42,47 +42,30 @@
             </span>
         </section>
 
-        <a class="vocabulary-list-link" href="vocabulary-list.html">
-
-            <span>🔎</span>
-
-            <div>
-                <strong>Danh sách từ vựng</strong>
-
-                <small>
-                    Xem và tìm kiếm trong kho từ
-                </small>
-            </div>
-
-            <b>›</b>
-        </a>
-
         <section class="vocabulary-statistics">
-
-            <article>
+            <a class="vocabulary-statistics-link total-statistics-link" href="vocabulary-list.html?status=all">
                 <strong id="totalVocabularyCount">
                     ...
                 </strong>
 
                 <span>Tổng số từ</span>
-            </article>
+            </a>
 
-            <article>
+            <a class="vocabulary-statistics-link studied-statistics-link" href="vocabulary-list.html?status=studied">
                 <strong id="studiedVocabularyCount">
                     ...
                 </strong>
 
                 <span>Đã học</span>
-            </article>
+            </a>
 
-            <article>
+            <a class="vocabulary-statistics-link review-statistics-link" href="vocabulary-list.html?status=review">
                 <strong id="dueVocabularyCount">
                     ...
                 </strong>
 
                 <span>Cần ôn</span>
-            </article>
-
+            </a>
         </section>
 
         <section class="vocabulary-today-result">
@@ -171,7 +154,7 @@
 
     <script src="assets/js/core/auth-guard.js"></script>
 
-    <script src="assets/js/english/vocabulary-home.js?v=2"></script>
+    <script src="assets/js/english/vocabulary-home.js?v=3"></script>
 
     <script src="assets/js/core/pwa.js"></script>
 
