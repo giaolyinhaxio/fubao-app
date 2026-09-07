@@ -18,7 +18,7 @@
 
     <meta name="apple-mobile-web-app-title" content="FuBao">
 
-    <link rel="stylesheet" href="assets/css/style.css?v=42">
+    <link rel="stylesheet" href="assets/css/style.css?v=43">
 
     <link rel="icon" type="image/svg+xml" href="assets/icons/bear-favicon.svg?v=2">
 </head>
@@ -195,20 +195,33 @@
                 <input id="readingTitleInput" type="text" placeholder="Ví dụ: Introducing Prompt Optimization" required>
 
 
-                <label for="readingEnglishInput">
-                    Nội dung tiếng Anh
+                <label for="readingCsvInput">
+                    File CSV
                 </label>
 
-                <textarea id="readingEnglishInput" rows="12" placeholder="Dán văn bản tiếng Anh vào đây..."
-                    required></textarea>
+                <input id="readingCsvInput" type="file" accept=".csv,text/csv">
 
+                <div class="reading-csv-guide">
+                    <strong>Định dạng file:</strong>
 
-                <label for="readingVietnameseInput">
-                    Bản dịch tiếng Việt
-                </label>
+                    <span>
+                        CSV gồm 2 cột
+                        <code>english</code> và
+                        <code>vietnamese</code>.
+                    </span>
 
-                <textarea id="readingVietnameseInput" rows="12"
-                    placeholder="Dán bản dịch tiếng Việt vào đây..."></textarea>
+                    <span>
+                        Mỗi dòng là một cặp câu Anh – Việt.
+                    </span>
+
+                    <span>
+                        Khi chỉnh sửa, không cần chọn file nếu chỉ muốn đổi tiêu đề.
+                    </span>
+                </div>
+
+                <p class="reading-csv-info" id="readingCsvInfo">
+                    Chưa chọn file CSV.
+                </p>
 
 
                 <p class="reading-form-message" id="readingFormMessage"></p>
@@ -238,7 +251,7 @@
 
     <script src="assets/js/core/auth-guard.js"></script>
 
-    <script src="assets/js/english/reading-list.js?v=4"></script>
+    <script src="assets/js/english/reading-list.js?v=5"></script>
 
     <script src="assets/js/core/pwa.js"></script>
 

@@ -18,7 +18,7 @@
 
     <meta name="apple-mobile-web-app-title" content="FuBao">
 
-    <link rel="stylesheet" href="assets/css/style.css?v=41">
+    <link rel="stylesheet" href="assets/css/style.css?v=43">
 
     <link rel="icon" type="image/svg+xml" href="assets/icons/bear-favicon.svg?v=2">
 </head>
@@ -115,39 +115,29 @@
             <section class="reading-language-section">
 
                 <header class="reading-language-header">
-                    <div>
-                        <p>ENGLISH</p>
 
-                        <h2>Nội dung tiếng Anh</h2>
+                    <div>
+                        <p>ENGLISH · TIẾNG VIỆT</p>
+
+                        <h2>Nội dung bài đọc</h2>
                     </div>
 
-                    <button id="readFromBeginningButton" type="button">
-                        ↻ Đọc từ đầu
-                    </button>
+                    <div class="reading-language-actions">
+
+                        <button id="readFromBeginningButton" type="button">
+                            ↻ Đọc từ đầu
+                        </button>
+
+                        <button id="toggleTranslationButton" type="button" aria-expanded="true">
+                            Ẩn bản dịch
+                        </button>
+
+                    </div>
+
                 </header>
 
 
-                <article class="reading-english-content" id="readingEnglishContent"></article>
-
-            </section>
-
-
-            <section class="reading-language-section reading-translation-section" id="readingVietnameseSection">
-
-                <header class="reading-language-header">
-                    <div>
-                        <p>TIẾNG VIỆT</p>
-
-                        <h2>Bản dịch</h2>
-                    </div>
-
-                    <button id="toggleTranslationButton" type="button" aria-expanded="true">
-                        Ẩn bản dịch
-                    </button>
-                </header>
-
-
-                <article class="reading-vietnamese-content" id="readingVietnameseContent"></article>
+                <article class="reading-paired-content" id="readingEnglishContent"></article>
 
             </section>
 
@@ -162,7 +152,7 @@
 
     <script src="assets/js/core/auth-guard.js"></script>
 
-    <script src="assets/js/english/reading.js?v=2"></script>
+    <script src="assets/js/english/reading.js?v=3"></script>
 
     <script src="assets/js/core/pwa.js"></script>
 

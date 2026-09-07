@@ -105,7 +105,6 @@ async function taiBaiDoc() {
             window.location.search
         ).get("id");
 
-
     if (!readingId) {
         hienThiLoi(
             "Không tìm thấy mã bài đọc."
@@ -114,29 +113,69 @@ async function taiBaiDoc() {
         return;
     }
 
-
     try {
-        const {
-            data,
-            error
-        } = await supabaseClient
-            .from("english_readings")
-            .select(`
-                id,
-                title,
-                english_content,
-                vietnamese_translation
-            `)
-            .eq("id", readingId)
-            .single();
+        const [
+            readingResult,
+            sentenceResult
+        ] = await Promise.all([
+            supabaseClient
+                .from(
+                    "english_readings"
+                )
+                .select(`
+                    id,
+                    title,
+                    english_content,
+                    vietnamese_translation
+                `)
+                .eq(
+                    "id",
+                    readingId
+                )
+                .single(),
 
+            supabaseClient
+                .from(
+                    "english_reading_sentences"
+                )
+                .select(`
+                    sentence_order,
+                    english,
+                    vietnamese
+                `)
+                .eq(
+                    "reading_id",
+                    readingId
+                )
+                .order(
+                    "sentence_order",
+                    {
+                        ascending: true
+                    }
+                )
+        ]);
 
-        if (error) {
-            throw error;
+        if (readingResult.error) {
+            throw readingResult.error;
         }
 
+        if (sentenceResult.error) {
+            throw sentenceResult.error;
+        }
 
-        currentReading = data;
+        const savedSentences =
+            sentenceResult.data || [];
+
+        currentReading = {
+            ...readingResult.data,
+
+            sentences:
+                savedSentences.length
+                    ? savedSentences
+                    : taoDanhSachCauTuDuLieuCu(
+                        readingResult.data
+                    )
+        };
 
         hienThiBaiDoc();
 
@@ -147,10 +186,52 @@ async function taiBaiDoc() {
         );
 
         hienThiLoi(
-            `Không thể tải bài đọc: ${error.message
-            }`
+            `Không thể tải bài đọc: ${error.message}`
         );
     }
+}
+
+
+/*
+ * Dùng cho các bài cũ được tạo trước khi có chức năng CSV.
+ * Sau khi upload CSV mới, app sẽ dùng dữ liệu trong bảng câu.
+ */
+function taoDanhSachCauTuDuLieuCu(
+    reading
+) {
+    const englishSentences =
+        tachThanhDoanVan(
+            reading.english_content
+        ).flatMap(
+            function (paragraph) {
+                return tachThanhCau(
+                    paragraph
+                );
+            }
+        );
+
+    const vietnameseSentences =
+        tachThanhDoanVan(
+            reading.vietnamese_translation
+        );
+
+    return englishSentences.map(
+        function (
+            english,
+            index
+        ) {
+            return {
+                sentence_order:
+                    index + 1,
+
+                english,
+
+                vietnamese:
+                    vietnameseSentences[index] ||
+                    ""
+            };
+        }
+    );
 }
 
 
@@ -160,36 +241,32 @@ async function taiBaiDoc() {
 
 function hienThiBaiDoc() {
     document
-        .getElementById("readingLoading")
+        .getElementById(
+            "readingLoading"
+        )
         .classList
         .add("hidden");
 
-
     document
-        .getElementById("readingWorkspace")
+        .getElementById(
+            "readingWorkspace"
+        )
         .classList
         .remove("hidden");
 
-
     document
-        .getElementById("readingTitle")
+        .getElementById(
+            "readingTitle"
+        )
         .textContent =
         currentReading.title;
-
 
     document.title =
         `${currentReading.title} | FuBao`;
 
-
-    hienThiNoiDungTiengAnh(
-        currentReading.english_content
+    hienThiCacCapCau(
+        currentReading.sentences || []
     );
-
-
-    hienThiBanDichTiengViet(
-        currentReading.vietnamese_translation
-    );
-
 
     capNhatTienDo(0);
 
@@ -197,101 +274,17 @@ function hienThiBaiDoc() {
 }
 
 
-function hienThiNoiDungTiengAnh(content) {
+function hienThiCacCapCau(sentences) {
     const container =
         document.getElementById(
             "readingEnglishContent"
         );
 
-
     container.replaceChildren();
 
     readingSentences = [];
 
-
-    const paragraphs =
-        tachThanhDoanVan(content);
-
-
-    paragraphs.forEach(
-        function (paragraphText) {
-            const paragraph =
-                document.createElement("p");
-
-
-            const sentences =
-                tachThanhCau(paragraphText);
-
-
-            sentences.forEach(
-                function (sentenceText) {
-                    const sentenceIndex =
-                        readingSentences.length;
-
-
-                    readingSentences.push(
-                        sentenceText
-                    );
-
-
-                    const sentenceElement =
-                        document.createElement(
-                            "span"
-                        );
-
-
-                    sentenceElement.className =
-                        "reading-sentence";
-
-
-                    sentenceElement.dataset.index =
-                        sentenceIndex;
-
-
-                    sentenceElement.textContent =
-                        sentenceText + " ";
-
-
-                    sentenceElement.addEventListener(
-                        "click",
-                        function () {
-                            docTuCau(
-                                sentenceIndex
-                            );
-                        }
-                    );
-
-
-                    paragraph.appendChild(
-                        sentenceElement
-                    );
-                }
-            );
-
-
-            container.appendChild(
-                paragraph
-            );
-        }
-    );
-}
-
-
-function hienThiBanDichTiengViet(content) {
-    const container =
-        document.getElementById(
-            "readingVietnameseContent"
-        );
-
-
-    container.replaceChildren();
-
-
-    const paragraphs =
-        tachThanhDoanVan(content);
-
-
-    if (paragraphs.length === 0) {
+    if (!sentences.length) {
         const emptyMessage =
             document.createElement("p");
 
@@ -299,7 +292,7 @@ function hienThiBanDichTiengViet(content) {
             "reading-translation-empty";
 
         emptyMessage.textContent =
-            "Bài đọc này chưa có bản dịch tiếng Việt.";
+            "Bài đọc này chưa có nội dung.";
 
         container.appendChild(
             emptyMessage
@@ -308,17 +301,107 @@ function hienThiBanDichTiengViet(content) {
         return;
     }
 
+    sentences.forEach(
+        function (sentence) {
+            const english =
+                String(
+                    sentence.english || ""
+                ).trim();
 
-    paragraphs.forEach(
-        function (paragraphText) {
-            const paragraph =
-                document.createElement("p");
+            const vietnamese =
+                String(
+                    sentence.vietnamese || ""
+                ).trim();
 
-            paragraph.textContent =
-                paragraphText;
+            if (!english) {
+                return;
+            }
+
+            const sentenceIndex =
+                readingSentences.length;
+
+            readingSentences.push(
+                english
+            );
+
+            const pair =
+                document.createElement(
+                    "div"
+                );
+
+            pair.className =
+                "reading-sentence-pair";
+
+            pair.dataset.index =
+                sentenceIndex;
+
+            pair.tabIndex = 0;
+
+            pair.setAttribute(
+                "role",
+                "button"
+            );
+
+            pair.setAttribute(
+                "aria-label",
+                `Đọc câu ${sentenceIndex + 1}`
+            );
+
+            const englishElement =
+                document.createElement(
+                    "p"
+                );
+
+            englishElement.className =
+                "reading-sentence-english";
+
+            englishElement.textContent =
+                english;
+
+            const vietnameseElement =
+                document.createElement(
+                    "p"
+                );
+
+            vietnameseElement.className =
+                "reading-sentence-vietnamese";
+
+            vietnameseElement.textContent =
+                vietnamese ||
+                "Chưa có bản dịch tiếng Việt.";
+
+            pair.append(
+                englishElement,
+                vietnameseElement
+            );
+
+            pair.addEventListener(
+                "click",
+                function () {
+                    docTuCau(
+                        sentenceIndex
+                    );
+                }
+            );
+
+            pair.addEventListener(
+                "keydown",
+                function (event) {
+                    if (
+                        event.key === "Enter" ||
+                        event.key === " "
+                    ) {
+                        event.preventDefault();
+
+                        docTuCau(
+                            sentenceIndex
+                        );
+                    }
+                }
+            );
 
             container.appendChild(
-                paragraph
+                pair
             );
         }
     );
@@ -806,7 +889,7 @@ function toSangCau(sentenceIndex) {
 
     const sentenceElement =
         document.querySelector(
-            `.reading-sentence[data-index="${sentenceIndex
+            `.reading-sentence-pair[data-index="${sentenceIndex
             }"]`
         );
 
@@ -992,29 +1075,28 @@ function capNhatTrangThaiDoc(message) {
 function batTatBanDich() {
     const content =
         document.getElementById(
-            "readingVietnameseContent"
+            "readingEnglishContent"
         );
-
 
     const button =
         document.getElementById(
             "toggleTranslationButton"
         );
 
-
     const willHide =
-        !content.hidden;
+        !content.classList.contains(
+            "hide-reading-translation"
+        );
 
-
-    content.hidden =
-        willHide;
-
+    content.classList.toggle(
+        "hide-reading-translation",
+        willHide
+    );
 
     button.textContent =
         willHide
             ? "Hiện bản dịch"
             : "Ẩn bản dịch";
-
 
     button.setAttribute(
         "aria-expanded",

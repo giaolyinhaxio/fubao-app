@@ -100,6 +100,13 @@ function attachEvents() {
         saveArticle
     );
 
+    getElement(
+        "readingCsvInput"
+    ).addEventListener(
+        "change",
+        handleReadingCsvChange
+    );
+
     document.addEventListener(
         "keydown",
         function (event) {
@@ -109,6 +116,229 @@ function attachEvents() {
             }
         }
     );
+}
+
+/* =========================
+   READING CSV
+========================= */
+
+async function handleReadingCsvChange(event) {
+    const file =
+        event.target.files[0];
+
+    const info =
+        getElement("readingCsvInfo");
+
+    info.classList.remove("error");
+
+    if (!file) {
+        info.textContent =
+            "Chưa chọn file CSV.";
+
+        return;
+    }
+
+    info.textContent =
+        "Đang kiểm tra file CSV...";
+
+    try {
+        const sentences =
+            await readReadingCsv(file);
+
+        info.textContent =
+            `Đã đọc ${sentences.length} cặp câu Anh – Việt từ file ${file.name}.`;
+
+    } catch (error) {
+        console.error(
+            "File CSV không hợp lệ:",
+            error
+        );
+
+        info.textContent =
+            error.message;
+
+        info.classList.add("error");
+
+        event.target.value = "";
+    }
+}
+
+
+async function readReadingCsv(file) {
+    const csvText =
+        await file.text();
+
+    const rows =
+        parseCsvText(csvText);
+
+    if (rows.length < 2) {
+        throw new Error(
+            "File CSV chưa có dữ liệu."
+        );
+    }
+
+    const headers =
+        rows[0].map(
+            function (header) {
+                return String(header || "")
+                    .replace(/^\uFEFF/, "")
+                    .trim()
+                    .toLowerCase();
+            }
+        );
+
+    const englishIndex =
+        headers.indexOf("english");
+
+    const vietnameseIndex =
+        headers.indexOf("vietnamese");
+
+    if (
+        englishIndex === -1 ||
+        vietnameseIndex === -1
+    ) {
+        throw new Error(
+            "CSV phải có 2 cột english và vietnamese."
+        );
+    }
+
+    const sentences = [];
+
+    for (
+        let rowIndex = 1;
+        rowIndex < rows.length;
+        rowIndex += 1
+    ) {
+        const row =
+            rows[rowIndex];
+
+        const english =
+            String(
+                row[englishIndex] || ""
+            ).trim();
+
+        const vietnamese =
+            String(
+                row[vietnameseIndex] || ""
+            ).trim();
+
+        if (
+            !english &&
+            !vietnamese
+        ) {
+            continue;
+        }
+
+        if (!english) {
+            throw new Error(
+                `Dòng ${rowIndex + 1} đang thiếu câu tiếng Anh.`
+            );
+        }
+
+        if (!vietnamese) {
+            throw new Error(
+                `Dòng ${rowIndex + 1} đang thiếu câu tiếng Việt.`
+            );
+        }
+
+        sentences.push({
+            english,
+            vietnamese
+        });
+    }
+
+    if (!sentences.length) {
+        throw new Error(
+            "File CSV không có cặp câu hợp lệ."
+        );
+    }
+
+    return sentences;
+}
+
+
+function parseCsvText(csvText) {
+    const source =
+        String(csvText || "")
+            .replace(/^\uFEFF/, "")
+            .replace(/\r\n?/g, "\n");
+
+    const rows = [];
+
+    let row = [];
+    let value = "";
+    let insideQuotes = false;
+
+    for (
+        let index = 0;
+        index < source.length;
+        index += 1
+    ) {
+        const character =
+            source[index];
+
+        if (insideQuotes) {
+            if (
+                character === '"' &&
+                source[index + 1] === '"'
+            ) {
+                value += '"';
+                index += 1;
+
+            } else if (
+                character === '"'
+            ) {
+                insideQuotes = false;
+
+            } else {
+                value += character;
+            }
+
+            continue;
+        }
+
+        if (character === '"') {
+            insideQuotes = true;
+
+        } else if (
+            character === ","
+        ) {
+            row.push(value);
+            value = "";
+
+        } else if (
+            character === "\n"
+        ) {
+            row.push(value);
+            rows.push(row);
+
+            row = [];
+            value = "";
+
+        } else {
+            value += character;
+        }
+    }
+
+    if (insideQuotes) {
+        throw new Error(
+            "File CSV có dấu ngoặc kép chưa được đóng."
+        );
+    }
+
+    row.push(value);
+
+    if (
+        row.some(
+            function (cell) {
+                return cell.trim() !== "";
+            }
+        )
+    ) {
+        rows.push(row);
+    }
+
+    return rows;
 }
 
 
@@ -1044,6 +1274,10 @@ function openArticleForm(
     ).textContent = "";
 
     getElement(
+        "readingCsvInfo"
+    ).classList.remove("error");
+
+    getElement(
         "readingId"
     ).value =
         article?.id || "";
@@ -1054,18 +1288,11 @@ function openArticleForm(
         article?.title || "";
 
     getElement(
-        "readingEnglishInput"
-    ).value =
+        "readingCsvInfo"
+    ).textContent =
         article
-            ?.english_content ||
-        "";
-
-    getElement(
-        "readingVietnameseInput"
-    ).value =
-        article
-            ?.vietnamese_translation ||
-        "";
+            ? "Không chọn file nếu chỉ muốn đổi tiêu đề. Chọn CSV mới sẽ thay toàn bộ nội dung bài."
+            : "Chưa chọn file CSV.";
 
     getElement(
         "readingFormTitle"
@@ -1099,29 +1326,92 @@ async function saveArticle(event) {
             "readingId"
         ).value;
 
+    const title =
+        getElement(
+            "readingTitleInput"
+        ).value.trim();
+
+    const csvFile =
+        getElement(
+            "readingCsvInput"
+        ).files[0];
+
+    const message =
+        getElement(
+            "readingFormMessage"
+        );
+
+    message.textContent = "";
+
+    if (!title) {
+        message.textContent =
+            "Vui lòng nhập tiêu đề.";
+
+        return;
+    }
+
+    if (
+        !id &&
+        !csvFile
+    ) {
+        message.textContent =
+            "Vui lòng chọn file CSV.";
+
+        return;
+    }
+
+    let sentences = null;
+
+    if (csvFile) {
+        try {
+            sentences =
+                await readReadingCsv(
+                    csvFile
+                );
+
+        } catch (error) {
+            message.textContent =
+                error.message;
+
+            return;
+        }
+    }
+
     const payload = {
         topic_id:
             topicId,
 
-        title:
-            getElement(
-                "readingTitleInput"
-            ).value.trim(),
-
-        english_content:
-            getElement(
-                "readingEnglishInput"
-            ).value.trim(),
-
-        vietnamese_translation:
-            getElement(
-                "readingVietnameseInput"
-            ).value.trim(),
+        title,
 
         updated_at:
             new Date()
                 .toISOString()
     };
+
+    /*
+     * Vẫn lưu nội dung tổng hợp trong bảng cũ.
+     * Phần này dùng để hiển thị nội dung xem trước
+     * và giữ tương thích với dữ liệu cũ.
+     */
+    if (sentences) {
+        payload.english_content =
+            sentences
+                .map(
+                    function (sentence) {
+                        return sentence.english;
+                    }
+                )
+                .join("\n");
+
+        payload.vietnamese_translation =
+            sentences
+                .map(
+                    function (sentence) {
+                        return sentence.vietnamese;
+                    }
+                )
+                .join("\n");
+    }
 
     if (!id) {
         const largestOrder =
@@ -1144,42 +1434,119 @@ async function saveArticle(event) {
             largestOrder + 1;
     }
 
-    if (
-        !payload.title ||
-        !payload.english_content
-    ) {
-        getElement(
-            "readingFormMessage"
-        ).textContent =
-            "Vui lòng nhập tiêu đề và nội dung tiếng Anh.";
-
-        return;
-    }
-
     setSaving(
         "readingForm",
         true,
         "Lưu bài đọc"
     );
 
+    let savedReadingId = id;
+    let createdReadingId = "";
+
     try {
-        const result =
-            id
-                ? await supabaseClient
+        if (id) {
+            const updateResult =
+                await supabaseClient
                     .from(
                         "english_readings"
                     )
                     .update(payload)
-                    .eq("id", id)
+                    .eq(
+                        "id",
+                        id
+                    );
 
-                : await supabaseClient
+            if (updateResult.error) {
+                throw updateResult.error;
+            }
+
+        } else {
+            const insertResult =
+                await supabaseClient
                     .from(
                         "english_readings"
                     )
-                    .insert(payload);
+                    .insert(payload)
+                    .select("id")
+                    .single();
 
-        if (result.error) {
-            throw result.error;
+            if (insertResult.error) {
+                throw insertResult.error;
+            }
+
+            savedReadingId =
+                insertResult.data.id;
+
+            createdReadingId =
+                insertResult.data.id;
+        }
+
+        /*
+         * Khi có CSV, ghi từng cặp câu
+         * vào bảng english_reading_sentences.
+         */
+        if (sentences) {
+            const sentenceRows =
+                sentences.map(
+                    function (
+                        sentence,
+                        index
+                    ) {
+                        return {
+                            reading_id:
+                                savedReadingId,
+
+                            sentence_order:
+                                index + 1,
+
+                            english:
+                                sentence.english,
+
+                            vietnamese:
+                                sentence.vietnamese
+                        };
+                    }
+                );
+
+            const sentenceResult =
+                await supabaseClient
+                    .from(
+                        "english_reading_sentences"
+                    )
+                    .upsert(
+                        sentenceRows,
+                        {
+                            onConflict:
+                                "reading_id,sentence_order"
+                        }
+                    );
+
+            if (sentenceResult.error) {
+                throw sentenceResult.error;
+            }
+
+            /*
+             * Nếu CSV mới ít câu hơn CSV cũ,
+             * xóa các câu thừa ở cuối.
+             */
+            const deleteExtraResult =
+                await supabaseClient
+                    .from(
+                        "english_reading_sentences"
+                    )
+                    .delete()
+                    .eq(
+                        "reading_id",
+                        savedReadingId
+                    )
+                    .gt(
+                        "sentence_order",
+                        sentences.length
+                    );
+
+            if (deleteExtraResult.error) {
+                throw deleteExtraResult.error;
+            }
         }
 
         closeArticleForm();
@@ -1192,9 +1559,23 @@ async function saveArticle(event) {
             error
         );
 
-        getElement(
-            "readingFormMessage"
-        ).textContent =
+        /*
+         * Nếu vừa tạo bài mới nhưng lưu câu lỗi,
+         * xóa bài mới để không còn bài trống.
+         */
+        if (createdReadingId) {
+            await supabaseClient
+                .from(
+                    "english_readings"
+                )
+                .delete()
+                .eq(
+                    "id",
+                    createdReadingId
+                );
+        }
+
+        message.textContent =
             error.message ||
             "Không thể lưu bài đọc.";
 

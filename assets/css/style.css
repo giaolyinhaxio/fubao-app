@@ -7437,3 +7437,184 @@ body.modal-open {
 .reading-move-down-button:disabled {
     opacity: 0.35;
 }
+
+/* ========================================
+   LUYỆN ĐỌC - CSV VÀ CẶP CÂU ANH VIỆT
+======================================== */
+
+.reading-csv-guide {
+    display: grid;
+    gap: 7px;
+    margin-top: 12px;
+    padding: 15px 17px;
+    border: 1px solid #dcece4;
+    border-radius: 16px;
+    color: #75636a;
+    background: #f2faf6;
+    font-size: 14px;
+    line-height: 1.55;
+}
+
+.reading-csv-guide strong {
+    color: #587565;
+}
+
+.reading-csv-guide code {
+    padding: 2px 6px;
+    border-radius: 6px;
+    color: #496655;
+    background: #e2f2e9;
+    font-weight: 800;
+}
+
+.reading-csv-info {
+    min-height: 22px;
+    margin: 10px 0 0;
+    color: #678071;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.reading-csv-info.error {
+    color: #c15475;
+}
+
+#readingCsvInput {
+    cursor: pointer;
+}
+
+#readingCsvInput::file-selector-button {
+    margin-right: 12px;
+    padding: 10px 14px;
+    border: 0;
+    border-radius: 11px;
+    color: #ffffff;
+    background: #82ae98;
+    font: inherit;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+
+/* NÚT TRÊN PHẦN NỘI DUNG */
+
+.reading-language-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 9px;
+}
+
+
+/* DANH SÁCH CẶP CÂU */
+
+.reading-paired-content {
+    display: grid;
+    gap: 14px;
+    padding-top: 20px;
+}
+
+.reading-sentence-pair {
+    padding: 19px 21px;
+    border: 1.5px solid #eadde2;
+    border-radius: 19px;
+    outline: none;
+    background: rgba(255, 255, 255, 0.78);
+    cursor: pointer;
+    transition:
+        border-color 0.16s ease,
+        background 0.16s ease,
+        box-shadow 0.16s ease,
+        transform 0.16s ease;
+}
+
+.reading-sentence-pair:hover {
+    border-color: #b9daca;
+    background: #f6fcf8;
+    transform: translateY(-1px);
+}
+
+.reading-sentence-pair:focus-visible {
+    border-color: #83b39b;
+    box-shadow:
+        0 0 0 4px rgba(131, 179, 155, 0.18);
+}
+
+.reading-sentence-pair.active-reading-sentence {
+    border-color: #83b69d;
+    background: #e5f6ed;
+    box-shadow:
+        0 10px 25px rgba(71, 111, 91, 0.15);
+}
+
+.reading-sentence-english {
+    margin: 0;
+    color: #493a40;
+    font-size: clamp(18px, 2.4vw, 22px);
+    font-weight: 650;
+    line-height: 1.7;
+}
+
+.reading-sentence-vietnamese {
+    margin: 10px 0 0;
+    padding-top: 10px;
+    border-top: 1px solid #e6eee9;
+    color: #806d75;
+    font-size: clamp(15px, 2vw, 18px);
+    line-height: 1.65;
+}
+
+.reading-paired-content.hide-reading-translation
+.reading-sentence-vietnamese {
+    display: none;
+}
+
+
+/* ĐIỆN THOẠI */
+
+@media (max-width: 700px) {
+    .reading-language-header {
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .reading-language-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        width: 100%;
+    }
+
+    .reading-language-actions button {
+        width: 100%;
+        min-height: 40px;
+        padding: 0 9px;
+        font-size: 12px;
+    }
+
+    .reading-paired-content {
+        gap: 11px;
+        padding-top: 15px;
+    }
+
+    .reading-sentence-pair {
+        padding: 15px 16px;
+        border-radius: 16px;
+    }
+
+    .reading-sentence-english {
+        font-size: 18px;
+        line-height: 1.65;
+    }
+
+    .reading-sentence-vietnamese {
+        margin-top: 8px;
+        padding-top: 8px;
+        font-size: 15px;
+        line-height: 1.6;
+    }
+
+    .reading-csv-guide {
+        padding: 13px 14px;
+        font-size: 13px;
+    }
+}
