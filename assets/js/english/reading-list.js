@@ -189,7 +189,7 @@ async function loadTopics() {
 
                         article_count:
                             articleCount[
-                                topic.id
+                            topic.id
                             ] || 0
                     };
                 }
@@ -205,8 +205,7 @@ async function loadTopics() {
 
         showMessage(
             "topicListContainer",
-            `Không thể tải chủ đề: ${
-                error.message
+            `Không thể tải chủ đề: ${error.message
             }`,
             true
         );
@@ -250,12 +249,11 @@ function renderTopics() {
 
             card.innerHTML = `
                 <div class="reading-topic-icon">
-                    ${
-                        escapeHtml(
-                            topic.emoji ||
-                            "📚"
-                        )
-                    }
+                    ${escapeHtml(
+                topic.emoji ||
+                "📚"
+            )
+                }
                 </div>
 
                 <div class="reading-topic-content">
@@ -266,18 +264,16 @@ function renderTopics() {
                     </h2>
 
                     <p>
-                        ${
-                            escapeHtml(
-                                topic.description ||
-                                "Chưa có mô tả"
-                            )
-                        }
+                        ${escapeHtml(
+                    topic.description ||
+                    "Chưa có mô tả"
+                )
+                }
                     </p>
 
                     <strong>
-                        ${
-                            topic.article_count
-                        } bài đọc
+                        ${topic.article_count
+                } bài đọc
                     </strong>
                 </div>
 
@@ -297,11 +293,10 @@ function renderTopics() {
                         Sửa
                     </button>
 
-                    ${
-                        topic.name ===
-                        "Chưa phân loại"
-                            ? ""
-                            : `
+                    ${topic.name ===
+                    "Chưa phân loại"
+                    ? ""
+                    : `
                                 <button
                                     class="reading-topic-delete"
                                     type="button"
@@ -309,7 +304,7 @@ function renderTopics() {
                                     Xóa
                                 </button>
                             `
-                    }
+                }
 
                 </div>
             `;
@@ -374,7 +369,7 @@ function renderTopics() {
                 function (event) {
                     if (
                         event.key ===
-                            "Enter" ||
+                        "Enter" ||
                         event.key === " "
                     ) {
                         event.preventDefault();
@@ -396,8 +391,7 @@ function renderTopics() {
 
 function openTopic(id) {
     window.location.href =
-        `reading-list.html?topic=${
-            encodeURIComponent(id)
+        `reading-list.html?topic=${encodeURIComponent(id)
         }`;
 }
 
@@ -445,6 +439,7 @@ async function loadTopicAndArticles() {
                     english_content,
                     vietnamese_translation,
                     topic_id,
+                    sort_order,
                     created_at,
                     updated_at
                 `)
@@ -453,9 +448,15 @@ async function loadTopicAndArticles() {
                     topicId
                 )
                 .order(
-                    "updated_at",
+                    "sort_order",
                     {
-                        ascending: false
+                        ascending: true
+                    }
+                )
+                .order(
+                    "created_at",
+                    {
+                        ascending: true
                     }
                 )
         ]);
@@ -486,8 +487,7 @@ async function loadTopicAndArticles() {
 
         showMessage(
             "readingListContainer",
-            `Không thể tải bài đọc: ${
-                error.message
+            `Không thể tải bài đọc: ${error.message
             }`,
             true
         );
@@ -537,9 +537,8 @@ function updateTopicHeading() {
     getElement(
         "readingListTitle"
     ).textContent =
-        `${
-            currentTopic.emoji ||
-            "📚"
+        `${currentTopic.emoji ||
+        "📚"
         } ${currentTopic.name}`;
 
     getElement(
@@ -594,28 +593,25 @@ function renderArticles() {
                 <div class="reading-list-card-content">
 
                     <span class="reading-list-card-label">
-                        BÀI LUYỆN ĐỌC ${
-                            index + 1
-                        }
+                        BÀI LUYỆN ĐỌC ${index + 1
+                }
                     </span>
 
                     <h2>
-                        ${
-                            escapeHtml(
-                                article.title
-                            )
-                        }
+                        ${escapeHtml(
+                    article.title
+                )
+                }
                     </h2>
 
                     <p>
-                        ${
-                            escapeHtml(
-                                createPreview(
-                                    article
-                                        .english_content
-                                )
-                            )
-                        }
+                        ${escapeHtml(
+                    createPreview(
+                        article
+                            .english_content
+                    )
+                )
+                }
                     </p>
 
                 </div>
@@ -642,6 +638,29 @@ function renderArticles() {
                     >
                         Xóa
                     </button>
+
+                    <button
+    class="reading-move-up-button"
+    type="button"
+    ${index === 0
+                    ? "disabled"
+                    : ""
+                }
+>
+    ↑ Đưa lên
+</button>
+
+<button
+    class="reading-move-down-button"
+    type="button"
+    ${index ===
+                    articles.length - 1
+                    ? "disabled"
+                    : ""
+                }
+>
+    ↓ Đưa xuống
+</button>
 
                 </div>
             `;
@@ -687,6 +706,42 @@ function renderArticles() {
                 }
             );
 
+            const moveUpButton =
+                card.querySelector(
+                    ".reading-move-up-button"
+                );
+
+            const moveDownButton =
+                card.querySelector(
+                    ".reading-move-down-button"
+                );
+
+
+            moveUpButton.addEventListener(
+                "click",
+                async function (event) {
+                    event.stopPropagation();
+
+                    await moveArticle(
+                        index,
+                        -1
+                    );
+                }
+            );
+
+
+            moveDownButton.addEventListener(
+                "click",
+                async function (event) {
+                    event.stopPropagation();
+
+                    await moveArticle(
+                        index,
+                        1
+                    );
+                }
+            );
+
             card.addEventListener(
                 "click",
                 function () {
@@ -701,7 +756,7 @@ function renderArticles() {
                 function (event) {
                     if (
                         event.key ===
-                            "Enter" ||
+                        "Enter" ||
                         event.key === " "
                     ) {
                         event.preventDefault();
@@ -723,8 +778,7 @@ function renderArticles() {
 
 function openArticle(id) {
     window.location.href =
-        `reading.html?id=${
-            encodeURIComponent(id)
+        `reading.html?id=${encodeURIComponent(id)
         }`;
 }
 
@@ -959,8 +1013,7 @@ async function deleteTopic(topic) {
         );
 
         window.alert(
-            `Không thể xóa chủ đề: ${
-                error.message
+            `Không thể xóa chủ đề: ${error.message
             }`
         );
     }
@@ -1066,6 +1119,27 @@ async function saveArticle(event) {
                 .toISOString()
     };
 
+    if (!id) {
+        const largestOrder =
+            articles.reduce(
+                function (
+                    currentLargest,
+                    article
+                ) {
+                    return Math.max(
+                        currentLargest,
+                        Number(
+                            article.sort_order
+                        ) || 0
+                    );
+                },
+                0
+            );
+
+        payload.sort_order =
+            largestOrder + 1;
+    }
+
     if (
         !payload.title ||
         !payload.english_content
@@ -1167,8 +1241,106 @@ async function deleteArticle(
         );
 
         window.alert(
-            `Không thể xóa bài đọc: ${
-                error.message
+            `Không thể xóa bài đọc: ${error.message
+            }`
+        );
+    }
+}
+
+/* =========================
+   CHANGE ARTICLE ORDER
+========================= */
+
+async function moveArticle(
+    currentIndex,
+    direction
+) {
+    const targetIndex =
+        currentIndex + direction;
+
+
+    if (
+        targetIndex < 0 ||
+        targetIndex >=
+        articles.length
+    ) {
+        return;
+    }
+
+
+    const currentArticle =
+        articles[currentIndex];
+
+    const targetArticle =
+        articles[targetIndex];
+
+
+    const currentOrder =
+        Number(
+            currentArticle.sort_order
+        ) || currentIndex + 1;
+
+
+    const targetOrder =
+        Number(
+            targetArticle.sort_order
+        ) || targetIndex + 1;
+
+
+    try {
+        const [
+            currentResult,
+            targetResult
+        ] = await Promise.all([
+            supabaseClient
+                .from(
+                    "english_readings"
+                )
+                .update({
+                    sort_order:
+                        targetOrder
+                })
+                .eq(
+                    "id",
+                    currentArticle.id
+                ),
+
+            supabaseClient
+                .from(
+                    "english_readings"
+                )
+                .update({
+                    sort_order:
+                        currentOrder
+                })
+                .eq(
+                    "id",
+                    targetArticle.id
+                )
+        ]);
+
+
+        if (currentResult.error) {
+            throw currentResult.error;
+        }
+
+
+        if (targetResult.error) {
+            throw targetResult.error;
+        }
+
+
+        await loadTopicAndArticles();
+
+    } catch (error) {
+        console.error(
+            "Không thể đổi thứ tự:",
+            error
+        );
+
+
+        window.alert(
+            `Không thể đổi thứ tự: ${error.message
             }`
         );
     }

@@ -147,8 +147,7 @@ async function taiBaiDoc() {
         );
 
         hienThiLoi(
-            `Không thể tải bài đọc: ${
-                error.message
+            `Không thể tải bài đọc: ${error.message
             }`
         );
     }
@@ -175,7 +174,7 @@ function hienThiBaiDoc() {
     document
         .getElementById("readingTitle")
         .textContent =
-            currentReading.title;
+        currentReading.title;
 
 
     document.title =
@@ -512,7 +511,7 @@ function docCauHienTai(runId) {
 
     const sentence =
         readingSentences[
-            currentSentenceIndex
+        currentSentenceIndex
         ];
 
 
@@ -565,10 +564,8 @@ function docCauHienTai(runId) {
 
 
             capNhatTrangThaiDoc(
-                `Đang đọc câu ${
-                    currentSentenceIndex + 1
-                }/${
-                    readingSentences.length
+                `Đang đọc câu ${currentSentenceIndex + 1
+                }/${readingSentences.length
                 }`
             );
         };
@@ -700,7 +697,7 @@ function docTuCau(sentenceIndex) {
     if (
         sentenceIndex < 0 ||
         sentenceIndex >=
-            readingSentences.length
+        readingSentences.length
     ) {
         return;
     }
@@ -809,8 +806,7 @@ function toSangCau(sentenceIndex) {
 
     const sentenceElement =
         document.querySelector(
-            `.reading-sentence[data-index="${
-                sentenceIndex
+            `.reading-sentence[data-index="${sentenceIndex
             }"]`
         );
 
@@ -833,7 +829,7 @@ function toSangCau(sentenceIndex) {
     if (
         position.top < 100 ||
         position.bottom >
-            window.innerHeight - 80
+        window.innerHeight - 80
     ) {
         sentenceElement.scrollIntoView({
             behavior: "smooth",
@@ -887,7 +883,7 @@ function capNhatTienDo(completedCount) {
         )
         .style
         .width =
-            `${percentage}%`;
+        `${percentage}%`;
 
 
     document
@@ -895,7 +891,7 @@ function capNhatTienDo(completedCount) {
             "readingProgressText"
         )
         .textContent =
-            `${safeCompleted}/${total} câu`;
+        `${safeCompleted}/${total} câu`;
 }
 
 
@@ -924,17 +920,43 @@ function capNhatNutDieuKhien() {
 
     if (isPaused) {
         playButton.textContent =
-            "▶ Tiếp tục";
+            "▶";
+
+        playButton.setAttribute(
+            "aria-label",
+            "Tiếp tục đọc"
+        );
+
+        playButton.title =
+            "Tiếp tục đọc";
+
     } else if (
         currentSentenceIndex >=
-            readingSentences.length &&
+        readingSentences.length &&
         readingSentences.length > 0
     ) {
         playButton.textContent =
-            "↻ Đọc lại";
+            "↻";
+
+        playButton.setAttribute(
+            "aria-label",
+            "Đọc lại"
+        );
+
+        playButton.title =
+            "Đọc lại";
+
     } else {
         playButton.textContent =
-            "🔊 Đọc";
+            "🔊";
+
+        playButton.setAttribute(
+            "aria-label",
+            "Đọc bài"
+        );
+
+        playButton.title =
+            "Đọc bài";
     }
 
 

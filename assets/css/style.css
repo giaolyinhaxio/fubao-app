@@ -7289,3 +7289,104 @@ body.modal-open {
         grid-template-columns: 1fr 1fr;
     }
 }
+
+/* ========================================
+   NÚT SẮP XẾP BÀI LUYỆN ĐỌC
+======================================== */
+
+.reading-move-up-button,
+.reading-move-down-button {
+    flex:
+        1 1
+        calc(50% - 5px);
+    color: #647f70;
+    background: #e9f5ee;
+}
+
+.reading-move-up-button:hover,
+.reading-move-down-button:hover {
+    color: #456754;
+    background: #dceee4;
+}
+
+.reading-move-up-button:disabled,
+.reading-move-down-button:disabled {
+    cursor: default;
+    color: #b5aaaE;
+    background: #f3eeee;
+    opacity: 0.55;
+    transform: none;
+}
+
+/* ========================================
+   THU GỌN BẢNG ĐỌC TRÊN ĐIỆN THOẠI
+======================================== */
+
+@media (max-width: 700px) {
+    .reading-audio-panel {
+        gap: 10px;
+        padding: 12px 13px;
+        border-radius: 19px;
+    }
+
+    .reading-audio-main-actions {
+        grid-template-columns:
+            repeat(3, 1fr);
+        gap: 8px;
+    }
+
+    .reading-audio-main-actions
+    .reading-play-button {
+        grid-column: auto;
+    }
+
+    .reading-audio-main-actions button {
+        min-height: 41px;
+        padding: 0;
+        border-radius: 13px;
+        font-size: 19px;
+    }
+
+    .reading-speed-control {
+        align-items: center;
+        flex-direction: row;
+        gap: 9px;
+    }
+
+    .reading-speed-control > span {
+        flex: 0 0 auto;
+        font-size: 12px;
+    }
+
+    .reading-speed-control select {
+        flex: 1;
+        width: auto;
+        min-width: 0;
+        min-height: 36px;
+        padding:
+            0 27px
+            0 10px;
+        font-size: 12px;
+    }
+
+    .reading-speech-status {
+        font-size: 12px;
+    }
+
+    .reading-progress {
+        align-items: center;
+        flex-direction: row;
+        gap: 8px;
+    }
+
+    .reading-progress-track {
+        height: 7px;
+    }
+
+    #readingProgressText {
+        width: auto;
+        min-width: 58px;
+        font-size: 12px;
+        text-align: right;
+    }
+}

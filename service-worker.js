@@ -1,4 +1,4 @@
-const CACHE_NAME = "fubao-v21";
+const CACHE_NAME = "fubao-v22";
 
 const APP_FILES = [
     "./",

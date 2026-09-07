@@ -18,7 +18,7 @@
 
     <meta name="apple-mobile-web-app-title" content="FuBao">
 
-    <link rel="stylesheet" href="assets/css/style.css?v=37">
+    <link rel="stylesheet" href="assets/css/style.css?v=41">
 
     <link rel="icon" type="image/svg+xml" href="assets/icons/bear-favicon.svg?v=2">
 </head>
@@ -60,16 +60,17 @@
             <section class="reading-audio-panel">
 
                 <div class="reading-audio-main-actions">
-                    <button class="reading-play-button" id="readingPlayButton" type="button">
-                        🔊 Đọc
+                    <button class="reading-play-button" id="readingPlayButton" type="button" aria-label="Đọc bài"
+                        title="Đọc bài">
+                        🔊
                     </button>
 
-                    <button id="readingPauseButton" type="button" disabled>
-                        ⏸ Tạm dừng
+                    <button id="readingPauseButton" type="button" aria-label="Tạm dừng" title="Tạm dừng" disabled>
+                        ⏸
                     </button>
 
-                    <button id="readingStopButton" type="button" disabled>
-                        ⏹ Dừng
+                    <button id="readingStopButton" type="button" aria-label="Dừng đọc" title="Dừng đọc" disabled>
+                        ⏹
                     </button>
                 </div>
 
@@ -161,7 +162,7 @@
 
     <script src="assets/js/core/auth-guard.js"></script>
 
-    <script src="assets/js/english/reading.js?v=1"></script>
+    <script src="assets/js/english/reading.js?v=2"></script>
 
     <script src="assets/js/core/pwa.js"></script>
 
