@@ -7390,3 +7390,50 @@ body.modal-open {
         text-align: right;
     }
 }
+
+/* ========================================
+   CĂN LẠI NÚT BÀI LUYỆN ĐỌC
+======================================== */
+
+.reading-list-card-actions {
+    display: grid;
+    grid-template-columns:
+        repeat(
+            4,
+            minmax(0, 1fr)
+        );
+    gap: 8px;
+}
+
+.reading-list-card-actions
+.reading-open-button {
+    grid-column: 1 / -1;
+    width: auto;
+}
+
+.reading-list-card-actions
+.reading-edit-button,
+.reading-list-card-actions
+.reading-delete-button,
+.reading-list-card-actions
+.reading-move-up-button,
+.reading-list-card-actions
+.reading-move-down-button {
+    width: auto;
+    min-width: 0;
+    padding: 0 7px;
+}
+
+.reading-list-card-actions
+.reading-move-up-button,
+.reading-list-card-actions
+.reading-move-down-button {
+    font-size: 19px;
+}
+
+.reading-list-card-actions
+.reading-move-up-button:disabled,
+.reading-list-card-actions
+.reading-move-down-button:disabled {
+    opacity: 0.35;
+}

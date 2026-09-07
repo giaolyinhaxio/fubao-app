@@ -642,24 +642,28 @@ function renderArticles() {
                     <button
     class="reading-move-up-button"
     type="button"
+    aria-label="Đưa bài lên"
+    title="Đưa lên"
     ${index === 0
                     ? "disabled"
                     : ""
                 }
 >
-    ↑ Đưa lên
+    ↑
 </button>
 
 <button
     class="reading-move-down-button"
     type="button"
+    aria-label="Đưa bài xuống"
+    title="Đưa xuống"
     ${index ===
                     articles.length - 1
                     ? "disabled"
                     : ""
                 }
 >
-    ↓ Đưa xuống
+    ↓
 </button>
 
                 </div>
