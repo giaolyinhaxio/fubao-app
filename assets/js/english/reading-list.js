@@ -1013,6 +1013,7 @@ function renderArticles() {
 function openArticle(id) {
     window.location.href =
         `reading.html?id=${encodeURIComponent(id)
+        }&topic=${encodeURIComponent(topicId)
         }`;
 }
 

@@ -7801,3 +7801,44 @@ body.modal-open {
         height: 5px;
     }
 }
+
+/* BẢNG ĐIỀU KHIỂN SAU KHI BỎ CHỌN GIỌNG */
+
+@media (max-width: 1100px) {
+    .reading-audio-panel {
+        grid-template-columns: 1fr;
+        gap: 5px;
+        padding: 7px 9px;
+        border-radius: 15px;
+    }
+
+    .reading-audio-main-actions {
+        grid-column: 1;
+    }
+
+    .reading-speed-control {
+        grid-column: 1;
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        gap: 8px;
+    }
+
+    .reading-speed-control > span {
+        flex: 0 0 67px;
+        font-size: 10px;
+        white-space: nowrap;
+    }
+
+    .reading-speed-control select {
+        flex: 1;
+        width: auto;
+        min-width: 0;
+        min-height: 30px;
+        font-size: 10px;
+    }
+
+    .reading-progress {
+        grid-column: 1;
+    }
+}

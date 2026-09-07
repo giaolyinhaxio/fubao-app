@@ -10,18 +10,11 @@ let isPaused = false;
 
 let speechRunId = 0;
 
-let englishVoice = null;
-
-const READING_VOICE_STORAGE_KEY =
-    "readingEnglishVoice";
-
 
 document.addEventListener(
     "DOMContentLoaded",
     async function () {
         ganSuKienTrangDoc();
-
-        taiDanhSachGiongDoc();
 
         await taiBaiDoc();
     }
@@ -39,6 +32,21 @@ window.addEventListener(
 ========================= */
 
 function ganSuKienTrangDoc() {
+    const topicId =
+        new URLSearchParams(
+            window.location.search
+        ).get("topic");
+
+    const backButton =
+        document.getElementById(
+            "readingBackButton"
+        );
+
+    if (topicId && backButton) {
+        backButton.href =
+            `reading-list.html?topic=${encodeURIComponent(topicId)}`;
+    }
+
     document
         .getElementById("readingPlayButton")
         .addEventListener(
@@ -87,13 +95,6 @@ function ganSuKienTrangDoc() {
         );
 
     document
-        .getElementById("readingVoiceSelect")
-        .addEventListener(
-            "change",
-            thayDoiGiongDoc
-        );
-
-    document
         .getElementById("readingScrollTopButton")
         .addEventListener(
             "click",
@@ -110,15 +111,6 @@ function ganSuKienTrangDoc() {
 
     capNhatNutQuayLenDauTrang();
 
-
-    if (
-        "speechSynthesis" in window
-    ) {
-        window.speechSynthesis.addEventListener(
-            "voiceschanged",
-            taiDanhSachGiongDoc
-        );
-    }
 }
 
 
@@ -494,134 +486,6 @@ function tachThanhCau(paragraph) {
         : [paragraph];
 }
 
-
-/* =========================
-   GIỌNG ĐỌC
-========================= */
-
-function taiDanhSachGiongDoc() {
-    if (
-        !("speechSynthesis" in window)
-    ) {
-        return;
-    }
-
-    const voices =
-        window.speechSynthesis.getVoices();
-
-    const englishVoices =
-        voices.filter(function (voice) {
-            return voice.lang
-                .toLowerCase()
-                .startsWith("en");
-        });
-
-    const select =
-        document.getElementById(
-            "readingVoiceSelect"
-        );
-
-    if (!select) {
-        return;
-    }
-
-    select.innerHTML = "";
-
-    if (!englishVoices.length) {
-        const option =
-            document.createElement("option");
-
-        option.value = "";
-        option.textContent =
-            "Giọng mặc định của thiết bị";
-
-        select.appendChild(option);
-        select.disabled = true;
-        englishVoice = null;
-
-        return;
-    }
-
-    select.disabled = false;
-
-    const savedVoiceKey =
-        localStorage.getItem(
-            READING_VOICE_STORAGE_KEY
-        ) || "";
-
-    englishVoice =
-        englishVoices.find(function (voice) {
-            return taoMaGiongDoc(voice) ===
-                savedVoiceKey;
-        }) ||
-        englishVoices.find(function (voice) {
-            return (
-                voice.default &&
-                voice.lang.toLowerCase() ===
-                "en-us"
-            );
-        }) ||
-        englishVoices.find(function (voice) {
-            return (
-                voice.lang.toLowerCase() ===
-                "en-us"
-            );
-        }) ||
-        englishVoices[0];
-
-    englishVoices.forEach(function (voice) {
-        const option =
-            document.createElement("option");
-
-        option.value =
-            taoMaGiongDoc(voice);
-
-        option.textContent =
-            `${voice.name} — ${voice.lang}${voice.default
-                ? " (mặc định)"
-                : ""
-            }`;
-
-        select.appendChild(option);
-    });
-
-    select.value =
-        taoMaGiongDoc(englishVoice);
-}
-
-
-function taoMaGiongDoc(voice) {
-    return `${voice.name}|||${voice.lang}`;
-}
-
-
-function thayDoiGiongDoc() {
-    const selectedVoiceKey =
-        document.getElementById(
-            "readingVoiceSelect"
-        ).value;
-
-    englishVoice =
-        window.speechSynthesis
-            .getVoices()
-            .find(function (voice) {
-                return (
-                    taoMaGiongDoc(voice) ===
-                    selectedVoiceKey
-                );
-            }) || null;
-
-    if (englishVoice) {
-        localStorage.setItem(
-            READING_VOICE_STORAGE_KEY,
-            selectedVoiceKey
-        );
-    }
-
-    thayDoiTocDoDoc();
-}
-
-
 /* =========================
    ĐỌC NỘI DUNG
 ========================= */
@@ -716,8 +580,7 @@ function docCauHienTai(runId) {
         );
 
 
-    utterance.lang =
-        englishVoice?.lang || "en-US";
+    utterance.lang = "en-US";
 
     utterance.rate =
         Number(
@@ -732,13 +595,6 @@ function docCauHienTai(runId) {
     utterance.pitch = 1;
 
     utterance.volume = 1;
-
-
-    if (englishVoice) {
-        utterance.voice =
-            englishVoice;
-    }
-
 
     utterance.onstart =
         function () {
