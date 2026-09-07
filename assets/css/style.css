@@ -2619,6 +2619,34 @@ body.modal-open {
         );
 }
 
+.reading-learning-card {
+    color: inherit;
+    text-decoration: none;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(234, 243, 255, 0.98),
+            rgba(216, 234, 247, 0.96)
+        );
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+.reading-learning-card:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        0 16px 32px rgba(77, 92, 112, 0.12);
+}
+
+.reading-learning-card:active {
+    transform: scale(0.98);
+}
+
+.reading-learning-card .english-learning-icon {
+    color: #567388;
+}
+
 .grammar-learning-card {
     background:
         linear-gradient(
@@ -6133,5 +6161,1131 @@ body.tioong-page
         min-height: 86px;
         padding: 12px 5px;
         border-radius: 18px;
+    }
+}
+
+/* ========================================
+   LUYỆN ĐỌC - DANH SÁCH BÀI ĐỌC
+======================================== */
+
+.reading-add-button {
+    min-height: 46px;
+    padding: 0 20px;
+    border: 0;
+    border-radius: 16px;
+    color: #ffffff;
+    background: #82ad98;
+    box-shadow:
+        0 8px 18px rgba(92, 134, 113, 0.18);
+    font: inherit;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.reading-add-button:active {
+    transform: scale(0.97);
+}
+
+
+.reading-list-heading {
+    margin: 52px 0 38px;
+    text-align: center;
+}
+
+.reading-list-heading > p {
+    margin: 0 0 10px;
+    color: #789989;
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: 5px;
+}
+
+.reading-list-heading > h1 {
+    margin: 0;
+    color: #49383f;
+    font-size: clamp(45px, 8vw, 72px);
+    line-height: 1;
+}
+
+.reading-list-heading > span {
+    display: block;
+    margin-top: 17px;
+    color: #967f88;
+    font-size: 18px;
+}
+
+
+.reading-list-container {
+    display: grid;
+    gap: 18px;
+    width: 100%;
+    max-width: 940px;
+    margin: 0 auto 60px;
+}
+
+
+.reading-list-message {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 34px;
+    border: 1px solid #eadde2;
+    border-radius: 25px;
+    color: #8e7780;
+    background: rgba(255, 255, 255, 0.76);
+    text-align: center;
+}
+
+.reading-list-message strong {
+    color: #523f46;
+    font-size: 22px;
+}
+
+.reading-list-error {
+    color: #bd5574;
+    border-color: rgba(189, 85, 116, 0.28);
+    background: rgba(255, 240, 244, 0.92);
+}
+
+
+.reading-list-card {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    min-height: 150px;
+    padding: 25px;
+    border: 1px solid rgba(197, 222, 209, 0.95);
+    border-radius: 28px;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.96),
+            rgba(236, 248, 242, 0.92)
+        );
+    box-shadow:
+        0 13px 30px rgba(74, 91, 82, 0.08);
+    cursor: pointer;
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+.reading-list-card:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        0 17px 34px rgba(74, 91, 82, 0.12);
+}
+
+.reading-list-card:active {
+    transform: scale(0.99);
+}
+
+.reading-list-card:focus-visible {
+    outline: 3px solid rgba(117, 166, 143, 0.35);
+    outline-offset: 3px;
+}
+
+
+.reading-list-card-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.reading-list-card-label {
+    display: block;
+    margin-bottom: 8px;
+    color: #7da08e;
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 3px;
+}
+
+.reading-list-card-content h2 {
+    margin: 0;
+    color: #4c3941;
+    font-size: 25px;
+    line-height: 1.25;
+}
+
+.reading-list-card-content p {
+    display: -webkit-box;
+    margin: 10px 0 0;
+    overflow: hidden;
+    color: #927f86;
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+
+.reading-list-card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 9px;
+    width: 205px;
+}
+
+.reading-list-card-actions button {
+    min-height: 42px;
+    padding: 0 16px;
+    border: 0;
+    border-radius: 14px;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.reading-open-button {
+    width: 100%;
+    color: #ffffff;
+    background: #82ad98;
+}
+
+.reading-edit-button {
+    flex: 1;
+    color: #725c65;
+    background: #f3e9ed;
+}
+
+.reading-delete-button {
+    flex: 1;
+    color: #b65070;
+    background: #fff0f4;
+}
+
+.reading-list-card-actions button:active {
+    transform: scale(0.96);
+}
+
+
+/* ========================================
+   FORM THÊM VÀ SỬA BÀI ĐỌC
+======================================== */
+
+body.modal-open {
+    overflow: hidden;
+}
+
+.reading-form-modal {
+    position: fixed;
+    z-index: 3000;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding:
+        max(18px, env(safe-area-inset-top))
+        18px
+        max(18px, env(safe-area-inset-bottom));
+}
+
+.reading-form-modal.hidden {
+    display: none;
+}
+
+.reading-form-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(58, 47, 52, 0.42);
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
+}
+
+.reading-form-panel {
+    position: relative;
+    z-index: 1;
+    width: min(760px, 100%);
+    max-height: 92vh;
+    overflow-y: auto;
+    padding: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-radius: 30px;
+    background: #fffafd;
+    box-shadow:
+        0 25px 70px rgba(66, 49, 57, 0.22);
+}
+
+
+.reading-form-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 26px;
+}
+
+.reading-form-header p {
+    margin: 0 0 6px;
+    color: #7da08e;
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 3px;
+}
+
+.reading-form-header h2 {
+    margin: 0;
+    color: #4c3941;
+    font-size: 32px;
+}
+
+.reading-form-header button {
+    flex: 0 0 47px;
+    width: 47px;
+    height: 47px;
+    border: 0;
+    border-radius: 50%;
+    color: #957b85;
+    background: #f5e9ee;
+    font-size: 27px;
+    cursor: pointer;
+}
+
+
+#readingForm {
+    display: flex;
+    flex-direction: column;
+}
+
+#readingForm label {
+    margin: 18px 0 8px;
+    color: #745e67;
+    font-size: 16px;
+    font-weight: 800;
+}
+
+#readingForm input,
+#readingForm textarea {
+    width: 100%;
+    padding: 16px 17px;
+    border: 1.5px solid #e7cfd9;
+    border-radius: 17px;
+    outline: none;
+    color: #4c3941;
+    background: rgba(255, 255, 255, 0.92);
+    font: inherit;
+    font-size: 16px;
+    line-height: 1.6;
+    resize: vertical;
+}
+
+#readingForm textarea {
+    min-height: 190px;
+}
+
+#readingForm input:focus,
+#readingForm textarea:focus {
+    border-color: #8ab7a0;
+    box-shadow:
+        0 0 0 4px rgba(138, 183, 160, 0.14);
+}
+
+#readingForm input::placeholder,
+#readingForm textarea::placeholder {
+    color: #b3a8ac;
+}
+
+
+.reading-form-message {
+    min-height: 24px;
+    margin: 15px 0 0;
+    color: #c15475;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+
+.reading-form-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 13px;
+    margin-top: 15px;
+}
+
+.reading-form-actions button {
+    min-height: 54px;
+    border: 0;
+    border-radius: 18px;
+    font: inherit;
+    font-size: 16px;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+.reading-cancel-button {
+    color: #8e7580;
+    background: #f3e8ed;
+}
+
+.reading-save-button {
+    color: #ffffff;
+    background: #82ad98;
+}
+
+.reading-form-actions button:disabled {
+    cursor: wait;
+    opacity: 0.65;
+}
+
+
+/* ========================================
+   LUYỆN ĐỌC - MÀN HÌNH NHỎ
+======================================== */
+
+@media (max-width: 700px) {
+    .reading-list-heading {
+        margin: 35px 0 28px;
+    }
+
+    .reading-list-heading > h1 {
+        font-size: 46px;
+    }
+
+    .reading-list-heading > span {
+        font-size: 15px;
+    }
+
+    .reading-list-card {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 20px;
+        padding: 22px;
+    }
+
+    .reading-list-card-actions {
+        width: 100%;
+    }
+
+    .reading-open-button {
+        width: 100%;
+    }
+
+    .reading-form-panel {
+        max-height: 94vh;
+        padding: 23px 19px;
+        border-radius: 25px;
+    }
+
+    .reading-form-header h2 {
+        font-size: 27px;
+    }
+}
+
+
+@media (max-width: 460px) {
+    .reading-add-button {
+        padding: 0 13px;
+        font-size: 13px;
+    }
+
+    .reading-list-card-content h2 {
+        font-size: 22px;
+    }
+
+    .reading-form-actions {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ========================================
+   LUYỆN ĐỌC - MÀN HÌNH ĐỌC BÀI
+======================================== */
+
+.reading-page-message {
+    width: min(900px, 100%);
+    margin: 80px auto;
+    padding: 32px;
+    border: 1px solid #e8dce1;
+    border-radius: 25px;
+    color: #8e7881;
+    background: rgba(255, 255, 255, 0.82);
+    text-align: center;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.reading-page-error {
+    color: #bd5574;
+    border-color: rgba(189, 85, 116, 0.3);
+    background: rgba(255, 240, 244, 0.94);
+}
+
+
+.reading-workspace {
+    width: min(940px, 100%);
+    margin: 0 auto 70px;
+}
+
+
+.reading-page-heading {
+    margin: 45px 0 35px;
+    text-align: center;
+}
+
+.reading-page-heading > p {
+    margin: 0 0 10px;
+    color: #789989;
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: 5px;
+}
+
+.reading-page-heading > h1 {
+    margin: 0;
+    color: #49383f;
+    font-size: clamp(38px, 7vw, 64px);
+    line-height: 1.12;
+    overflow-wrap: anywhere;
+}
+
+.reading-page-heading > span {
+    display: block;
+    margin-top: 15px;
+    color: #947f87;
+    font-size: 17px;
+}
+
+
+/* BẢNG ĐIỀU KHIỂN GIỌNG ĐỌC */
+
+.reading-audio-panel {
+    position: sticky;
+    z-index: 30;
+    top: 12px;
+    display: grid;
+    gap: 18px;
+    margin-bottom: 25px;
+    padding: 22px;
+    border: 1px solid rgba(197, 222, 209, 0.95);
+    border-radius: 27px;
+    background: rgba(248, 255, 251, 0.94);
+    box-shadow:
+        0 15px 34px rgba(70, 94, 81, 0.12);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+}
+
+.reading-audio-main-actions {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr 1fr;
+    gap: 10px;
+}
+
+.reading-audio-main-actions button {
+    min-height: 52px;
+    padding: 0 17px;
+    border: 0;
+    border-radius: 17px;
+    color: #6f5962;
+    background: #f1e8ec;
+    font: inherit;
+    font-size: 15px;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+.reading-audio-main-actions .reading-play-button {
+    color: #ffffff;
+    background: #7fae96;
+}
+
+.reading-audio-main-actions button:active {
+    transform: scale(0.97);
+}
+
+.reading-audio-main-actions button:disabled {
+    cursor: default;
+    opacity: 0.46;
+}
+
+
+.reading-speed-control {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    color: #6e5961;
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.reading-speed-control select {
+    min-height: 43px;
+    padding: 0 35px 0 14px;
+    border: 1px solid #d7c6cd;
+    border-radius: 13px;
+    outline: none;
+    color: #5e4a52;
+    background: #ffffff;
+    font: inherit;
+    font-weight: 700;
+}
+
+
+.reading-speech-status {
+    color: #728b7f;
+    font-size: 14px;
+    font-weight: 800;
+    text-align: center;
+}
+
+
+.reading-progress {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.reading-progress-track {
+    flex: 1;
+    height: 10px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #dfece5;
+}
+
+.reading-progress-track span {
+    display: block;
+    width: 0;
+    height: 100%;
+    border-radius: inherit;
+    background:
+        linear-gradient(
+            90deg,
+            #8dc4a6,
+            #6ea58a
+        );
+    transition: width 0.25s ease;
+}
+
+#readingProgressText {
+    flex: 0 0 auto;
+    min-width: 70px;
+    color: #678071;
+    font-size: 14px;
+    font-weight: 900;
+    text-align: right;
+}
+
+
+/* KHUNG NỘI DUNG */
+
+.reading-language-section {
+    margin-top: 24px;
+    padding: 30px;
+    border: 1px solid #eadde2;
+    border-radius: 29px;
+    background: rgba(255, 255, 255, 0.88);
+    box-shadow:
+        0 13px 30px rgba(77, 62, 68, 0.07);
+}
+
+.reading-translation-section {
+    border-color: rgba(199, 223, 211, 0.95);
+    background:
+        linear-gradient(
+            135deg,
+            rgba(244, 253, 248, 0.94),
+            rgba(255, 251, 253, 0.94)
+        );
+}
+
+
+.reading-language-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding-bottom: 19px;
+    border-bottom: 1px solid #eee1e6;
+}
+
+.reading-language-header p {
+    margin: 0 0 5px;
+    color: #7c9b8c;
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 3px;
+}
+
+.reading-language-header h2 {
+    margin: 0;
+    color: #4f3c44;
+    font-size: 24px;
+}
+
+.reading-language-header button {
+    min-height: 43px;
+    padding: 0 16px;
+    border: 0;
+    border-radius: 14px;
+    color: #6b806f;
+    background: #e9f5ee;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+
+/* NỘI DUNG TIẾNG ANH */
+
+.reading-english-content {
+    padding-top: 9px;
+    color: #493a40;
+    font-size: clamp(18px, 2.4vw, 22px);
+    line-height: 1.95;
+}
+
+.reading-english-content p {
+    margin: 21px 0;
+}
+
+.reading-sentence {
+    padding: 3px 2px;
+    border-radius: 7px;
+    cursor: pointer;
+    transition:
+        color 0.16s ease,
+        background 0.16s ease,
+        box-shadow 0.16s ease;
+}
+
+.reading-sentence:hover {
+    background: rgba(223, 242, 232, 0.68);
+}
+
+.reading-sentence.active-reading-sentence {
+    color: #285640;
+    background: #cfeddd;
+    box-shadow:
+        0 0 0 4px rgba(207, 237, 221, 0.5);
+}
+
+
+/* BẢN DỊCH TIẾNG VIỆT */
+
+.reading-vietnamese-content {
+    padding-top: 9px;
+    color: #66535b;
+    font-size: clamp(17px, 2.2vw, 20px);
+    line-height: 1.85;
+}
+
+.reading-vietnamese-content p {
+    margin: 21px 0;
+}
+
+.reading-vietnamese-content[hidden] {
+    display: none;
+}
+
+.reading-translation-empty {
+    color: #a18d95;
+    font-style: italic;
+}
+
+
+/* ========================================
+   MÀN HÌNH NHỎ
+======================================== */
+
+@media (max-width: 700px) {
+    .reading-workspace {
+        margin-bottom:
+            calc(
+                45px +
+                env(safe-area-inset-bottom)
+            );
+    }
+
+    .reading-page-heading {
+        margin: 34px 0 27px;
+    }
+
+    .reading-page-heading > h1 {
+        font-size: 42px;
+    }
+
+    .reading-audio-panel {
+        top:
+            max(
+                7px,
+                env(safe-area-inset-top)
+            );
+        padding: 17px;
+        border-radius: 23px;
+    }
+
+    .reading-audio-main-actions {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .reading-audio-main-actions .reading-play-button {
+        grid-column: 1 / -1;
+    }
+
+    .reading-speed-control {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .reading-speed-control select {
+        width: 100%;
+    }
+
+    .reading-language-section {
+        padding: 23px 19px;
+        border-radius: 25px;
+    }
+
+    .reading-language-header {
+        align-items: flex-start;
+    }
+
+    .reading-language-header h2 {
+        font-size: 21px;
+    }
+
+    .reading-language-header button {
+        padding: 0 12px;
+        font-size: 12px;
+    }
+
+    .reading-english-content {
+        font-size: 19px;
+        line-height: 1.85;
+    }
+
+    .reading-vietnamese-content {
+        font-size: 17px;
+        line-height: 1.8;
+    }
+}
+
+
+@media (max-width: 420px) {
+    .reading-page-heading > h1 {
+        font-size: 36px;
+    }
+
+    .reading-audio-main-actions button {
+        padding: 0 10px;
+        font-size: 13px;
+    }
+
+    .reading-progress {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 7px;
+    }
+
+    #readingProgressText {
+        width: 100%;
+        text-align: center;
+    }
+
+    .reading-language-header {
+        flex-direction: column;
+    }
+
+    .reading-language-header button {
+        width: 100%;
+    }
+}
+
+.reading-page-message.hidden,
+.reading-workspace.hidden {
+    display: none !important;
+}
+
+/* ========================================
+   LUYỆN ĐỌC - DANH SÁCH CHỦ ĐỀ
+======================================== */
+
+.reading-topic-container {
+    display: grid;
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(0, 1fr)
+        );
+    gap: 20px;
+    width: min(940px, 100%);
+    margin: 0 auto 60px;
+}
+
+
+.reading-topic-card {
+    display: grid;
+    grid-template-columns:
+        82px minmax(0, 1fr);
+    gap: 20px;
+    min-height: 230px;
+    padding: 25px;
+    border: 1px solid
+        rgba(197, 222, 209, 0.95);
+    border-radius: 29px;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.97),
+            rgba(231, 247, 239, 0.94)
+        );
+    box-shadow:
+        0 14px 32px
+        rgba(74, 91, 82, 0.09);
+    cursor: pointer;
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+.reading-topic-card:nth-child(2n) {
+    border-color:
+        rgba(235, 215, 169, 0.95);
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.97),
+            rgba(255, 247, 226, 0.94)
+        );
+}
+
+.reading-topic-card:nth-child(3n) {
+    border-color:
+        rgba(225, 204, 215, 0.95);
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.97),
+            rgba(250, 235, 242, 0.94)
+        );
+}
+
+.reading-topic-card:hover {
+    transform: translateY(-3px);
+    box-shadow:
+        0 19px 38px
+        rgba(74, 91, 82, 0.13);
+}
+
+.reading-topic-card:active {
+    transform: scale(0.99);
+}
+
+.reading-topic-card:focus-visible {
+    outline: 3px solid
+        rgba(119, 169, 144, 0.35);
+    outline-offset: 3px;
+}
+
+
+.reading-topic-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 82px;
+    height: 82px;
+    border-radius: 24px;
+    background:
+        rgba(255, 255, 255, 0.82);
+    box-shadow:
+        0 8px 20px
+        rgba(75, 94, 84, 0.08);
+    font-size: 38px;
+}
+
+
+.reading-topic-content {
+    min-width: 0;
+}
+
+.reading-topic-content > span {
+    display: block;
+    margin-bottom: 7px;
+    color: #7da08e;
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 3px;
+}
+
+.reading-topic-content h2 {
+    margin: 0;
+    color: #4d3a42;
+    font-size: 25px;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+}
+
+.reading-topic-content p {
+    margin: 10px 0;
+    color: #917e86;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.reading-topic-content strong {
+    display: inline-block;
+    padding: 7px 11px;
+    border-radius: 999px;
+    color: #648673;
+    background:
+        rgba(224, 242, 232, 0.9);
+    font-size: 13px;
+}
+
+
+.reading-topic-actions {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: 1fr 1fr;
+    gap: 9px;
+    margin-top: auto;
+}
+
+.reading-topic-actions button {
+    min-height: 43px;
+    padding: 0 14px;
+    border: 0;
+    border-radius: 14px;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 850;
+    cursor: pointer;
+}
+
+.reading-topic-open {
+    grid-column: 1 / -1;
+    color: #ffffff;
+    background: #82ad98;
+}
+
+.reading-topic-edit {
+    color: #735d66;
+    background: #f2e8ec;
+}
+
+.reading-topic-delete {
+    color: #bd5574;
+    background: #fff0f4;
+}
+
+.reading-topic-actions button:active {
+    transform: scale(0.97);
+}
+
+
+/* ========================================
+   FORM CHỦ ĐỀ
+======================================== */
+
+.reading-topic-form-panel {
+    width: min(580px, 100%);
+}
+
+#topicForm {
+    display: flex;
+    flex-direction: column;
+}
+
+#topicForm label {
+    margin: 18px 0 8px;
+    color: #745e67;
+    font-size: 16px;
+    font-weight: 800;
+}
+
+#topicForm input,
+#topicForm textarea {
+    width: 100%;
+    padding: 16px 17px;
+    border: 1.5px solid #e7cfd9;
+    border-radius: 17px;
+    outline: none;
+    color: #4c3941;
+    background:
+        rgba(255, 255, 255, 0.94);
+    font: inherit;
+    font-size: 16px;
+    line-height: 1.6;
+    resize: vertical;
+}
+
+#topicEmojiInput {
+    max-width: 120px;
+    font-size: 25px !important;
+    text-align: center;
+}
+
+#topicForm textarea {
+    min-height: 110px;
+}
+
+#topicForm input:focus,
+#topicForm textarea:focus {
+    border-color: #8ab7a0;
+    box-shadow:
+        0 0 0 4px
+        rgba(138, 183, 160, 0.14);
+}
+
+#topicForm input::placeholder,
+#topicForm textarea::placeholder {
+    color: #b3a8ac;
+}
+
+
+/* BẮT BUỘC ẨN ĐÚNG MÀN HÌNH */
+
+.reading-topic-container.hidden,
+.reading-list-container.hidden,
+.reading-add-button.hidden,
+.reading-form-modal.hidden,
+.reading-form-modal[hidden] {
+    display: none !important;
+}
+
+
+/* ========================================
+   CHỦ ĐỀ - MÀN HÌNH NHỎ
+======================================== */
+
+@media (max-width: 760px) {
+    .reading-topic-container {
+        grid-template-columns: 1fr;
+    }
+
+    .reading-topic-card {
+        min-height: 215px;
+    }
+}
+
+
+@media (max-width: 480px) {
+    .reading-topic-card {
+        grid-template-columns:
+            65px minmax(0, 1fr);
+        gap: 15px;
+        padding: 20px;
+        border-radius: 25px;
+    }
+
+    .reading-topic-icon {
+        width: 65px;
+        height: 65px;
+        border-radius: 19px;
+        font-size: 30px;
+    }
+
+    .reading-topic-content h2 {
+        font-size: 22px;
+    }
+
+    .reading-topic-actions {
+        grid-template-columns: 1fr 1fr;
     }
 }

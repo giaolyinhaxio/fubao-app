@@ -57,40 +57,76 @@ function laySoLuongTuMoiLuot() {
 ========================= */
 
 async function taiThongKeTuVung() {
-    const {
-        data,
-        error
-    } = await supabaseClient.rpc(
-        "get_vocabulary_stats"
-    );
+    const [
+        statisticsResult,
+        knownResult
+    ] = await Promise.all([
+        supabaseClient.rpc(
+            "get_vocabulary_stats"
+        ),
 
-    if (error) {
-        throw error;
+        supabaseClient.rpc(
+            "get_vocabulary_list",
+            {
+                p_search: "",
+                p_status: "known",
+                p_limit: 1,
+                p_offset: 0
+            }
+        )
+    ]);
+
+
+    if (statisticsResult.error) {
+        throw statisticsResult.error;
     }
 
+
+    if (knownResult.error) {
+        throw knownResult.error;
+    }
+
+
     const statistics =
-        data && data.length > 0
-            ? data[0]
+        statisticsResult.data &&
+        statisticsResult.data.length > 0
+            ? statisticsResult.data[0]
             : {
                 total_words: 0,
-                studied_words: 0,
                 due_words: 0
             };
+
+
+    const knownWords =
+        knownResult.data &&
+        knownResult.data.length > 0
+            ? Number(
+                knownResult.data[0]
+                    .total_count
+            ) || 0
+            : 0;
+
 
     document.getElementById(
         "totalVocabularyCount"
     ).textContent =
-        Number(statistics.total_words) || 0;
+        Number(
+            statistics.total_words
+        ) || 0;
+
 
     document.getElementById(
         "studiedVocabularyCount"
     ).textContent =
-        Number(statistics.studied_words) || 0;
+        knownWords;
+
 
     document.getElementById(
         "dueVocabularyCount"
     ).textContent =
-        Number(statistics.due_words) || 0;
+        Number(
+            statistics.due_words
+        ) || 0;
 }
 
 

@@ -1,4 +1,4 @@
-const CACHE_NAME = "fubao-v19";
+const CACHE_NAME = "fubao-v21";
 
 const APP_FILES = [
     "./",
@@ -16,6 +16,10 @@ const APP_FILES = [
     "./assets/js/english/vocabulary-list.js",
     "./flashcard.html",
     "./assets/js/english/flashcard.js",
+    "./reading-list.html",
+    "./assets/js/english/reading-list.js",
+    "./reading.html",
+    "./assets/js/english/reading.js",
 
     "./assets/css/style.css",
     "./assets/js/core/app.js",
@@ -38,6 +42,7 @@ const APP_FILES = [
     "./assets/icons/icon.svg",
     "./assets/icons/icon-192.png",
     "./assets/icons/icon-512.png",
+    "./assets/icons/bear-favicon.svg",
     "./assets/icons/apple-touch-icon.png"
 ];
 
