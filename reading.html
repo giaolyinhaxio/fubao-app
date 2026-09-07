@@ -18,7 +18,7 @@
 
     <meta name="apple-mobile-web-app-title" content="FuBao">
 
-    <link rel="stylesheet" href="assets/css/style.css?v=43">
+    <link rel="stylesheet" href="assets/css/style.css?v=48">
 
     <link rel="icon" type="image/svg+xml" href="assets/icons/bear-favicon.svg?v=2">
 </head>
@@ -93,11 +93,15 @@
                     </select>
                 </label>
 
+                                <label class="reading-speed-control reading-voice-control">
+                    <span>Giọng đọc</span>
 
-                <div class="reading-speech-status" id="readingSpeechStatus" aria-live="polite">
-                    Sẵn sàng đọc
-                </div>
-
+                    <select id="readingVoiceSelect" aria-label="Chọn giọng đọc tiếng Anh">
+                        <option value="">
+                            Đang tải giọng...
+                        </option>
+                    </select>
+                </label>
 
                 <div class="reading-progress">
                     <div class="reading-progress-track">
@@ -145,6 +149,15 @@
 
     </div>
 
+        <button
+        class="reading-scroll-top-button"
+        id="readingScrollTopButton"
+        type="button"
+        aria-label="Quay lên đầu trang"
+        title="Quay lên đầu trang">
+        ↑
+    </button>
+
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -152,7 +165,7 @@
 
     <script src="assets/js/core/auth-guard.js"></script>
 
-    <script src="assets/js/english/reading.js?v=3"></script>
+    <script src="assets/js/english/reading.js?v=6"></script>
 
     <script src="assets/js/core/pwa.js"></script>
 
