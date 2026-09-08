@@ -18,7 +18,7 @@
 
     <meta name="apple-mobile-web-app-title" content="FuBao">
 
-    <link rel="stylesheet" href="assets/css/style.css?v=60">
+    <link rel="stylesheet" href="assets/css/style.css?v=63">
 
     <style>
         .schedule-item-type-grid,
@@ -68,7 +68,7 @@
             line-height: 1.5;
         }
 
-        .week-plan-group + .week-plan-group {
+        .week-plan-group+.week-plan-group {
             margin-top: 14px;
             padding-top: 13px;
             border-top: 1px dashed #e6cbd7;
@@ -125,6 +125,7 @@
         }
 
         @media (max-width: 600px) {
+
             .schedule-item-type-grid,
             .pomodoro-grid,
             .personal-time-grid {
@@ -181,6 +182,12 @@
                 ›
             </button>
         </nav>
+
+        <div class="schedule-template-toolbar">
+            <button class="schedule-template-button" id="openScheduleTemplateButton" type="button">
+                ⚙ Lịch cố định
+            </button>
+        </div>
 
         <main class="weekly-plan-section">
 
@@ -300,7 +307,8 @@
                     <div class="form-group is-hidden" id="personalCustomTitleGroup">
                         <label for="personalCustomTitle">Tên công việc</label>
 
-                        <input id="personalCustomTitle" name="personalCustomTitle" type="text" maxlength="80" placeholder="Nhập tên công việc">
+                        <input id="personalCustomTitle" name="personalCustomTitle" type="text" maxlength="80"
+                            placeholder="Nhập tên công việc">
                     </div>
 
                     <div class="personal-time-grid">
@@ -320,7 +328,8 @@
                     <div class="form-group">
                         <label for="personalNote">Ghi chú (không bắt buộc)</label>
 
-                        <textarea id="personalNote" name="personalNote" maxlength="200" placeholder="Ví dụ: địa điểm, đồ cần mang..."></textarea>
+                        <textarea id="personalNote" name="personalNote" maxlength="200"
+                            placeholder="Ví dụ: địa điểm, đồ cần mang..."></textarea>
                     </div>
 
                 </section>
@@ -338,10 +347,275 @@
         </section>
     </div>
 
+    <!-- Quản lý lịch cố định -->
+    <div class="modal-overlay" id="scheduleTemplateModal">
+        <section class="shift-modal schedule-template-modal">
+
+            <div class="modal-handle"></div>
+
+            <header class="modal-header">
+                <div>
+                    <p class="section-label">
+                        LỊCH ÁP DỤNG HẰNG TUẦN
+                    </p>
+
+                    <h2>Quản lý lịch cố định</h2>
+
+                    <p>
+                        Lịch sẽ tự thay đổi theo thời gian áp dụng.
+                    </p>
+                </div>
+
+                <button class="close-modal-button" id="closeScheduleTemplateButton" type="button" aria-label="Đóng">
+                    ×
+                </button>
+            </header>
+
+
+            <!-- Danh sách lịch cố định -->
+            <section class="schedule-template-list-section" id="scheduleTemplateListSection">
+                <button class="save-shift-button" id="addScheduleTemplateButton" type="button">
+                    ＋ Thêm lịch cố định
+                </button>
+
+                <div class="schedule-template-list" id="scheduleTemplateList">
+                    <p class="schedule-template-empty">
+                        Đang tải lịch cố định...
+                    </p>
+                </div>
+            </section>
+
+
+            <!-- Form thêm hoặc sửa -->
+            <form class="schedule-template-form is-hidden" id="scheduleTemplateForm">
+                <input id="scheduleTemplateId" type="hidden">
+
+                <div class="form-group">
+                    <label for="scheduleTemplateTitle">
+                        Nội dung
+                    </label>
+
+                    <input id="scheduleTemplateTitle" type="text" maxlength="80" placeholder="Ví dụ: Học tiếng Nhật N5"
+                        required>
+                </div>
+
+
+                <div class="schedule-template-time-grid">
+                    <div class="form-group">
+                        <label for="scheduleTemplateStartTime">
+                            Bắt đầu
+                        </label>
+
+                        <input id="scheduleTemplateStartTime" type="time" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="scheduleTemplateEndTime">
+                            Kết thúc
+                        </label>
+
+                        <input id="scheduleTemplateEndTime" type="time" required>
+                    </div>
+                </div>
+
+
+                <div class="schedule-template-time-grid">
+                    <div class="form-group">
+                        <label for="scheduleTemplateWeekday">
+                            Thứ áp dụng
+                        </label>
+
+                        <select id="scheduleTemplateWeekday" required>
+                            <option value="1">Thứ Hai</option>
+                            <option value="2">Thứ Ba</option>
+                            <option value="3">Thứ Tư</option>
+                            <option value="4">Thứ Năm</option>
+                            <option value="5">Thứ Sáu</option>
+                            <option value="6">Thứ Bảy</option>
+                            <option value="0">Chủ Nhật</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="scheduleTemplateShift">
+                            Ca áp dụng
+                        </label>
+
+                        <select id="scheduleTemplateShift" required>
+                            <option value="any">
+                                Mọi ca
+                            </option>
+
+                            <option value="riki">
+                                Ngày học Riki
+                            </option>
+
+                            <option value="morning">
+                                Ca sáng
+                            </option>
+
+                            <option value="normal">
+                                Ca thường
+                            </option>
+
+                            <option value="afternoon">
+                                Ca chiều
+                            </option>
+
+                            <option value="off">
+                                Ngày nghỉ
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="schedule-template-time-grid">
+                    <div class="form-group">
+                        <label for="scheduleTemplateFrom">
+                            Áp dụng từ ngày
+                        </label>
+
+                        <input id="scheduleTemplateFrom" type="date" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="scheduleTemplateTo">
+                            Đến ngày
+                        </label>
+
+                        <input id="scheduleTemplateTo" type="date">
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="scheduleTemplateIcon">
+                        Biểu tượng
+                    </label>
+
+                    <input id="scheduleTemplateIcon" type="text" maxlength="10" value="📖">
+                </div>
+
+
+                <div class="form-group">
+                    <label for="scheduleTemplateDescription">
+                        Ghi chú
+                    </label>
+
+                    <textarea id="scheduleTemplateDescription" maxlength="200"
+                        placeholder="Ví dụ: Lớp học tại Riki"></textarea>
+                </div>
+
+
+                <p class="schedule-template-message" id="scheduleTemplateMessage"></p>
+
+
+                <div class="schedule-template-form-actions">
+                    <button id="cancelScheduleTemplateButton" type="button">
+                        Hủy
+                    </button>
+
+                    <button class="save-shift-button" type="submit">
+                        Lưu lịch
+                    </button>
+                </div>
+            </form>
+
+        </section>
+    </div>
+
+    <!-- Sửa lịch cố định riêng cho một ngày -->
+    <div class="modal-overlay" id="dailyTemplateOverrideModal">
+        <section class="shift-modal daily-template-override-modal">
+
+            <div class="modal-handle"></div>
+
+            <header class="modal-header">
+                <div>
+                    <p class="section-label">
+                        CHỈ ÁP DỤNG NGÀY NÀY
+                    </p>
+
+                    <h2>Sửa lịch trong ngày</h2>
+
+                    <p id="dailyTemplateOverrideDate">
+                        Chưa chọn ngày
+                    </p>
+                </div>
+
+                <button class="close-modal-button" id="closeDailyTemplateOverrideButton" type="button"
+                    aria-label="Đóng">
+                    ×
+                </button>
+            </header>
+
+
+            <form id="dailyTemplateOverrideForm">
+
+                <input id="dailyOverridePlanDate" type="hidden">
+
+                <input id="dailyOverrideTemplateId" type="hidden">
+
+
+                <div class="form-group">
+                    <label for="dailyOverrideTitle">
+                        Nội dung
+                    </label>
+
+                    <input id="dailyOverrideTitle" type="text" maxlength="80" required>
+                </div>
+
+
+                <div class="daily-override-time-grid">
+                    <div class="form-group">
+                        <label for="dailyOverrideStartTime">
+                            Bắt đầu
+                        </label>
+
+                        <input id="dailyOverrideStartTime" type="time" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dailyOverrideEndTime">
+                            Kết thúc
+                        </label>
+
+                        <input id="dailyOverrideEndTime" type="time" required>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="dailyOverrideNote">
+                        Ghi chú
+                    </label>
+
+                    <textarea id="dailyOverrideNote" maxlength="200" placeholder="Không bắt buộc"></textarea>
+                </div>
+
+
+                <p class="daily-override-message" id="dailyOverrideMessage"></p>
+
+
+                <div class="daily-override-actions">
+                    <button id="cancelDailyTemplateOverrideButton" type="button">
+                        Hủy
+                    </button>
+
+                    <button class="save-shift-button" type="submit">
+                        Lưu cho ngày này
+                    </button>
+                </div>
+
+            </form>
+        </section>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="assets/js/core/supabase-config.js"></script>
     <script src="assets/js/core/auth-guard.js"></script>
-    <script src="assets/js/diquy/week.js?v=29"></script>
+    <script src="assets/js/diquy/week.js?v=35"></script>
     <script src="assets/js/core/pwa.js"></script>
 </body>
 

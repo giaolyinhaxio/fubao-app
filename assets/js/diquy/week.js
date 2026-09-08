@@ -19,6 +19,8 @@ const JAPAN_TIMEZONE =
 
 let weekOffset = 0;
 
+let scheduleTemplates = [];
+
 const PERSONAL_PRESET_TITLES = {
     church: "Đi lễ",
     running: "Chạy bộ",
@@ -43,6 +45,8 @@ document.addEventListener(
 
         ganSuKienChuyenTuan();
         ganSuKienKeHoachTuan();
+        ganSuKienLichCoDinh();
+        ganSuKienSuaLichRiengNgay();
         hienThiLichTuan();
     }
 );
@@ -875,14 +879,18 @@ function taoBoChonCaLam(
 }
 
 
-function taoMucGioHocMacDinh(task) {
+function taoMucGioHocMacDinh(
+    task,
+    planDate
+) {
     const displayTime =
         chuyenKhoangGioHienThi(
             task.time
         );
 
+
     return `
-        <div class="week-study-item default">
+        <div class="week-study-item default editable">
             <span>
                 ${baoVeNoiDungHTML(
         displayTime
@@ -894,6 +902,34 @@ function taoMucGioHocMacDinh(task) {
         task.title
     )}
             </strong>
+
+            <button
+                class="edit-fixed-day-button"
+                type="button"
+                data-plan-date="${baoVeNoiDungHTML(
+        planDate
+    )}"
+                data-template-id="${baoVeNoiDungHTML(
+        task.templateId
+    )}"
+                aria-label="Sửa riêng ngày này"
+            >
+                ✎
+            </button>
+
+            <button
+                class="delete-fixed-day-button"
+                type="button"
+                data-plan-date="${baoVeNoiDungHTML(
+        planDate
+    )}"
+                data-template-id="${baoVeNoiDungHTML(
+        task.templateId
+    )}"
+                aria-label="Xóa riêng ngày này"
+            >
+                ×
+            </button>
         </div>
     `;
 }
@@ -1037,10 +1073,45 @@ function taoNgayHTML(
             ? dailyPlan.study_slots
             : [];
 
+    const hiddenTemplateIds =
+        new Set(
+            customSlots
+                .filter(
+                    function (slot) {
+                        return (
+                            slot.kind ===
+                            "template_hidden" ||
+                            slot.source ===
+                            "template_override"
+                        );
+                    }
+                )
+                .map(
+                    function (slot) {
+                        return String(
+                            slot.template_id
+                        );
+                    }
+                )
+        );
+
+
+    const visibleDefaultStudyTasks =
+        defaultStudyTasks.filter(
+            function (task) {
+                return !hiddenTemplateIds.has(
+                    String(task.templateId)
+                );
+            }
+        );
+
+
     const customStudySlots =
         customSlots.filter(
             function (slot) {
                 return (
+                    slot.kind !==
+                    "template_hidden" &&
                     layLoaiMucLich(slot) ===
                     "study"
                 );
@@ -1058,13 +1129,14 @@ function taoNgayHTML(
         );
 
     const allStudyItems = [
-        ...defaultStudyTasks.map(
+        ...visibleDefaultStudyTasks.map(
             function (task) {
                 return {
                     startTime: task.time,
                     html:
                         taoMucGioHocMacDinh(
-                            task
+                            task,
+                            planDate
                         )
                 };
             }
@@ -2112,6 +2184,33 @@ function ganSuKienKeHoachTuan() {
         scheduleElement.addEventListener(
             "click",
             function (event) {
+                const editFixedButton =
+                    event.target.closest(
+                        ".edit-fixed-day-button"
+                    );
+
+                if (editFixedButton) {
+                    moFormSuaLichRiengNgay(
+                        editFixedButton
+                    );
+
+                    return;
+                }
+
+
+                const deleteFixedButton =
+                    event.target.closest(
+                        ".delete-fixed-day-button"
+                    );
+
+                if (deleteFixedButton) {
+                    xuLyXoaLichCoDinhTrongNgay(
+                        deleteFixedButton
+                    );
+
+                    return;
+                }
+
                 const addButton =
                     event.target.closest(
                         ".add-study-slot-button"
@@ -2277,11 +2376,17 @@ async function hienThiLichTuan() {
     try {
         const [
             settingsList,
-            dailyPlans
+            dailyPlans,
+            weeklyTemplates
         ] = await Promise.all([
             layTatCaCauHinhCaLam(),
 
             layKeHoachNgayTrongKhoang(
+                selectedMonday,
+                selectedSunday
+            ),
+
+            layLichCoDinhTrongKhoang(
                 selectedMonday,
                 selectedSunday
             )
@@ -2327,11 +2432,36 @@ async function hienThiLichTuan() {
                         settings
                     );
 
-            const tasks =
+            /*
+ * Chỉ giữ phần ca làm từ lịch cũ.
+ * Phần học tập sẽ lấy từ Supabase.
+ */
+            const workTasks =
                 taoLichHocTheoCaDaChon(
                     date,
                     selectedShift
+                ).filter(
+                    function (task) {
+                        return (
+                            task.type ===
+                            "work"
+                        );
+                    }
                 );
+
+
+            const fixedStudyTasks =
+                layLichCoDinhChoNgay(
+                    date,
+                    selectedShift,
+                    weeklyTemplates
+                );
+
+
+            const tasks = [
+                ...workTasks,
+                ...fixedStudyTasks
+            ];
 
             weekHTML += taoNgayHTML(
                 date,
@@ -2357,5 +2487,1427 @@ async function hienThiLichTuan() {
                 </td>
             </tr>
         `;
+    }
+}
+
+/* =========================
+   CỬA SỔ QUẢN LÝ LỊCH CỐ ĐỊNH
+========================= */
+
+function ganSuKienLichCoDinh() {
+    const openButton =
+        document.getElementById(
+            "openScheduleTemplateButton"
+        );
+
+    const closeButton =
+        document.getElementById(
+            "closeScheduleTemplateButton"
+        );
+
+    const addButton =
+        document.getElementById(
+            "addScheduleTemplateButton"
+        );
+
+    const cancelButton =
+        document.getElementById(
+            "cancelScheduleTemplateButton"
+        );
+
+    const modal =
+        document.getElementById(
+            "scheduleTemplateModal"
+        );
+
+    const form =
+        document.getElementById(
+            "scheduleTemplateForm"
+        );
+
+    const listElement =
+        document.getElementById(
+            "scheduleTemplateList"
+        );
+
+
+    if (openButton) {
+        openButton.addEventListener(
+            "click",
+            moCuaSoLichCoDinh
+        );
+    }
+
+
+    if (closeButton) {
+        closeButton.addEventListener(
+            "click",
+            dongCuaSoLichCoDinh
+        );
+    }
+
+
+    if (addButton) {
+        addButton.addEventListener(
+            "click",
+            moFormThemLichCoDinh
+        );
+    }
+
+
+    if (cancelButton) {
+        cancelButton.addEventListener(
+            "click",
+            quayLaiDanhSachLichCoDinh
+        );
+    }
+
+
+    if (modal) {
+        modal.addEventListener(
+            "click",
+            function (event) {
+                if (event.target === modal) {
+                    dongCuaSoLichCoDinh();
+                }
+            }
+        );
+    }
+
+    if (form) {
+        form.addEventListener(
+            "submit",
+            xuLyLuuLichCoDinh
+        );
+    }
+
+
+    if (listElement) {
+        listElement.addEventListener(
+            "click",
+            function (event) {
+                const editButton =
+                    event.target.closest(
+                        ".edit-template-button"
+                    );
+
+                if (editButton) {
+                    moFormSuaLichCoDinh(
+                        editButton.dataset
+                            .templateId
+                    );
+
+                    return;
+                }
+
+
+                const deleteButton =
+                    event.target.closest(
+                        ".delete-template-button"
+                    );
+
+                if (deleteButton) {
+                    xuLyXoaLichCoDinh(
+                        deleteButton.dataset
+                            .templateId
+                    );
+                }
+            }
+        );
+    }
+}
+
+
+async function moCuaSoLichCoDinh() {
+    const modal =
+        document.getElementById(
+            "scheduleTemplateModal"
+        );
+
+    if (!modal) {
+        return;
+    }
+
+
+    quayLaiDanhSachLichCoDinh();
+
+    modal.classList.add("open");
+
+    document.body.classList.add(
+        "modal-open"
+    );
+
+    await taiDanhSachLichCoDinh();
+}
+
+
+function dongCuaSoLichCoDinh() {
+    const modal =
+        document.getElementById(
+            "scheduleTemplateModal"
+        );
+
+    if (!modal) {
+        return;
+    }
+
+
+    modal.classList.remove("open");
+
+    document.body.classList.remove(
+        "modal-open"
+    );
+}
+
+
+function moFormThemLichCoDinh() {
+    const listSection =
+        document.getElementById(
+            "scheduleTemplateListSection"
+        );
+
+    const form =
+        document.getElementById(
+            "scheduleTemplateForm"
+        );
+
+    const idInput =
+        document.getElementById(
+            "scheduleTemplateId"
+        );
+
+    const iconInput =
+        document.getElementById(
+            "scheduleTemplateIcon"
+        );
+
+    const fromInput =
+        document.getElementById(
+            "scheduleTemplateFrom"
+        );
+
+    const toInput =
+        document.getElementById(
+            "scheduleTemplateTo"
+        );
+
+    const messageElement =
+        document.getElementById(
+            "scheduleTemplateMessage"
+        );
+
+
+    if (!listSection || !form) {
+        return;
+    }
+
+
+    form.reset();
+
+    if (idInput) {
+        idInput.value = "";
+    }
+
+    if (iconInput) {
+        iconInput.value = "📖";
+    }
+
+    if (fromInput) {
+        fromInput.value =
+            dinhDangNgayISO(
+                new Date()
+            );
+    }
+
+    if (toInput) {
+        toInput.value = "";
+    }
+
+    if (messageElement) {
+        messageElement.textContent = "";
+    }
+
+
+    listSection.classList.add(
+        "is-hidden"
+    );
+
+    form.classList.remove(
+        "is-hidden"
+    );
+}
+
+
+function quayLaiDanhSachLichCoDinh() {
+    const listSection =
+        document.getElementById(
+            "scheduleTemplateListSection"
+        );
+
+    const form =
+        document.getElementById(
+            "scheduleTemplateForm"
+        );
+
+
+    if (listSection) {
+        listSection.classList.remove(
+            "is-hidden"
+        );
+    }
+
+    if (form) {
+        form.classList.add(
+            "is-hidden"
+        );
+    }
+}
+
+/* =========================
+   TẢI DANH SÁCH LỊCH CỐ ĐỊNH
+========================= */
+
+async function taiDanhSachLichCoDinh() {
+    const listElement =
+        document.getElementById(
+            "scheduleTemplateList"
+        );
+
+
+    if (!listElement) {
+        return;
+    }
+
+
+    listElement.innerHTML = `
+        <p class="schedule-template-empty">
+            Đang tải lịch cố định...
+        </p>
+    `;
+
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from(
+            "diquy_schedule_templates"
+        )
+        .select(`
+            id,
+            weekday,
+            shift_type,
+            icon,
+            start_time,
+            end_time,
+            title,
+            description,
+            item_type,
+            effective_from,
+            effective_to,
+            sort_order
+        `)
+        .order(
+            "effective_from",
+            {
+                ascending: true
+            }
+        )
+        .order(
+            "weekday",
+            {
+                ascending: true
+            }
+        )
+        .order(
+            "start_time",
+            {
+                ascending: true
+            }
+        );
+
+
+    if (error) {
+        console.error(
+            "Không tải được lịch cố định:",
+            error
+        );
+
+        listElement.innerHTML = `
+            <p class="schedule-template-empty">
+                Không tải được lịch cố định.
+            </p>
+        `;
+
+        return;
+    }
+
+
+    scheduleTemplates =
+        Array.isArray(data)
+            ? data
+            : [];
+
+
+    hienThiDanhSachLichCoDinh();
+}
+
+
+function hienThiDanhSachLichCoDinh() {
+    const listElement =
+        document.getElementById(
+            "scheduleTemplateList"
+        );
+
+
+    if (!listElement) {
+        return;
+    }
+
+
+    if (scheduleTemplates.length === 0) {
+        listElement.innerHTML = `
+            <p class="schedule-template-empty">
+                Chưa có lịch cố định.
+            </p>
+        `;
+
+        return;
+    }
+
+
+    listElement.innerHTML =
+        scheduleTemplates
+            .map(
+                taoTheLichCoDinhHTML
+            )
+            .join("");
+}
+
+
+function taoTheLichCoDinhHTML(template) {
+    const weekdayText =
+        layTenThuTheoGiaTri(
+            template.weekday
+        );
+
+    const shiftText =
+        layTenCaLichCoDinh(
+            template.shift_type
+        );
+
+    const startTime =
+        String(
+            template.start_time || ""
+        ).slice(0, 5);
+
+    const endTime =
+        String(
+            template.end_time || ""
+        ).slice(0, 5);
+
+    const effectiveTo =
+        template.effective_to ||
+        "Không giới hạn";
+
+
+    return `
+        <article class="schedule-template-card">
+            <div class="schedule-template-card-content">
+                <h3>
+                    ${baoVeNoiDungHTML(
+        template.icon || "📖"
+    )}
+                    ${baoVeNoiDungHTML(
+        template.title
+    )}
+                </h3>
+
+                <p>
+                    ${baoVeNoiDungHTML(
+        weekdayText
+    )}
+                    ·
+                    ${baoVeNoiDungHTML(
+        startTime
+    )}–${baoVeNoiDungHTML(
+        endTime
+    )}
+                </p>
+
+                <p>
+                    ${baoVeNoiDungHTML(
+        shiftText
+    )}
+                </p>
+
+                <p>
+                    ${baoVeNoiDungHTML(
+        template.effective_from
+    )}
+                    →
+                    ${baoVeNoiDungHTML(
+        effectiveTo
+    )}
+                </p>
+            </div>
+
+            <div class="schedule-template-card-actions">
+                <button
+                    class="edit-template-button"
+                    type="button"
+                    data-template-id="${baoVeNoiDungHTML(
+        template.id
+    )}"
+                    aria-label="Sửa lịch"
+                >
+                    ✎
+                </button>
+
+                <button
+                    class="delete-template-button"
+                    type="button"
+                    data-template-id="${baoVeNoiDungHTML(
+        template.id
+    )}"
+                    aria-label="Xóa lịch"
+                >
+                    ×
+                </button>
+            </div>
+        </article>
+    `;
+}
+
+
+function layTenThuTheoGiaTri(weekday) {
+    const names = {
+        0: "Chủ Nhật",
+        1: "Thứ Hai",
+        2: "Thứ Ba",
+        3: "Thứ Tư",
+        4: "Thứ Năm",
+        5: "Thứ Sáu",
+        6: "Thứ Bảy"
+    };
+
+    return names[
+        Number(weekday)
+    ] || "Không rõ";
+}
+
+
+function layTenCaLichCoDinh(shiftType) {
+    const names = {
+        any: "Mọi ca",
+        riki: "Ngày học Riki",
+        morning: "Ca sáng",
+        normal: "Ca thường",
+        afternoon: "Ca chiều",
+        off: "Ngày nghỉ"
+    };
+
+    return names[shiftType] ||
+        "Mọi ca";
+}
+
+/* =========================
+   LƯU LỊCH CỐ ĐỊNH
+========================= */
+
+async function xuLyLuuLichCoDinh(event) {
+    event.preventDefault();
+
+
+    const id =
+        document.getElementById(
+            "scheduleTemplateId"
+        ).value;
+
+    const title =
+        document.getElementById(
+            "scheduleTemplateTitle"
+        ).value.trim();
+
+    const startTime =
+        document.getElementById(
+            "scheduleTemplateStartTime"
+        ).value;
+
+    const endTime =
+        document.getElementById(
+            "scheduleTemplateEndTime"
+        ).value;
+
+    const weekday =
+        Number(
+            document.getElementById(
+                "scheduleTemplateWeekday"
+            ).value
+        );
+
+    const shiftType =
+        document.getElementById(
+            "scheduleTemplateShift"
+        ).value;
+
+    const effectiveFrom =
+        document.getElementById(
+            "scheduleTemplateFrom"
+        ).value;
+
+    const effectiveTo =
+        document.getElementById(
+            "scheduleTemplateTo"
+        ).value;
+
+    const icon =
+        document.getElementById(
+            "scheduleTemplateIcon"
+        ).value.trim() || "📖";
+
+    const description =
+        document.getElementById(
+            "scheduleTemplateDescription"
+        ).value.trim();
+
+    const messageElement =
+        document.getElementById(
+            "scheduleTemplateMessage"
+        );
+
+    const submitButton =
+        event.submitter;
+
+
+    if (
+        !title ||
+        !startTime ||
+        !endTime ||
+        !effectiveFrom
+    ) {
+        messageElement.textContent =
+            "Hãy nhập đầy đủ nội dung, giờ và ngày bắt đầu.";
+
+        return;
+    }
+
+
+    if (endTime <= startTime) {
+        messageElement.textContent =
+            "Giờ kết thúc phải sau giờ bắt đầu.";
+
+        return;
+    }
+
+
+    if (
+        effectiveTo &&
+        effectiveTo < effectiveFrom
+    ) {
+        messageElement.textContent =
+            "Ngày kết thúc phải bằng hoặc sau ngày bắt đầu.";
+
+        return;
+    }
+
+
+    const payload = {
+        weekday,
+        shift_type: shiftType,
+        icon,
+        start_time: startTime,
+        end_time: endTime,
+        title,
+        description:
+            description || null,
+        item_type: "study",
+        effective_from:
+            effectiveFrom,
+        effective_to:
+            effectiveTo || null
+    };
+
+
+    messageElement.textContent =
+        "Đang lưu...";
+
+    if (submitButton) {
+        submitButton.disabled = true;
+    }
+
+
+    let error;
+
+    if (id) {
+        const result =
+            await supabaseClient
+                .from(
+                    "diquy_schedule_templates"
+                )
+                .update({
+                    ...payload,
+                    updated_at:
+                        new Date()
+                            .toISOString()
+                })
+                .eq(
+                    "id",
+                    id
+                );
+
+        error = result.error;
+    } else {
+        const result =
+            await supabaseClient
+                .from(
+                    "diquy_schedule_templates"
+                )
+                .insert(payload);
+
+        error = result.error;
+    }
+
+
+    if (submitButton) {
+        submitButton.disabled = false;
+    }
+
+
+    if (error) {
+        console.error(
+            "Không lưu được lịch cố định:",
+            error
+        );
+
+        messageElement.textContent =
+            error.message ||
+            "Không lưu được lịch cố định.";
+
+        return;
+    }
+
+
+    await taiDanhSachLichCoDinh();
+
+    quayLaiDanhSachLichCoDinh();
+
+    await hienThiLichTuan();
+}
+
+
+/* =========================
+   SỬA LỊCH CỐ ĐỊNH
+========================= */
+
+function moFormSuaLichCoDinh(
+    templateId
+) {
+    const template =
+        scheduleTemplates.find(
+            function (item) {
+                return (
+                    item.id ===
+                    templateId
+                );
+            }
+        );
+
+
+    if (!template) {
+        return;
+    }
+
+
+    const listSection =
+        document.getElementById(
+            "scheduleTemplateListSection"
+        );
+
+    const form =
+        document.getElementById(
+            "scheduleTemplateForm"
+        );
+
+
+    document.getElementById(
+        "scheduleTemplateId"
+    ).value = template.id;
+
+    document.getElementById(
+        "scheduleTemplateTitle"
+    ).value = template.title || "";
+
+    document.getElementById(
+        "scheduleTemplateStartTime"
+    ).value =
+        String(
+            template.start_time || ""
+        ).slice(0, 5);
+
+    document.getElementById(
+        "scheduleTemplateEndTime"
+    ).value =
+        String(
+            template.end_time || ""
+        ).slice(0, 5);
+
+    document.getElementById(
+        "scheduleTemplateWeekday"
+    ).value =
+        String(template.weekday);
+
+    document.getElementById(
+        "scheduleTemplateShift"
+    ).value =
+        template.shift_type || "any";
+
+    document.getElementById(
+        "scheduleTemplateFrom"
+    ).value =
+        template.effective_from || "";
+
+    document.getElementById(
+        "scheduleTemplateTo"
+    ).value =
+        template.effective_to || "";
+
+    document.getElementById(
+        "scheduleTemplateIcon"
+    ).value =
+        template.icon || "📖";
+
+    document.getElementById(
+        "scheduleTemplateDescription"
+    ).value =
+        template.description || "";
+
+    document.getElementById(
+        "scheduleTemplateMessage"
+    ).textContent = "";
+
+
+    listSection.classList.add(
+        "is-hidden"
+    );
+
+    form.classList.remove(
+        "is-hidden"
+    );
+}
+
+
+/* =========================
+   XÓA LỊCH CỐ ĐỊNH
+========================= */
+
+async function xuLyXoaLichCoDinh(
+    templateId
+) {
+    const template =
+        scheduleTemplates.find(
+            function (item) {
+                return (
+                    item.id ===
+                    templateId
+                );
+            }
+        );
+
+
+    if (!template) {
+        return;
+    }
+
+
+    const confirmed =
+        window.confirm(
+            `Xóa lịch "${template.title}"?`
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    const {
+        error
+    } = await supabaseClient
+        .from(
+            "diquy_schedule_templates"
+        )
+        .delete()
+        .eq(
+            "id",
+            templateId
+        );
+
+
+    if (error) {
+        console.error(
+            "Không xóa được lịch cố định:",
+            error
+        );
+
+        alert(
+            error.message ||
+            "Không xóa được lịch cố định."
+        );
+
+        return;
+    }
+
+
+    await taiDanhSachLichCoDinh();
+
+    await hienThiLichTuan();
+}
+
+/* =========================
+   LỊCH CỐ ĐỊNH TRONG TUẦN
+========================= */
+
+async function layLichCoDinhTrongKhoang(
+    startDate,
+    endDate
+) {
+    const startText =
+        dinhDangNgayISO(startDate);
+
+    const endText =
+        dinhDangNgayISO(endDate);
+
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from(
+            "diquy_schedule_templates"
+        )
+        .select(`
+            id,
+            weekday,
+            shift_type,
+            icon,
+            start_time,
+            end_time,
+            title,
+            description,
+            item_type,
+            effective_from,
+            effective_to,
+            sort_order
+        `)
+        .lte(
+            "effective_from",
+            endText
+        )
+        .or(
+            `effective_to.is.null,effective_to.gte.${startText}`
+        )
+        .order(
+            "sort_order",
+            {
+                ascending: true
+            }
+        )
+        .order(
+            "start_time",
+            {
+                ascending: true
+            }
+        );
+
+
+    if (error) {
+        throw error;
+    }
+
+
+    return Array.isArray(data)
+        ? data
+        : [];
+}
+
+
+function layLichCoDinhChoNgay(
+    date,
+    selectedShift,
+    templates
+) {
+    const planDate =
+        dinhDangNgayISO(date);
+
+    const weekday =
+        date.getDay();
+
+    const isRikiDay =
+        weekday === 1 ||
+        weekday === 3 ||
+        weekday === 5;
+
+
+    return templates
+        .filter(
+            function (template) {
+                const correctWeekday =
+                    Number(
+                        template.weekday
+                    ) === weekday;
+
+                const afterStart =
+                    planDate >=
+                    template.effective_from;
+
+                const beforeEnd =
+                    !template.effective_to ||
+                    planDate <=
+                    template.effective_to;
+
+                const correctShift =
+                    template.shift_type ===
+                    "any" ||
+                    template.shift_type ===
+                    selectedShift ||
+                    (
+                        template.shift_type ===
+                        "riki" &&
+                        isRikiDay
+                    );
+
+
+                return (
+                    correctWeekday &&
+                    afterStart &&
+                    beforeEnd &&
+                    correctShift
+                );
+            }
+        )
+        .map(
+            function (template) {
+                const startTime =
+                    String(
+                        template.start_time ||
+                        ""
+                    ).slice(0, 5);
+
+                const endTime =
+                    String(
+                        template.end_time ||
+                        ""
+                    ).slice(0, 5);
+
+
+                const task =
+                    taoCongViec(
+                        template.icon || "📖",
+                        `${startTime}–${endTime}`,
+                        template.title,
+                        template.description || "",
+                        template.item_type ||
+                        "study"
+                    );
+
+
+                task.templateId =
+                    template.id;
+
+
+                return task;
+            }
+        );
+}
+
+/* =========================
+   SỬA LỊCH CỐ ĐỊNH RIÊNG MỘT NGÀY
+========================= */
+
+function ganSuKienSuaLichRiengNgay() {
+    const modal =
+        document.getElementById(
+            "dailyTemplateOverrideModal"
+        );
+
+    const closeButton =
+        document.getElementById(
+            "closeDailyTemplateOverrideButton"
+        );
+
+    const cancelButton =
+        document.getElementById(
+            "cancelDailyTemplateOverrideButton"
+        );
+
+    const form =
+        document.getElementById(
+            "dailyTemplateOverrideForm"
+        );
+
+
+    if (closeButton) {
+        closeButton.addEventListener(
+            "click",
+            dongFormSuaLichRiengNgay
+        );
+    }
+
+
+    if (cancelButton) {
+        cancelButton.addEventListener(
+            "click",
+            dongFormSuaLichRiengNgay
+        );
+    }
+
+
+    if (form) {
+        form.addEventListener(
+            "submit",
+            xuLyLuuLichRiengNgay
+        );
+    }
+
+
+    if (modal) {
+        modal.addEventListener(
+            "click",
+            function (event) {
+                if (event.target === modal) {
+                    dongFormSuaLichRiengNgay();
+                }
+            }
+        );
+    }
+}
+
+
+async function moFormSuaLichRiengNgay(
+    button
+) {
+    const planDate =
+        button.dataset.planDate;
+
+    const templateId =
+        button.dataset.templateId;
+
+    const modal =
+        document.getElementById(
+            "dailyTemplateOverrideModal"
+        );
+
+    const messageElement =
+        document.getElementById(
+            "dailyOverrideMessage"
+        );
+
+
+    if (
+        !planDate ||
+        !templateId ||
+        !modal
+    ) {
+        return;
+    }
+
+
+    button.disabled = true;
+
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from(
+            "diquy_schedule_templates"
+        )
+        .select(`
+            id,
+            icon,
+            start_time,
+            end_time,
+            title,
+            description
+        `)
+        .eq(
+            "id",
+            templateId
+        )
+        .single();
+
+
+    button.disabled = false;
+
+
+    if (error || !data) {
+        console.error(
+            "Không tải được lịch cần sửa:",
+            error
+        );
+
+        alert(
+            "Không tải được lịch cần sửa."
+        );
+
+        return;
+    }
+
+
+    document.getElementById(
+        "dailyOverridePlanDate"
+    ).value = planDate;
+
+    document.getElementById(
+        "dailyOverrideTemplateId"
+    ).value = templateId;
+
+    document.getElementById(
+        "dailyOverrideTitle"
+    ).value = data.title || "";
+
+    document.getElementById(
+        "dailyOverrideStartTime"
+    ).value =
+        String(
+            data.start_time || ""
+        ).slice(0, 5);
+
+    document.getElementById(
+        "dailyOverrideEndTime"
+    ).value =
+        String(
+            data.end_time || ""
+        ).slice(0, 5);
+
+    document.getElementById(
+        "dailyOverrideNote"
+    ).value =
+        data.description || "";
+
+    document.getElementById(
+        "dailyTemplateOverrideDate"
+    ).textContent =
+        `Ngày ${planDate}`;
+
+    if (messageElement) {
+        messageElement.textContent = "";
+    }
+
+
+    modal.dataset.icon =
+        data.icon || "📖";
+
+    modal.classList.add("open");
+
+    document.body.classList.add(
+        "modal-open"
+    );
+}
+
+
+function dongFormSuaLichRiengNgay() {
+    const modal =
+        document.getElementById(
+            "dailyTemplateOverrideModal"
+        );
+
+    if (!modal) {
+        return;
+    }
+
+
+    modal.classList.remove("open");
+
+    document.body.classList.remove(
+        "modal-open"
+    );
+}
+
+
+async function xuLyLuuLichRiengNgay(
+    event
+) {
+    event.preventDefault();
+
+
+    const planDate =
+        document.getElementById(
+            "dailyOverridePlanDate"
+        ).value;
+
+    const templateId =
+        document.getElementById(
+            "dailyOverrideTemplateId"
+        ).value;
+
+    const title =
+        document.getElementById(
+            "dailyOverrideTitle"
+        ).value.trim();
+
+    const startTime =
+        document.getElementById(
+            "dailyOverrideStartTime"
+        ).value;
+
+    const endTime =
+        document.getElementById(
+            "dailyOverrideEndTime"
+        ).value;
+
+    const note =
+        document.getElementById(
+            "dailyOverrideNote"
+        ).value.trim();
+
+    const messageElement =
+        document.getElementById(
+            "dailyOverrideMessage"
+        );
+
+    const submitButton =
+        event.submitter;
+
+    const modal =
+        document.getElementById(
+            "dailyTemplateOverrideModal"
+        );
+
+
+    if (
+        !planDate ||
+        !templateId ||
+        !title ||
+        !startTime ||
+        !endTime
+    ) {
+        messageElement.textContent =
+            "Hãy nhập đầy đủ nội dung và thời gian.";
+
+        return;
+    }
+
+
+    if (endTime <= startTime) {
+        messageElement.textContent =
+            "Giờ kết thúc phải sau giờ bắt đầu.";
+
+        return;
+    }
+
+
+    if (submitButton) {
+        submitButton.disabled = true;
+    }
+
+    messageElement.textContent =
+        "Đang lưu...";
+
+
+    try {
+        const dailyPlan =
+            await layKeHoachMotNgay(
+                planDate
+            );
+
+        const workShift =
+            dailyPlan
+                ? dailyPlan.work_shift
+                : layCaDangChonTrongBang(
+                    planDate
+                );
+
+        let studySlots =
+            dailyPlan &&
+                Array.isArray(
+                    dailyPlan.study_slots
+                )
+                ? [...dailyPlan.study_slots]
+                : [];
+
+
+        /*
+         * Xóa trạng thái cũ của cùng lịch:
+         * bản sửa cũ hoặc trạng thái đã ẩn.
+         */
+        studySlots =
+            studySlots.filter(
+                function (slot) {
+                    return (
+                        String(
+                            slot.template_id ||
+                            ""
+                        ) !==
+                        String(templateId)
+                    );
+                }
+            );
+
+
+        studySlots.push({
+            id:
+                `override-${templateId}`,
+            kind: "study",
+            source:
+                "template_override",
+            template_id:
+                templateId,
+            icon:
+                modal.dataset.icon ||
+                "📖",
+            start_time:
+                startTime,
+            end_time:
+                endTime,
+            end_day_offset: 0,
+            title: title,
+            note: note,
+            pomodoro_sessions: 0
+        });
+
+
+        studySlots.sort(
+            function (
+                firstSlot,
+                secondSlot
+            ) {
+                return String(
+                    firstSlot.start_time ||
+                    ""
+                ).localeCompare(
+                    String(
+                        secondSlot.start_time ||
+                        ""
+                    )
+                );
+            }
+        );
+
+
+        await luuKeHoachNgay(
+            planDate,
+            workShift,
+            studySlots
+        );
+
+
+        dongFormSuaLichRiengNgay();
+
+        await hienThiLichTuan();
+    } catch (error) {
+        console.error(
+            "Không lưu được lịch riêng:",
+            error
+        );
+
+        messageElement.textContent =
+            error.message ||
+            "Không lưu được lịch riêng.";
+    } finally {
+        if (submitButton) {
+            submitButton.disabled = false;
+        }
     }
 }

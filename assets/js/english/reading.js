@@ -10,6 +10,15 @@ let isPaused = false;
 
 let speechRunId = 0;
 
+let currentSpeechParts = [];
+let currentSpeechPartIndex = 0;
+let speechPauseTimer = null;
+let pendingSpeechAction = null;
+let isWaitingForSpeech = false;
+
+const SPEECH_PART_PAUSE_MS = 700;
+const SPEECH_SENTENCE_PAUSE_MS = 900;
+
 
 document.addEventListener(
     "DOMContentLoaded",
@@ -95,6 +104,15 @@ function ganSuKienTrangDoc() {
         );
 
     document
+        .getElementById(
+            "readingPanelToggle"
+        )
+        .addEventListener(
+            "click",
+            batTatBangDieuKhien
+        );
+
+    document
         .getElementById("readingScrollTopButton")
         .addEventListener(
             "click",
@@ -111,6 +129,54 @@ function ganSuKienTrangDoc() {
 
     capNhatNutQuayLenDauTrang();
 
+}
+
+/* =========================
+   THU GỌN BẢNG ĐIỀU KHIỂN
+========================= */
+
+function batTatBangDieuKhien() {
+    const panel =
+        document.getElementById(
+            "readingAudioPanel"
+        );
+
+    const toggleButton =
+        document.getElementById(
+            "readingPanelToggle"
+        );
+
+
+    if (!panel || !toggleButton) {
+        return;
+    }
+
+
+    const isCollapsed =
+        panel.classList.toggle(
+            "is-collapsed"
+        );
+
+
+    toggleButton.textContent =
+        isCollapsed ? "↓" : "↑";
+
+    toggleButton.setAttribute(
+        "aria-expanded",
+        String(!isCollapsed)
+    );
+
+    toggleButton.setAttribute(
+        "aria-label",
+        isCollapsed
+            ? "Mở bảng điều khiển"
+            : "Thu nhỏ bảng điều khiển"
+    );
+
+    toggleButton.title =
+        isCollapsed
+            ? "Mở bảng điều khiển"
+            : "Thu nhỏ bảng điều khiển";
 }
 
 
@@ -375,7 +441,7 @@ function hienThiCacCapCau(sentences) {
                 "reading-sentence-english";
 
             englishElement.textContent =
-                english;
+                xoaDauNgatKhiHienThi(english);
 
             const vietnameseElement =
                 document.createElement(
@@ -386,7 +452,9 @@ function hienThiCacCapCau(sentences) {
                 "reading-sentence-vietnamese";
 
             vietnameseElement.textContent =
-                vietnamese ||
+                xoaDauNgatKhiHienThi(
+                    vietnamese
+                ) ||
                 "Chưa có bản dịch tiếng Việt.";
 
             pair.append(
@@ -486,18 +554,146 @@ function tachThanhCau(paragraph) {
         : [paragraph];
 }
 
+/* Xóa dấu | khi hiển thị trên màn hình */
+function xoaDauNgatKhiHienThi(text) {
+    return String(text || "")
+        .replace(/\s*\|\s*/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+}
+
+
+/* Chia nội dung thành các cụm ngắn để đọc */
+function tachCumDoc(text) {
+    const normalizedText = String(text || "")
+        .replace(/\s+/g, " ")
+        .trim();
+
+    if (!normalizedText) {
+        return [];
+    }
+
+
+    /* Ưu tiên vị trí có dấu | do Phong đặt */
+    const markedParts = normalizedText
+        .split(/\s*\|\s*/)
+        .map(function (part) {
+            return part.trim();
+        })
+        .filter(Boolean);
+
+
+    if (markedParts.length > 1) {
+        return markedParts.flatMap(
+            function (part) {
+                return chiaCumTheoSoTu(
+                    part,
+                    12
+                );
+            }
+        );
+    }
+
+
+    /* Câu ngắn thì giữ nguyên */
+    if (demSoTu(normalizedText) <= 12) {
+        return [
+            normalizedText.replace(
+                /\|/g,
+                ""
+            )
+        ];
+    }
+
+
+    /*
+     * Nếu không có dấu | thì tự tìm
+     * vị trí ngắt nghỉ tự nhiên.
+     */
+    const naturalParts = normalizedText
+        .replace(
+            /([,;:—–])\s+/g,
+            "$1|"
+        )
+        .replace(
+            /\s+(and|but|because|which|while|when|where|so|or)\s+/gi,
+            "|$1 "
+        )
+        .split("|")
+        .map(function (part) {
+            return part.trim();
+        })
+        .filter(Boolean);
+
+
+    return naturalParts.flatMap(
+        function (part) {
+            return chiaCumTheoSoTu(
+                part,
+                12
+            );
+        }
+    );
+}
+
+
+/* Đếm số từ */
+function demSoTu(text) {
+    return String(text || "")
+        .trim()
+        .split(/\s+/)
+        .filter(Boolean)
+        .length;
+}
+
+
+/* Cắt cụm quá dài thành các cụm tối đa 12 từ */
+function chiaCumTheoSoTu(
+    text,
+    maximumWords
+) {
+    const words = String(text || "")
+        .trim()
+        .split(/\s+/)
+        .filter(Boolean);
+
+
+    if (words.length <= maximumWords) {
+        return words.length
+            ? [words.join(" ")]
+            : [];
+    }
+
+
+    const parts = [];
+
+    for (
+        let index = 0;
+        index < words.length;
+        index += maximumWords
+    ) {
+        parts.push(
+            words
+                .slice(
+                    index,
+                    index + maximumWords
+                )
+                .join(" ")
+        );
+    }
+
+    return parts;
+}
+
 /* =========================
    ĐỌC NỘI DUNG
 ========================= */
 
 function batDauHoacTiepTucDoc() {
-    if (
-        !("speechSynthesis" in window)
-    ) {
+    if (!("speechSynthesis" in window)) {
         capNhatTrangThaiDoc(
             "Thiết bị này không hỗ trợ chức năng đọc."
         );
-
         return;
     }
 
@@ -506,22 +702,44 @@ function batDauHoacTiepTucDoc() {
         capNhatTrangThaiDoc(
             "Bài này chưa có nội dung tiếng Anh."
         );
-
         return;
     }
 
 
     if (isPaused) {
-        window.speechSynthesis.resume();
-
         isPaused = false;
+
+        /*
+         * Nếu đang tạm nghỉ giữa hai cụm,
+         * tiếp tục đọc cụm kế tiếp.
+         */
+        if (
+            isWaitingForSpeech &&
+            pendingSpeechAction
+        ) {
+            window.clearTimeout(
+                speechPauseTimer
+            );
+
+            speechPauseTimer = null;
+
+            const nextAction =
+                pendingSpeechAction;
+
+            pendingSpeechAction = null;
+            isWaitingForSpeech = false;
+
+            nextAction();
+        } else {
+            window.speechSynthesis.resume();
+        }
+
 
         capNhatTrangThaiDoc(
             "Đang tiếp tục đọc..."
         );
 
         capNhatNutDieuKhien();
-
         return;
     }
 
@@ -535,16 +753,13 @@ function batDauHoacTiepTucDoc() {
 
 
     window.speechSynthesis.cancel();
+    huyHenDoc();
 
     speechRunId += 1;
-
     isReading = true;
-
     isPaused = false;
 
-
     capNhatNutDieuKhien();
-
     docCauHienTai(speechRunId);
 }
 
@@ -563,7 +778,6 @@ function docCauHienTai(runId) {
         readingSentences.length
     ) {
         ketThucBaiDoc();
-
         return;
     }
 
@@ -574,9 +788,63 @@ function docCauHienTai(runId) {
         ];
 
 
+    currentSpeechParts =
+        tachCumDoc(sentence);
+
+    currentSpeechPartIndex = 0;
+
+
+    toSangCau(
+        currentSentenceIndex
+    );
+
+    capNhatTienDo(
+        currentSentenceIndex + 1
+    );
+
+
+    docCumHienTai(runId);
+}
+
+
+/* Đọc từng cụm nhỏ trong một câu */
+function docCumHienTai(runId) {
+    if (
+        runId !== speechRunId ||
+        !isReading ||
+        isPaused
+    ) {
+        return;
+    }
+
+
+    if (
+        currentSpeechPartIndex >=
+        currentSpeechParts.length
+    ) {
+        currentSentenceIndex += 1;
+
+        henDocTiep(
+            runId,
+            SPEECH_SENTENCE_PAUSE_MS,
+            function () {
+                docCauHienTai(runId);
+            }
+        );
+
+        return;
+    }
+
+
+    const speechPart =
+        currentSpeechParts[
+        currentSpeechPartIndex
+        ];
+
+
     const utterance =
         new SpeechSynthesisUtterance(
-            sentence
+            speechPart
         );
 
 
@@ -591,83 +859,87 @@ function docCauHienTai(runId) {
                 .value
         ) || 1;
 
-
     utterance.pitch = 1;
-
     utterance.volume = 1;
 
-    utterance.onstart =
-        function () {
-            if (
-                runId !== speechRunId
-            ) {
-                return;
-            }
+
+    utterance.onstart = function () {
+        if (runId !== speechRunId) {
+            return;
+        }
+
+        capNhatTrangThaiDoc(
+            `Đang đọc câu ${currentSentenceIndex + 1
+            }/${readingSentences.length}`
+        );
+    };
 
 
-            toSangCau(
-                currentSentenceIndex
-            );
+    utterance.onend = function () {
+        if (
+            runId !== speechRunId ||
+            !isReading
+        ) {
+            return;
+        }
 
 
-            capNhatTienDo(
-                currentSentenceIndex + 1
-            );
+        currentSpeechPartIndex += 1;
+
+        const isLastPart =
+            currentSpeechPartIndex >=
+            currentSpeechParts.length;
 
 
-            capNhatTrangThaiDoc(
-                `Đang đọc câu ${currentSentenceIndex + 1
-                }/${readingSentences.length
-                }`
-            );
-        };
-
-
-    utterance.onend =
-        function () {
-            if (
-                runId !== speechRunId ||
-                !isReading
-            ) {
-                return;
-            }
-
-
+        if (isLastPart) {
             currentSentenceIndex += 1;
 
-            docCauHienTai(runId);
-        };
+            henDocTiep(
+                runId,
+                SPEECH_SENTENCE_PAUSE_MS,
+                function () {
+                    docCauHienTai(runId);
+                }
+            );
+
+            return;
+        }
 
 
-    utterance.onerror =
-        function (event) {
-            if (
-                runId !== speechRunId ||
-                event.error === "canceled" ||
-                event.error === "interrupted"
-            ) {
-                return;
+        henDocTiep(
+            runId,
+            SPEECH_PART_PAUSE_MS,
+            function () {
+                docCumHienTai(runId);
             }
+        );
+    };
 
 
-            console.error(
-                "Lỗi giọng đọc:",
-                event.error
-            );
+    utterance.onerror = function (event) {
+        if (
+            runId !== speechRunId ||
+            event.error === "canceled" ||
+            event.error === "interrupted"
+        ) {
+            return;
+        }
 
 
-            isReading = false;
+        console.error(
+            "Lỗi giọng đọc:",
+            event.error
+        );
 
-            isPaused = false;
+        isReading = false;
+        isPaused = false;
 
+        capNhatTrangThaiDoc(
+            "Không thể phát giọng đọc."
+        );
 
-            capNhatTrangThaiDoc(
-                "Không thể phát giọng đọc."
-            );
-
-
-            capNhatNutDieuKhien();
-        };
+        capNhatNutDieuKhien();
+    };
 
 
     window.speechSynthesis.speak(
@@ -675,6 +947,62 @@ function docCauHienTai(runId) {
     );
 }
 
+
+/* Tạo khoảng nghỉ trước khi đọc tiếp */
+function henDocTiep(
+    runId,
+    delay,
+    nextAction
+) {
+    window.clearTimeout(
+        speechPauseTimer
+    );
+
+    pendingSpeechAction = nextAction;
+    isWaitingForSpeech = true;
+
+
+    speechPauseTimer =
+        window.setTimeout(
+            function () {
+                speechPauseTimer = null;
+
+                if (
+                    runId !== speechRunId ||
+                    !isReading ||
+                    isPaused
+                ) {
+                    return;
+                }
+
+
+                const action =
+                    pendingSpeechAction;
+
+                pendingSpeechAction = null;
+                isWaitingForSpeech = false;
+
+                if (action) {
+                    action();
+                }
+            },
+            delay
+        );
+}
+
+
+/* Hủy khoảng nghỉ khi Stop hoặc đổi tốc độ */
+function huyHenDoc() {
+    window.clearTimeout(
+        speechPauseTimer
+    );
+
+    speechPauseTimer = null;
+    pendingSpeechAction = null;
+    isWaitingForSpeech = false;
+    currentSpeechParts = [];
+    currentSpeechPartIndex = 0;
+}
 
 /* =========================
    TẠM DỪNG VÀ DỪNG
@@ -710,6 +1038,8 @@ function dungDoc() {
         window.speechSynthesis.cancel();
     }
 
+
+    huyHenDoc();
 
     speechRunId += 1;
 
@@ -762,6 +1092,8 @@ function docTuCau(sentenceIndex) {
     }
 
 
+    huyHenDoc();
+
     speechRunId += 1;
 
     isReading = false;
@@ -800,6 +1132,8 @@ function thayDoiTocDoDoc() {
 
     window.speechSynthesis.cancel();
 
+    huyHenDoc();
+
     speechRunId += 1;
 
     isReading = false;
@@ -824,6 +1158,8 @@ function thayDoiTocDoDoc() {
 ========================= */
 
 function ketThucBaiDoc() {
+    huyHenDoc();
+
     isReading = false;
 
     isPaused = false;
@@ -906,44 +1242,8 @@ function xoaToSangCau() {
 }
 
 
-function capNhatTienDo(completedCount) {
-    const total =
-        readingSentences.length;
-
-
-    const safeCompleted =
-        Math.min(
-            Math.max(
-                completedCount,
-                0
-            ),
-            total
-        );
-
-
-    const percentage =
-        total > 0
-            ? (
-                safeCompleted / total
-            ) * 100
-            : 0;
-
-
-    document
-        .getElementById(
-            "readingProgressFill"
-        )
-        .style
-        .width =
-        `${percentage}%`;
-
-
-    document
-        .getElementById(
-            "readingProgressText"
-        )
-        .textContent =
-        `${safeCompleted}/${total} câu`;
+function capNhatTienDo() {
+    /* Đã xóa thanh tiến độ và số câu */
 }
 
 

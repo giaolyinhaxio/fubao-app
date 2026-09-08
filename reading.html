@@ -18,7 +18,7 @@
 
     <meta name="apple-mobile-web-app-title" content="FuBao">
 
-    <link rel="stylesheet" href="assets/css/style.css?v=49">
+    <link rel="stylesheet" href="assets/css/style.css?v=50">
 
     <link rel="icon" type="image/svg+xml" href="assets/icons/bear-favicon.svg?v=2">
 </head>
@@ -57,8 +57,7 @@
             </section>
 
 
-            <section class="reading-audio-panel">
-
+            <section class="reading-audio-panel" id="readingAudioPanel">
                 <div class="reading-audio-main-actions">
                     <button class="reading-play-button" id="readingPlayButton" type="button" aria-label="Đọc bài"
                         title="Đọc bài">
@@ -74,35 +73,34 @@
                     </button>
                 </div>
 
+                <div class="reading-audio-options">
+                    <button class="reading-panel-toggle" id="readingPanelToggle" type="button"
+                        aria-label="Thu nhỏ bảng điều khiển" aria-expanded="true" title="Thu nhỏ bảng điều khiển">
+                        ↑
+                    </button>
 
-                <label class="reading-speed-control">
-                    <span>Tốc độ đọc</span>
+                    <label class="reading-speed-control">
+                        <span>Tốc độ đọc</span>
 
-                    <select id="readingRateSelect">
-                        <option value="0.75">
-                            Chậm — 0.75×
-                        </option>
+                        <select id="readingRateSelect">
+                            <option value="0.5">
+                                Rất chậm — 0.5×
+                            </option>
 
-                        <option value="1" selected>
-                            Bình thường — 1×
-                        </option>
+                            <option value="0.75">
+                                Chậm — 0.75×
+                            </option>
 
-                        <option value="1.25">
-                            Nhanh — 1.25×
-                        </option>
-                    </select>
-                </label>
+                            <option value="1" selected>
+                                Bình thường — 1×
+                            </option>
 
-                <div class="reading-progress">
-                    <div class="reading-progress-track">
-                        <span id="readingProgressFill"></span>
-                    </div>
-
-                    <span id="readingProgressText">
-                        0/0 câu
-                    </span>
+                            <option value="1.25">
+                                Nhanh — 1.25×
+                            </option>
+                        </select>
+                    </label>
                 </div>
-
             </section>
 
 
@@ -151,7 +149,7 @@
 
     <script src="assets/js/core/auth-guard.js"></script>
 
-    <script src="assets/js/english/reading.js?v=8"></script>
+    <script src="assets/js/english/reading.js?v=11"></script>
 
     <script src="assets/js/core/pwa.js"></script>
 
