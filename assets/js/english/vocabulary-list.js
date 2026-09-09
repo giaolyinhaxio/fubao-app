@@ -15,10 +15,19 @@ const allowedStatusFilters = [
     "known"
 ];
 
-const requestedStatusFilter =
+const urlParameters =
     new URLSearchParams(
         window.location.search
-    ).get("status");
+    );
+
+
+const requestedStatusFilter =
+    urlParameters.get("status");
+
+
+const vocabularyTopicId =
+    urlParameters.get("topic");
+
 
 let currentStatusFilter =
     allowedStatusFilters.includes(
@@ -33,6 +42,29 @@ let totalVocabularyCount = 0;
 document.addEventListener(
     "DOMContentLoaded",
     async function () {
+        if (!vocabularyTopicId) {
+            window.location.replace(
+                "vocabulary-topics.html"
+            );
+
+            return;
+        }
+
+
+        const backButton =
+            document.getElementById(
+                "vocabularyListBackButton"
+            );
+
+
+        if (backButton) {
+            backButton.href =
+                `vocabulary.html?topic=${encodeURIComponent(
+                    vocabularyTopicId
+                )}`;
+        }
+
+
         const statusFilter =
             document.getElementById(
                 "vocabularyStatusFilter"
@@ -53,7 +85,10 @@ document.addEventListener(
 
             ganSuKienDanhSachTu();
 
+            await taiThongTinChuDe();
+
             await taiDanhSachTrongKho();
+
         } catch (error) {
             console.error(
                 "Lỗi khởi động danh sách:",
@@ -65,6 +100,59 @@ document.addEventListener(
         }
     }
 );
+
+/* =========================
+   THÔNG TIN CHỦ ĐỀ
+========================= */
+
+async function taiThongTinChuDe() {
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from(
+            "english_vocabulary_topics"
+        )
+        .select(`
+            name,
+            description,
+            emoji
+        `)
+        .eq(
+            "id",
+            vocabularyTopicId
+        )
+        .maybeSingle();
+
+
+    if (error) {
+        throw error;
+    }
+
+
+    if (!data) {
+        throw new Error(
+            "Không tìm thấy chủ đề từ vựng."
+        );
+    }
+
+
+    document.getElementById(
+        "vocabularyListTitle"
+    ).textContent =
+        `Danh sách ${data.name}`;
+
+
+    document.getElementById(
+        "vocabularyListDescription"
+    ).textContent =
+        data.description ||
+        "Xem và tìm kiếm từ trong chủ đề";
+
+
+    document.title =
+        `Danh sách ${data.name} | FuBao`;
+}
 
 
 /* =========================
@@ -222,7 +310,10 @@ async function taiDanhSachTrongKho() {
                     VOCABULARY_PAGE_SIZE,
 
                 p_offset:
-                    startIndex
+                    startIndex,
+
+                p_topic_id:
+                    vocabularyTopicId
             }
         );
 

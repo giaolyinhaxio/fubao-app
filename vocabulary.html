@@ -18,7 +18,7 @@
 
     <meta name="apple-mobile-web-app-title" content="FuBao">
 
-    <link rel="stylesheet" href="assets/css/style.css?v=63">
+    <link rel="stylesheet" href="assets/css/style.css?v=64">
 
     <link rel="icon" type="image/svg+xml" href="assets/icons/bear-favicon.svg?v=2">
 </head>
@@ -28,24 +28,35 @@
     <div class="app-container sub-page-container">
 
         <header class="sub-page-header">
-            <a class="back-button" href="english.html">
+            <a class="back-button" href="vocabulary-topics.html">
                 <span>‹</span>
-                Học tiếng Anh
+                Chủ đề
             </a>
         </header>
 
         <section class="vocabulary-heading">
             <p>HỌC TIẾNG ANH</p>
 
-            <h1>Từ vựng</h1>
+            <h1 id="vocabularyTopicName">
+                Đang tải...
+            </h1>
 
-            <span>
-                Chọn nội dung bạn muốn học
+            <span id="vocabularyTopicDescription">
+                Đang tải thông tin chủ đề...
             </span>
         </section>
 
+        <section class="vocabulary-import-toolbar">
+
+            <button id="openVocabularyCsvButton" type="button">
+                ↑ Import CSV
+            </button>
+
+        </section>
+
         <section class="vocabulary-statistics">
-            <a class="vocabulary-statistics-link total-statistics-link" href="vocabulary-list.html?status=all">
+            <a class="vocabulary-statistics-link total-statistics-link" id="allVocabularyLink"
+                href="vocabulary-list.html?status=all">
                 <strong id="totalVocabularyCount">
                     ...
                 </strong>
@@ -53,7 +64,8 @@
                 <span>Tổng số từ</span>
             </a>
 
-            <a class="vocabulary-statistics-link studied-statistics-link" href="vocabulary-list.html?status=known">
+            <a class="vocabulary-statistics-link studied-statistics-link" id="knownVocabularyLink"
+                href="vocabulary-list.html?status=known">
                 <strong id="studiedVocabularyCount">
                     ...
                 </strong>
@@ -61,7 +73,8 @@
                 <span>Đã học</span>
             </a>
 
-            <a class="vocabulary-statistics-link review-statistics-link" href="vocabulary-list.html?status=review">
+            <a class="vocabulary-statistics-link review-statistics-link" id="reviewVocabularyListLink"
+                href="vocabulary-list.html?status=review">
                 <strong id="dueVocabularyCount">
                     ...
                 </strong>
@@ -100,7 +113,7 @@
 
         <section class="vocabulary-mode-selector" aria-label="Chọn chế độ học">
 
-            <a class="vocabulary-mode-button" href="flashcard.html?mode=new">
+            <a class="vocabulary-mode-button" id="newVocabularyModeLink" href="flashcard.html?mode=new">
 
                 <strong>Học từ mới</strong>
 
@@ -109,9 +122,11 @@
                 </span>
 
                 <b>›</b>
+
             </a>
 
-            <a class="vocabulary-mode-button" href="flashcard.html?mode=review">
+
+            <a class="vocabulary-mode-button" id="reviewVocabularyModeLink" href="flashcard.html?mode=review">
 
                 <strong>Ôn tập</strong>
 
@@ -120,6 +135,7 @@
                 </span>
 
                 <b>›</b>
+
             </a>
 
         </section>
@@ -150,13 +166,95 @@
 
     </div>
 
+    <!-- IMPORT CSV TỪ VỰNG -->
+
+    <div class="reading-form-modal hidden" id="vocabularyCsvModal" hidden>
+        <section class="reading-form-panel vocabulary-csv-panel" role="dialog" aria-modal="true"
+            aria-labelledby="vocabularyCsvTitle">
+
+            <header class="reading-form-header">
+
+                <div>
+                    <p>THÊM TỪ VỰNG</p>
+
+                    <h2 id="vocabularyCsvTitle">
+                        Import CSV
+                    </h2>
+                </div>
+
+                <button class="reading-form-close" id="closeVocabularyCsvButton" type="button" aria-label="Đóng">
+                    ×
+                </button>
+
+            </header>
+
+
+            <form id="vocabularyCsvForm">
+
+                <label for="vocabularyCsvInput">
+                    File CSV
+                </label>
+
+                <input id="vocabularyCsvInput" type="file" accept=".csv,text/csv" required>
+
+
+                <div class="vocabulary-csv-guide">
+
+                    <strong>Định dạng file:</strong>
+
+                    <p>
+                        CSV gồm 4 cột:
+                    </p>
+
+                    <code>
+                        english,ipa,vietnamese,japanese
+                    </code>
+
+                    <p>
+                        Các từ mới sẽ được thêm vào
+                        chủ đề đang mở.
+                    </p>
+
+                    <p>
+                        Những từ đã tồn tại trong
+                        chủ đề sẽ được bỏ qua.
+                    </p>
+
+                </div>
+
+
+                <p class="vocabulary-csv-selected" id="vocabularyCsvSelected">
+                    Chưa chọn file.
+                </p>
+
+
+                <p class="reading-form-message" id="vocabularyCsvMessage"></p>
+
+
+                <div class="reading-form-actions">
+
+                    <button id="cancelVocabularyCsvButton" type="button">
+                        Hủy
+                    </button>
+
+                    <button class="reading-form-submit" id="submitVocabularyCsvButton" type="submit">
+                        Thêm từ vựng
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script src="assets/js/core/supabase-config.js"></script>
 
     <script src="assets/js/core/auth-guard.js"></script>
 
-    <script src="assets/js/english/vocabulary-home.js?v=4"></script>
+    <script src="assets/js/english/vocabulary-home.js?v=6"></script>
 
     <script src="assets/js/core/pwa.js"></script>
 

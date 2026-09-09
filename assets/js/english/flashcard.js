@@ -34,6 +34,10 @@ const vocabularyMode =
         : "new";
 
 
+const vocabularyTopicId =
+    urlParameters.get("topic");
+
+
 const vocabularySessionSize =
     laySoLuongTuMoiLuot();
 
@@ -47,6 +51,29 @@ localStorage.setItem(
 document.addEventListener(
     "DOMContentLoaded",
     async function () {
+        if (!vocabularyTopicId) {
+            window.location.replace(
+                "vocabulary-topics.html"
+            );
+
+            return;
+        }
+
+
+        const backButton =
+            document.getElementById(
+                "flashcardBackButton"
+            );
+
+
+        if (backButton) {
+            backButton.href =
+                `vocabulary.html?topic=${encodeURIComponent(
+                    vocabularyTopicId
+                )}`;
+        }
+
+
         capNhatTieuDeCheDo();
 
         try {
@@ -133,7 +160,10 @@ async function taiDanhSachTuVung() {
                 vocabularySessionSize,
 
             p_mode:
-                vocabularyMode
+                vocabularyMode,
+
+            p_topic_id:
+                vocabularyTopicId
         }
     );
 
