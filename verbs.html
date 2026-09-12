@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+    <meta name="theme-color" content="#eef8f1">
+
+    <title>Động từ | FuBao</title>
+
+    <link rel="manifest" href="manifest.json">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="FuBao">
+
+    <link rel="stylesheet" href="assets/css/style.css?v=66">
+    <link rel="icon" type="image/svg+xml" href="assets/icons/bear-favicon.svg?v=2">
+
+    <style>
+        .verbs-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .verbs-import-button {
+            flex-shrink: 0;
+            min-height: 44px;
+            padding: 12px 18px;
+            border: 0;
+            border-radius: 16px;
+            background: #86b49f;
+            color: white;
+            font: inherit;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .verbs-settings {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-top: 24px;
+            padding: 18px 22px;
+            border: 1px solid #ead4dd;
+            border-radius: 22px;
+            background: #fffafd;
+        }
+
+        .verbs-settings label {
+            font-weight: 800;
+        }
+
+        .verbs-settings select {
+            min-height: 44px;
+            padding: 8px 14px;
+            border: 1px solid #dec8d1;
+            border-radius: 12px;
+            background: white;
+            color: inherit;
+            font: inherit;
+        }
+
+        .verbs-message {
+            margin: 20px 0;
+            color: #647e70;
+            text-align: center;
+        }
+
+        .verbs-message.error {
+            color: #bf476c;
+        }
+
+        #verbCsvModal[hidden] {
+            display: none !important;
+        }
+
+        #verbCsvModal {
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(65, 45, 54, 0.35);
+        }
+
+        .verb-csv-panel {
+            box-sizing: border-box;
+            width: min(560px, 100%);
+            max-height: 90dvh;
+            overflow-y: auto;
+            padding: 26px;
+            border-radius: 26px;
+            background: #fffafd;
+            box-shadow: 0 20px 60px rgba(65, 45, 54, 0.2);
+        }
+
+        .verb-csv-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .verb-csv-header h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        #closeVerbCsvButton {
+            min-width: 44px;
+            min-height: 44px;
+            border: 0;
+            border-radius: 50%;
+            background: #f3e7ed;
+            color: inherit;
+            font-size: 26px;
+            cursor: pointer;
+        }
+
+        #verbCsvForm {
+            display: grid;
+            gap: 16px;
+        }
+
+        #verbCsvInput {
+            box-sizing: border-box;
+            width: 100%;
+            min-width: 0;
+            padding: 12px;
+            border: 1px solid #dec8d1;
+            border-radius: 12px;
+            background: white;
+            font: inherit;
+        }
+
+        .verb-csv-guide {
+            padding: 14px;
+            border-radius: 14px;
+            background: #edf8f1;
+            line-height: 1.7;
+        }
+
+        .verb-csv-guide code {
+            display: block;
+            overflow-wrap: anywhere;
+        }
+
+        .verb-csv-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .verb-csv-actions button {
+            min-height: 44px;
+            padding: 10px 18px;
+            border: 0;
+            border-radius: 14px;
+            font: inherit;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        #cancelVerbCsvButton {
+            background: #f3e7ed;
+            color: inherit;
+        }
+
+        #submitVerbCsvButton {
+            background: #86b49f;
+            color: white;
+        }
+
+        #submitVerbCsvButton:disabled {
+            opacity: 0.6;
+            cursor: wait;
+        }
+
+        #verbCsvMessage {
+            margin: 0;
+            color: #477b64;
+            overflow-wrap: anywhere;
+        }
+
+        #verbCsvMessage.error {
+            color: #bf476c;
+        }
+
+        @media (max-width: 600px) {
+            .verbs-import-button {
+                padding: 10px 13px;
+                font-size: 14px;
+            }
+
+            .verb-csv-panel {
+                padding: 20px;
+            }
+        }
+
+        .vocabulary-mode-section {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .vocabulary-mode-section .vocabulary-mode-button {
+            box-sizing: border-box;
+            width: 100%;
+            min-width: 0;
+            margin: 0;
+            padding: 24px 16px;
+        }
+
+        .vocabulary-mode-section .vocabulary-mode-button h2 {
+            font-size: 24px;
+        }
+
+        .vocabulary-mode-section .vocabulary-mode-button p {
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 600px) {
+            .vocabulary-mode-section {
+                gap: 10px;
+            }
+
+            .vocabulary-mode-section .vocabulary-mode-button {
+                padding: 20px 10px;
+            }
+
+            .vocabulary-mode-section .vocabulary-mode-button h2 {
+                font-size: 19px;
+            }
+
+            .vocabulary-mode-section .vocabulary-mode-button p {
+                font-size: 14px;
+            }
+        }
+
+        .vocabulary-mode-section .vocabulary-mode-button {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .vocabulary-mode-section .vocabulary-mode-button>div {
+            margin: 0;
+        }
+
+        .vocabulary-mode-section .vocabulary-mode-button h2 {
+            margin: 0;
+        }
+
+        .vocabulary-mode-section .vocabulary-mode-button>span {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 26px;
+        }
+    </style>
+</head>
+
+<body class="tioong-page vocabulary-home-page">
+
+    <div class="app-container sub-page-container">
+
+        <header class="sub-page-header verbs-header">
+            <a class="back-button" href="english.html">
+                <span>‹</span>
+                Tiếng Anh
+            </a>
+
+            <button class="verbs-import-button" id="openVerbCsvButton" type="button">
+                ↑ Import CSV
+            </button>
+        </header>
+
+        <section class="vocabulary-heading">
+            <p>HỌC TIẾNG ANH</p>
+
+            <h1>Động từ</h1>
+        </section>
+
+        <section class="vocabulary-statistics" aria-label="Thống kê động từ">
+
+            <div class="vocabulary-statistics-link total-statistics-link">
+                <strong id="totalVerbCount">…</strong>
+                <span>Tổng số từ</span>
+            </div>
+
+            <div class="vocabulary-statistics-link studied-statistics-link">
+                <strong id="knownVerbCount">…</strong>
+                <span>Đã nhớ</span>
+            </div>
+
+            <div class="vocabulary-statistics-link review-statistics-link">
+                <strong id="reviewVerbCount">…</strong>
+                <span>Cần ôn</span>
+            </div>
+
+        </section>
+
+        <p class="verbs-message" id="verbsPageMessage" role="status" aria-live="polite">
+            Đang tải dữ liệu…
+        </p>
+
+        <section class="vocabulary-mode-section">
+            <a class="vocabulary-mode-button" id="newVerbModeLink" href="verb-flashcard.html?mode=new">
+
+                <div>
+                    <h2>Học từ mới</h2>
+                </div>
+
+                <span aria-hidden="true">›</span>
+            </a>
+
+            <a class="vocabulary-mode-button" id="reviewVerbModeLink" href="verb-flashcard.html?mode=review">
+
+                <div>
+                    <h2>Ôn tập</h2>
+                </div>
+
+                <span aria-hidden="true">›</span>
+            </a>
+        </section>
+
+        <section class="verbs-settings">
+            <label for="verbSessionSizeSelect">
+                Số từ mỗi lượt
+            </label>
+
+            <select id="verbSessionSizeSelect">
+                <option value="5">5 từ</option>
+                <option value="10" selected>10 từ</option>
+                <option value="20">20 từ</option>
+            </select>
+        </section>
+
+    </div>
+
+    <div id="verbCsvModal" hidden>
+        <section class="verb-csv-panel" role="dialog" aria-modal="true" aria-labelledby="verbCsvTitle" tabindex="-1">
+
+            <header class="verb-csv-header">
+                <h2 id="verbCsvTitle">Thêm động từ</h2>
+
+                <button id="closeVerbCsvButton" type="button" aria-label="Đóng">
+                    ×
+                </button>
+            </header>
+
+            <form id="verbCsvForm">
+                <label for="verbCsvInput">
+                    Chọn file CSV
+                </label>
+
+                <input id="verbCsvInput" type="file" accept=".csv,text/csv" required>
+
+                <div class="verb-csv-guide">
+                    File CSV UTF-8 gồm bốn cột:
+                    <code>v1,v22,v3,vietnamese</code>
+                    <p>
+                        Ví dụ: go,went,gone,đi
+                    </p>
+                    <p>
+                        Nếu có nhiều dạng hợp lệ, dùng dấu /
+                        trong cùng ô, ví dụ: learned/learnt.
+                    </p>
+                </div>
+
+                <p id="verbCsvSelected">Chưa chọn file.</p>
+
+                <p id="verbCsvMessage" role="status" aria-live="polite"></p>
+
+                <div class="verb-csv-actions">
+                    <button id="cancelVerbCsvButton" type="button">
+                        Hủy
+                    </button>
+
+                    <button id="submitVerbCsvButton" type="submit">
+                        Thêm động từ
+                    </button>
+                </div>
+            </form>
+
+        </section>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="assets/js/core/supabase-config.js"></script>
+    <script src="assets/js/core/auth-guard.js"></script>
+    <script src="assets/js/english/verbs.js?v=1"></script>
+    <script src="assets/js/core/pwa.js"></script>
+
+</body>
+
+</html>

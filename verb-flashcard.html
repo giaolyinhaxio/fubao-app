@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+    <meta name="theme-color" content="#eef8f1">
+
+    <title>Học động từ | FuBao</title>
+
+    <link rel="manifest" href="manifest.json">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="FuBao">
+
+    <link rel="stylesheet" href="assets/css/style.css?v=66">
+    <link rel="icon" type="image/svg+xml"
+        href="assets/icons/bear-favicon.svg?v=2">
+
+    <style>
+        .verb-study {
+            width: min(720px, 100%);
+            margin: 0 auto;
+        }
+
+        .verb-progress {
+            margin: 24px 0;
+        }
+
+        .verb-progress-label {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 10px;
+            color: #73877c;
+        }
+
+        #verbStudyProgress {
+            display: block;
+            width: 100%;
+            height: 10px;
+            border: 0;
+            border-radius: 20px;
+            overflow: hidden;
+            accent-color: #86b49f;
+        }
+
+        #verbStudyProgress::-webkit-progress-bar {
+            background: #e0ece5;
+        }
+
+        #verbStudyProgress::-webkit-progress-value {
+            background: #86b49f;
+            border-radius: 20px;
+        }
+
+        #verbStudyProgress::-moz-progress-bar {
+            background: #86b49f;
+        }
+
+        .verb-card {
+            box-sizing: border-box;
+            padding: 32px 24px;
+            border: 1px solid #c8e3d5;
+            border-radius: 30px;
+            background: linear-gradient(135deg, #f7fffb, #e3f4eb);
+            box-shadow: 0 18px 45px rgba(84, 117, 99, 0.12);
+            text-align: center;
+        }
+
+        .verb-card-face {
+            min-height: 260px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .verb-card-face[hidden],
+        #verbAnswerActions[hidden],
+        #verbStudySession[hidden],
+        #verbStudyResult[hidden],
+        #verbEmptyState[hidden] {
+            display: none !important;
+        }
+
+        .verb-card-label {
+            margin: 0;
+            color: #789486;
+            font-size: 14px;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        #verbFrontV1 {
+            margin: 0;
+            font-size: clamp(36px, 8vw, 64px);
+            line-height: 1.2;
+            overflow-wrap: anywhere;
+        }
+
+        .verb-meaning {
+            margin: 0;
+            color: #73636b;
+            font-size: 22px;
+            line-height: 1.5;
+            overflow-wrap: anywhere;
+        }
+
+        .verb-speak-button {
+            min-height: 44px;
+            padding: 10px 16px;
+            border: 0;
+            border-radius: 20px;
+            background: #ffffff;
+            color: #547762;
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .verb-forms {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+            width: 100%;
+        }
+
+        .verb-form {
+            min-width: 0;
+            padding: 16px 8px;
+            border: 1px solid #d7e9df;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .verb-form-label {
+            margin: 0 0 12px;
+            color: #799687;
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+        .verb-form-word {
+            display: block;
+            margin-bottom: 12px;
+            font-size: clamp(20px, 4vw, 30px);
+            overflow-wrap: anywhere;
+        }
+
+        .verb-flip-button {
+            width: 100%;
+            min-height: 48px;
+            margin-top: 20px;
+            padding: 12px;
+            border: 1px solid #bddbcb;
+            border-radius: 16px;
+            background: #ffffff;
+            color: #547762;
+            font: inherit;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .verb-answer-actions {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+            margin-top: 22px;
+        }
+
+        .verb-answer-actions button {
+            min-height: 54px;
+            padding: 12px 6px;
+            border: 0;
+            border-radius: 16px;
+            font: inherit;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .verb-again {
+            background: #fce5ed;
+            color: #b85679;
+        }
+
+        .verb-learning {
+            background: #fff2d6;
+            color: #9a7837;
+        }
+
+        .verb-known {
+            background: #dff2e7;
+            color: #537d65;
+        }
+
+        .verb-answer-actions button:disabled {
+            opacity: 0.55;
+            cursor: wait;
+        }
+
+        .verb-message {
+            margin: 20px 0;
+            text-align: center;
+            color: #708679;
+        }
+
+        .verb-message.error {
+            color: #bf476c;
+        }
+
+        .verb-end-panel {
+            padding: 30px 22px;
+            border: 1px solid #d8e8df;
+            border-radius: 26px;
+            background: #fffafd;
+            text-align: center;
+        }
+
+        .verb-result-counts {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+            margin: 24px 0;
+        }
+
+        .verb-result-counts strong,
+        .verb-result-counts span {
+            display: block;
+        }
+
+        .verb-result-counts strong {
+            margin-bottom: 8px;
+            font-size: 30px;
+        }
+
+        .verb-return-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 48px;
+            padding: 10px 22px;
+            border-radius: 16px;
+            background: #86b49f;
+            color: #ffffff;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        @media (max-width: 480px) {
+            .verb-card {
+                padding: 24px 12px;
+                border-radius: 24px;
+            }
+
+            .verb-forms {
+                gap: 6px;
+            }
+
+            .verb-form {
+                padding: 14px 5px;
+            }
+
+            .verb-form .verb-speak-button {
+                padding: 8px 10px;
+            }
+
+            .verb-answer-actions {
+                gap: 6px;
+            }
+
+            .verb-answer-actions button {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body class="tioong-page">
+
+    <div class="app-container sub-page-container">
+
+        <header class="sub-page-header">
+            <a class="back-button" href="verbs.html">
+                <span>‹</span>
+                Động từ
+            </a>
+        </header>
+
+        <section class="vocabulary-heading">
+            <p>FLASHCARD</p>
+            <h1 id="verbStudyTitle">Học động từ</h1>
+            <span>Nhớ V2 và V3 rồi chạm để xem đáp án</span>
+        </section>
+
+        <main class="verb-study">
+
+            <p class="verb-message" id="verbStudyMessage"
+                role="status" aria-live="polite">
+                Đang tải động từ…
+            </p>
+
+            <section id="verbStudySession" hidden>
+
+                <div class="verb-progress">
+                    <div class="verb-progress-label">
+                        <span>Tiến độ</span>
+                        <strong id="verbStudyCounter">0 / 0</strong>
+                    </div>
+
+                    <progress id="verbStudyProgress"
+                        max="1" value="0"
+                        aria-label="Tiến độ học"></progress>
+                </div>
+
+                <article class="verb-card" id="verbStudyCard">
+
+                    <!-- Mặt 1: V1 và nghĩa tiếng Việt -->
+                    <div class="verb-card-face" id="verbFrontFace">
+                        <p class="verb-card-label">V1 · NGUYÊN MẪU</p>
+
+                        <h2 id="verbFrontV1"></h2>
+
+                        <p class="verb-meaning"
+                            id="verbFrontMeaning"></p>
+
+                        <button class="verb-speak-button"
+                            type="button" data-speak-form="v1">
+                            🔊 Nghe phát âm
+                        </button>
+                    </div>
+
+                    <!-- Mặt 2: V1, V2 và V3 -->
+                    <div class="verb-card-face"
+                        id="verbBackFace" hidden>
+
+                        <div class="verb-forms">
+                            <div class="verb-form">
+                                <p class="verb-form-label">V1</p>
+                                <strong class="verb-form-word"
+                                    id="verbBackV1"></strong>
+
+                                <button class="verb-speak-button"
+                                    type="button" data-speak-form="v1"
+                                    aria-label="Nghe V1">
+                                    🔊
+                                </button>
+                            </div>
+
+                            <div class="verb-form">
+                                <p class="verb-form-label">V2</p>
+                                <strong class="verb-form-word"
+                                    id="verbBackV2"></strong>
+
+                                <button class="verb-speak-button"
+                                    type="button" data-speak-form="v2"
+                                    aria-label="Nghe V2">
+                                    🔊
+                                </button>
+                            </div>
+
+                            <div class="verb-form">
+                                <p class="verb-form-label">V3</p>
+                                <strong class="verb-form-word"
+                                    id="verbBackV3"></strong>
+
+                                <button class="verb-speak-button"
+                                    type="button" data-speak-form="v3"
+                                    aria-label="Nghe V3">
+                                    🔊
+                                </button>
+                            </div>
+                        </div>
+
+                        <p class="verb-meaning"
+                            id="verbBackMeaning"></p>
+                    </div>
+
+                    <button class="verb-flip-button"
+                        id="flipVerbButton" type="button"
+                        aria-expanded="false"
+                        aria-controls="verbBackFace">
+                        Xem V2 và V3
+                    </button>
+
+                </article>
+
+                <div class="verb-answer-actions"
+                    id="verbAnswerActions" hidden>
+
+                    <button class="verb-again"
+                        type="button" data-verb-result="again">
+                        Chưa nhớ
+                    </button>
+
+                    <button class="verb-learning"
+                        type="button" data-verb-result="learning">
+                        Hơi nhớ
+                    </button>
+
+                    <button class="verb-known"
+                        type="button" data-verb-result="known">
+                        Đã nhớ
+                    </button>
+                </div>
+
+            </section>
+
+            <section class="verb-end-panel"
+                id="verbStudyResult" hidden>
+
+                <h2>Hoàn thành lượt học!</h2>
+
+                <p id="verbResultSummary"></p>
+
+                <div class="verb-result-counts">
+                    <div>
+                        <strong id="verbAgainCount">0</strong>
+                        <span>Chưa nhớ</span>
+                    </div>
+
+                    <div>
+                        <strong id="verbLearningCount">0</strong>
+                        <span>Hơi nhớ</span>
+                    </div>
+
+                    <div>
+                        <strong id="verbKnownCount">0</strong>
+                        <span>Đã nhớ</span>
+                    </div>
+                </div>
+
+                <a class="verb-return-link" href="verbs.html">
+                    Về trang động từ
+                </a>
+
+            </section>
+
+            <section class="verb-end-panel"
+                id="verbEmptyState" hidden>
+
+                <h2 id="verbEmptyTitle">Chưa có động từ</h2>
+                <p id="verbEmptyDescription"></p>
+
+                <a class="verb-return-link" href="verbs.html">
+                    Về trang động từ
+                </a>
+
+            </section>
+
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="assets/js/core/supabase-config.js"></script>
+    <script src="assets/js/core/auth-guard.js"></script>
+    <script src="assets/js/english/verb-flashcard.js?v=1"></script>
+    <script src="assets/js/core/pwa.js"></script>
+
+</body>
+</html>

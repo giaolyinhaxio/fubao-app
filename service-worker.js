@@ -1,4 +1,4 @@
-const CACHE_NAME = "fubao-v34";
+const CACHE_NAME = "fubao-v35";
 
 const APP_FILES = [
     "./",
@@ -10,6 +10,10 @@ const APP_FILES = [
     "./chung-minh.html",
 
     "./english.html",
+    "./verbs.html",
+    "./verb-flashcard.html",
+    "./assets/js/english/verbs.js?v=1",
+    "./assets/js/english/verb-flashcard.js?v=1",
     "./vocabulary.html",
     "./assets/js/english/vocabulary-home.js",
     "./vocabulary-list.html",
