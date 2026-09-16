@@ -148,41 +148,81 @@ async function taiDanhSachChuDeTuVung() {
         await Promise.all(
             (data || []).map(
                 async function (topic) {
-                    const {
-                        count,
-                        error: countError
-                    } = await supabaseClient
-                        .from(
-                            "english_vocabulary"
-                        )
-                        .select(
-                            "id",
+                    const [
+                        statisticsResult,
+                        knownResult
+                    ] = await Promise.all([
+                        supabaseClient.rpc(
+                            "get_vocabulary_stats",
                             {
-                                count: "exact",
-                                head: true
+                                p_topic_id: topic.id
+                            }
+                        ),
+
+                        supabaseClient.rpc(
+                            "get_vocabulary_list",
+                            {
+                                p_search: "",
+                                p_status: "known",
+                                p_limit: 1,
+                                p_offset: 0,
+                                p_topic_id: topic.id
                             }
                         )
-                        .eq(
-                            "topic_id",
-                            topic.id
-                        );
+                    ]);
 
 
-                    if (countError) {
+                    if (statisticsResult.error) {
                         console.error(
-                            "Không thể đếm từ:",
-                            countError
+                            "Không thể tải thống kê:",
+                            statisticsResult.error
                         );
                     }
+
+
+                    if (knownResult.error) {
+                        console.error(
+                            "Không thể đếm từ đã học:",
+                            knownResult.error
+                        );
+                    }
+
+
+                    const statistics =
+                        statisticsResult.data &&
+                            statisticsResult.data.length > 0
+                            ? statisticsResult.data[0]
+                            : {
+                                total_words: 0,
+                                due_words: 0
+                            };
+
+
+                    const knownCount =
+                        knownResult.data &&
+                            knownResult.data.length > 0
+                            ? Number(
+                                knownResult.data[0]
+                                    .total_count
+                            ) || 0
+                            : 0;
 
 
                     return {
                         ...topic,
 
                         vocabulary_count:
-                            countError
-                                ? 0
-                                : Number(count) || 0
+                            Number(
+                                statistics.total_words
+                            ) || 0,
+
+                        learned_count:
+                            knownCount,
+
+                        review_count:
+                            Number(
+                                statistics.due_words
+                            ) || 0
                     };
                 }
             )
@@ -250,9 +290,24 @@ function hienThiDanhSachChuDeTuVung() {
             )}
                     </p>
 
-                    <strong>
-                        ${topic.vocabulary_count} từ
-                    </strong>
+                    <div class="vocabulary-topic-statistics">
+
+    <span class="vocabulary-topic-stat total">
+        <strong>${topic.vocabulary_count}</strong>
+        <small>Tổng</small>
+    </span>
+
+    <span class="vocabulary-topic-stat learned">
+        <strong>${topic.learned_count}</strong>
+        <small>Đã học</small>
+    </span>
+
+    <span class="vocabulary-topic-stat review">
+        <strong>${topic.review_count}</strong>
+        <small>Cần ôn</small>
+    </span>
+
+</div>
 
                 </div>
 
