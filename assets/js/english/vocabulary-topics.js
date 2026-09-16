@@ -229,7 +229,54 @@ async function taiDanhSachChuDeTuVung() {
         );
 
 
+    capNhatThongKeTongQuan();
+
     hienThiDanhSachChuDeTuVung();
+}
+
+function capNhatThongKeTongQuan() {
+    const totalVocabulary =
+        vocabularyTopics.reduce(
+            function (total, topic) {
+                return total +
+                    (
+                        Number(
+                            topic.vocabulary_count
+                        ) || 0
+                    );
+            },
+            0
+        );
+
+
+    const totalLearned =
+        vocabularyTopics.reduce(
+            function (total, topic) {
+                return total +
+                    (
+                        Number(
+                            topic.learned_count
+                        ) || 0
+                    );
+            },
+            0
+        );
+
+
+    layPhanTu(
+        "allTopicsVocabularyCount"
+    ).textContent =
+        totalVocabulary.toLocaleString(
+            "vi-VN"
+        );
+
+
+    layPhanTu(
+        "allTopicsLearnedCount"
+    ).textContent =
+        totalLearned.toLocaleString(
+            "vi-VN"
+        );
 }
 
 

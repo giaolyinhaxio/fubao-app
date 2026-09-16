@@ -8763,3 +8763,64 @@ body.modal-open {
         font-size: 11px;
     }
 }
+
+.vocabulary-overall-statistics {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    margin: 0 auto 34px;
+    width: min(760px, 100%);
+}
+
+.vocabulary-overall-stat {
+    display: flex;
+    min-height: 130px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    padding: 22px;
+    border: 1px solid #ead4dd;
+    border-radius: 26px;
+    background: #fffafd;
+    text-align: center;
+}
+
+.vocabulary-overall-stat.learned {
+    border-color: #cce4d7;
+    background: #f0faf4;
+}
+
+.vocabulary-overall-stat strong {
+    color: #503f49;
+    font-size: 38px;
+    line-height: 1;
+}
+
+.vocabulary-overall-stat span {
+    margin-top: 10px;
+    color: #8e7782;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+@media (max-width: 600px) {
+    .vocabulary-overall-statistics {
+        gap: 10px;
+        margin-bottom: 24px;
+    }
+
+    .vocabulary-overall-stat {
+        min-height: 105px;
+        padding: 16px 10px;
+        border-radius: 20px;
+    }
+
+    .vocabulary-overall-stat strong {
+        font-size: 30px;
+    }
+
+    .vocabulary-overall-stat span {
+        font-size: 14px;
+    }
+}

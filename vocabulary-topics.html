@@ -18,7 +18,7 @@
 
     <meta name="apple-mobile-web-app-title" content="FuBao">
 
-    <link rel="stylesheet" href="assets/css/style.css?v=68">
+    <link rel="stylesheet" href="assets/css/style.css?v=69">
 
     <link rel="icon" type="image/svg+xml" href="assets/icons/bear-favicon.svg?v=2">
 </head>
@@ -47,14 +47,26 @@
 
             <h1>Từ vựng</h1>
 
-            <span>
-                Chọn chủ đề bạn muốn học
-            </span>
+        </section>
+
 
         </section>
 
 
-        <main class="vocabulary-topic-container" id="vocabularyTopicContainer">
+        <section class="vocabulary-overall-statistics" aria-label="Thống kê toàn bộ từ vựng">
+            <div class="vocabulary-overall-stat total">
+                <strong id="allTopicsVocabularyCount">…</strong>
+                <span>Tổng số từ</span>
+            </div>
+
+            <div class="vocabulary-overall-stat learned">
+                <strong id="allTopicsLearnedCount">…</strong>
+                <span>Đã học</span>
+            </div>
+        </section>
+
+
+        <main class="vocabulary-topic-container" <main class="vocabulary-topic-container" id="vocabularyTopicContainer">
             <article class="vocabulary-topic-message">
                 Đang tải danh sách chủ đề...
             </article>
@@ -139,7 +151,7 @@
 
     <script src="assets/js/core/auth-guard.js"></script>
 
-    <script src="assets/js/english/vocabulary-topics.js?v=3"></script>
+    <script src="assets/js/english/vocabulary-topics.js?v=4"></script>
 
     <script src="assets/js/core/pwa.js"></script>
 
