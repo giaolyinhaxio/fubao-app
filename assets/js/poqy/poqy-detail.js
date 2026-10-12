@@ -1903,6 +1903,96 @@ async function xuLyHanhDongDanhSach(
     );
 }
 
+async function xoaMucTieuHienTai() {
+    if (!poqyCurrentGoal) {
+        return;
+    }
+
+    const goalId =
+        poqyCurrentGoal.id;
+
+    const goalTitle =
+        poqyCurrentGoal.title ||
+        "mục tiêu này";
+
+    const confirmed =
+        window.confirm(
+            `Xóa "${goalTitle}"?\n\n` +
+            "Toàn bộ khoản chi, đóng góp, " +
+            "việc cần làm, cột mốc và lịch sử " +
+            "của mục tiêu này cũng sẽ bị xóa."
+        );
+
+    if (!confirmed) {
+        return;
+    }
+
+    const deleteButton =
+        layPhanTu("deleteGoalButton");
+
+    deleteButton.disabled = true;
+    deleteButton.textContent = "Đang xóa...";
+
+    try {
+        const childTables = [
+            "poqy_expenses",
+            "poqy_contributions",
+            "poqy_tasks",
+            "poqy_milestones",
+            "poqy_activities"
+        ];
+
+        for (const table of childTables) {
+            const result =
+                await supabaseClient
+                    .from(table)
+                    .delete()
+                    .eq(
+                        "goal_id",
+                        goalId
+                    );
+
+            if (result.error) {
+                throw result.error;
+            }
+        }
+
+        const goalResult =
+            await supabaseClient
+                .from("poqy_goals")
+                .delete()
+                .eq(
+                    "id",
+                    goalId
+                );
+
+        if (goalResult.error) {
+            throw goalResult.error;
+        }
+
+        localStorage.removeItem(
+            POQY_SELECTED_GOAL_KEY
+        );
+
+        window.location.href =
+            "poqy.html";
+
+    } catch (error) {
+        console.error(
+            "Không xóa được mục tiêu:",
+            error
+        );
+
+        alert(
+            error.message ||
+            "Không xóa được mục tiêu."
+        );
+
+        deleteButton.disabled = false;
+        deleteButton.textContent = "Xóa";
+    }
+}
+
 function ganSuKienPoQy() {
     layPhanTu("createFirstGoalButton")
         .addEventListener(
@@ -1926,6 +2016,12 @@ function ganSuKienPoQy() {
             function () {
                 moFormGoal(poqyCurrentGoal);
             }
+        );
+
+    layPhanTu("deleteGoalButton")
+        .addEventListener(
+            "click",
+            xoaMucTieuHienTai
         );
 
     layPhanTu("addExpenseButton")
