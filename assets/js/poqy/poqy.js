@@ -449,10 +449,19 @@ function capNhatDanhSachGoal() {
                     </div>
 
                     <span class="poqy-goal-card-arrow">
-                        ›
-                    </span>
+    ›
+</span>
 
-                </a>
+<button
+    class="poqy-goal-card-delete"
+    type="button"
+    data-action="delete-goal"
+    data-id="${baoVeHTML(goal.id)}"
+    aria-label="Xóa ${baoVeHTML(goal.title)}">
+    ×
+</button>
+
+</a>
             `;
         }).join("");
 }
@@ -1809,6 +1818,86 @@ async function xuLyHanhDongDanhSach(
     id,
     target
 ) {
+    if (action === "delete-goal") {
+        const goal =
+            poqyGoals.find(
+                function (item) {
+                    return String(item.id) ===
+                        String(id);
+                }
+            );
+
+        if (!goal) {
+            return;
+        }
+
+        const confirmed =
+            window.confirm(
+                `Xóa "${goal.title}"?\n\n` +
+                "Toàn bộ khoản chi, đóng góp, " +
+                "việc cần làm, cột mốc và lịch sử " +
+                "của mục tiêu này cũng sẽ bị xóa."
+            );
+
+        if (!confirmed) {
+            return;
+        }
+
+        target.disabled = true;
+        target.textContent = "…";
+
+        const childTables = [
+            "poqy_expenses",
+            "poqy_contributions",
+            "poqy_tasks",
+            "poqy_milestones",
+            "poqy_activities"
+        ];
+
+        for (const table of childTables) {
+            const childResult =
+                await supabaseClient
+                    .from(table)
+                    .delete()
+                    .eq(
+                        "goal_id",
+                        id
+                    );
+
+            if (childResult.error) {
+                throw childResult.error;
+            }
+        }
+
+        const goalResult =
+            await supabaseClient
+                .from("poqy_goals")
+                .delete()
+                .eq(
+                    "id",
+                    id
+                );
+
+        if (goalResult.error) {
+            throw goalResult.error;
+        }
+
+        if (
+            String(
+                localStorage.getItem(
+                    POQY_SELECTED_GOAL_KEY
+                )
+            ) === String(id)
+        ) {
+            localStorage.removeItem(
+                POQY_SELECTED_GOAL_KEY
+            );
+        }
+
+        await taiPoQy();
+
+        return;
+    }
     if (action === "edit-expense") {
         moFormExpense(
             poqyExpenses.find(function (item) {
@@ -2140,6 +2229,14 @@ function ganSuKienPoQy() {
 
             if (!button) {
                 return;
+            }
+
+            if (
+                button.dataset.action ===
+                "delete-goal"
+            ) {
+                event.preventDefault();
+                event.stopPropagation();
             }
 
             try {

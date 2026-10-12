@@ -1975,7 +1975,7 @@ async function xoaMucTieuHienTai() {
         );
 
         window.location.href =
-            "poqy.html";
+            "chung-minh.html";
 
     } catch (error) {
         console.error(
